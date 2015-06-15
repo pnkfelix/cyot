@@ -2,22 +2,47 @@
 % Felix Klock
 % Thursday 25 June
 
-# Goals
+# Rust: How do we get to Gecko?
+
+## Goals
 
 * Convince you Rust is awesome
 * Provide seeds of knowledge
   * One can only cultivate so much during a three hour window
 
-# Outline
+## Outline
 
 * Playpen: Ownership and Borrowing; Arrays and Strings
 * Local Development: Cargo; Crates and Modules
 * More Fundamentals: Data; More Borrowing; Traits
 * Systems Development: Concurrency and I/O; FFI
 
-# Part 1: Playpen (in parallel with distribution via USB stick)
+# Part 1: Playpen
+
+## Playpen
+
+* For now, open `http://play.rust-lang.org/` in a web browser.
+
+* For later: Install Rust from the USB stick when it comes to you
+
+## Rust Basics
+
+```rust
+pub fn main() {
+    println!("Hello World!");
+}
+```
 
 ## Ownership and Move Semantics
+
+```rust
+pub fn fill_a_vec() {
+	let mut vec = Vec::new();
+	vec.push(22);
+	vec.push(44);
+	vec.push(66);
+}
+```
 
 ## Borrowing (immutably), Scopes (no explicit lifetimes)
 

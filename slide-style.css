@@ -1,0 +1,34 @@
+.reveal h1 {
+    font-size: 1.2em;
+}
+
+/* Below is based off of: 
+ *     http://benjeffrey.com/pandoc-syntax-highlighting-css
+ */
+
+/* .sourceCode pre code { background-color: #FDF6E3; } */
+
+
+/* KeyWordTok */
+.sourceCode .kw { color: #268BD2; }
+/* DataTypeTok */
+.sourceCode .dt { color: #36ABE2; }
+
+/* DecValTok (decimal value), BaseNTok, FloatTok */
+.sourceCode .dv, .sourceCode .bn, .sourceCode .fl { color: #D33682; }
+/* CharTok */
+.sourceCode .ch { color: #DC322F; }
+/* StringTok */
+.sourceCode .st { color: #2AA198; }
+/* CommentTok */
+.sourceCode .co { color: #93A1A1; }
+/* OtherTok */
+.sourceCode .ot { color: #A57800; }
+/* AlertTok */
+.sourceCode .al { color: #CB4B16; font-weight: bold; }
+/* FunctionTok */
+.sourceCode .fu { color: #268BD2; }
+/* RegionMarkerTok */
+.sourceCode .re { }
+/* ErrorTok */
+.sourceCode .er { color: #D30102; font-weight: bold; }
