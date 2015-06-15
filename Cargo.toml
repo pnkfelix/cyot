@@ -1,5 +1,5 @@
 [package]
-name = "tango-demo"
+name = "cyot"
 version = "0.1.0"
 authors = ["Felix S. Klock II <pnkfelix@pnkfx.org>"]
 
@@ -11,7 +11,12 @@ authors = ["Felix S. Klock II <pnkfelix@pnkfx.org>"]
 # fn main() { tango::process_root().unwrap() }
 # ```
 
-build = "tango-build.rs"
+# Our specialized build script first runs `tango` to bring the
+# `.rs` and `.md` files into sync, and then it runs `pandoc`
+# as an external program to convert a selection of the `.md`
+# files into `reveal.js` slideshows.
+
+build = "build.rs"
 
 # The preprocessor is the `tango` crate, so we need to add that
 # to the build-dependencies.
