@@ -7,9 +7,11 @@ as well as [pandoc]'s support for slideshows via [reveal.js].
 [pandoc]: http://pandoc.org/
 [reveal.js]: http://lab.hakim.se/reveal-js/
 
-You should be able to jump to [lib.md] and see some nicely rendered text.
+You should be able to jump to [path_to_gecko.md] and see some nicely
+rendered text; note that this document is merely the *source* for the
+target slideshow; it is not the slideshow itself.
 
-[lib.md]: src/lib.md
+[path_to_gecko.md]: src/tutorial/path_to_gecko.md
 
 ## Tangling with Tango and pandoc.
 
