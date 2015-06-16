@@ -20,11 +20,19 @@ mod pandoc {
         mk_slide_dir.status().ok()
             .expect("we should be able to ensure `target/slides/` exists");
 
+        let is_mod_md = |entry: &fs::DirEntry| -> bool {
+            if let Some("mod.md") = entry.path().file_name().and_then(|p|p.to_str()) {
+                true
+            } else {
+                false
+            }
+        };
         for name in &["path_to_gecko"] {
             let src_dir_path = &format!("src/tutorial/{}", name);
             let mut src_paths = Vec::new();
             for entry in try!(fs::read_dir(src_dir_path)) {
                 let entry = try!(entry);
+                if is_mod_md(&entry) { continue; }
                 if let Some("md") = entry.path().extension().and_then(|p|p.to_str()) {
                     src_paths.push(entry.path());
                 }
@@ -40,6 +48,8 @@ mod pandoc {
                 .args(&["--css", "../../slide-style.css"])
                 .args(&["-o", tgt_path])
                 .args(&["-s"]);
+
+            src_paths.sort();
             for p in src_paths {
                 pandoc.arg(p);
             }
