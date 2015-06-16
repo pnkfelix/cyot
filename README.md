@@ -7,11 +7,17 @@ as well as [pandoc]'s support for slideshows via [reveal.js].
 [pandoc]: http://pandoc.org/
 [reveal.js]: http://lab.hakim.se/reveal-js/
 
-You should be able to jump to [path_to_gecko.md] and see some nicely
+You should be able to jump to [path_to_gecko overview] and see some nicely
 rendered text; note that this document is merely the *source* for the
 target slideshow; it is not the slideshow itself.
 
-[path_to_gecko.md]: src/tutorial/path_to_gecko.md
+[path_to_gecko overview]: src/tutorial/path_to_gecko/overview.md
+
+The root to that slideshow's hierarch is [path_to_gecko mod.md].  As
+that text explains, it is not actually included in the slideshow,
+unlike every other `.md` file in that directory.
+
+[path_to_gecko mod.md]: src/tutorial/path_to_gecko/mod.md
 
 ## Tangling with Tango and pandoc.
 
