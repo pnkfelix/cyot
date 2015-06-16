@@ -14,15 +14,19 @@ during the build, and thus what `#[test]`-marked functions should
 actually be treated as unit tests.
 
 ```rust
-mod overview;
+pub mod overview;
 
-mod part_01;
-mod part_02;
-mod part_03;
-mod part_04;
+pub mod part_01;
+pub mod part_02;
+pub mod part_03;
+pub mod part_04;
 
-mod part_01_sect_010;
-mod part_01_sect_020;
+pub mod part_01_sect_010;
+pub mod part_01_sect_011;
+pub mod part_01_sect_020;
+pub mod part_01_sect_030;
+pub mod part_01_sect_040;
+pub mod part_01_sect_050;
 ```
 
 Thus, if you have a file that you want to be in the slideshow but do

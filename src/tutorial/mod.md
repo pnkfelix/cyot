@@ -25,7 +25,7 @@ Hello world
   * Rust in Gecko (demonstration)
 
 ```rust
-mod path_to_gecko;
+pub mod path_to_gecko;
 ```
 
 ### FFI and callbacks
