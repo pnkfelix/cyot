@@ -10,6 +10,7 @@ fn main() {
 
 mod pandoc {
     use std::env;
+    use std::fs;
     use std::io;
     use std::process::Command;
 
@@ -20,7 +21,14 @@ mod pandoc {
             .expect("we should be able to ensure `target/slides/` exists");
 
         for name in &["path_to_gecko"] {
-            let src_path = &format!("src/tutorial/{}.md", name);
+            let src_dir_path = &format!("src/tutorial/{}", name);
+            let mut src_paths = Vec::new();
+            for entry in try!(fs::read_dir(src_dir_path)) {
+                let entry = try!(entry);
+                if let Some("md") = entry.path().extension().and_then(|p|p.to_str()) {
+                    src_paths.push(entry.path());
+                }
+            }
             let tgt_path = &format!("target/slides/{}.html", name);
             let mut pandoc = Command::new("pandoc");
             pandoc
@@ -30,8 +38,11 @@ mod pandoc {
                 // .args(&["--highlight-style=pygments"])
                 .args(&["--highlight-style=kate"])
                 .args(&["--css", "../../slide-style.css"])
-                .args(&["-s", src_path])
-                .args(&["-o", tgt_path]);
+                .args(&["-o", tgt_path])
+                .args(&["-s"]);
+            for p in src_paths {
+                pandoc.arg(p);
+            }
             let command = format!("{:?}", pandoc);
             match pandoc.output() {
                 Ok(ref output) if output.status.success() => {}
