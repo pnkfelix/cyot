@@ -13,7 +13,10 @@
 /* .sourceCode .rust { font-size: 0.90em; } */
 /* .sourceCode .rust { font-size: 90%; } */
 /* .sourceCode .rust { font-size: 0.90em; } */
-.sourceCode .rust { font-size: smaller; line-height: initial; }
+/* .sourceCode .rust { font-size: smaller; line-height: initial; } */
+/* .sourceCode .rust { font-size: 100%; line-height: initial; } */
+/* .sourceCode .rust { line-height: initial; } */
+.sourceCode .rust { font-size: 85%; line-height: initial; }
 /* .sourceCode .rust { background: #3F3F3F; display: block; } */
 
 /* KeyWordTok */
