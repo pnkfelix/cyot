@@ -8,6 +8,13 @@
 
 /* .sourceCode pre code { background-color: #FDF6E3; } */
 
+.sourceCode .rust { overflow: visible; }
+
+/* .sourceCode .rust { font-size: 0.90em; } */
+/* .sourceCode .rust { font-size: 90%; } */
+/* .sourceCode .rust { font-size: 0.90em; } */
+.sourceCode .rust { font-size: smaller; line-height: initial; }
+/* .sourceCode .rust { background: #3F3F3F; display: block; } */
 
 /* KeyWordTok */
 .sourceCode .kw { color: #268BD2; }
@@ -32,3 +39,6 @@
 .sourceCode .re { }
 /* ErrorTok */
 .sourceCode .er { color: #D30102; font-weight: bold; }
+
+/* PreProcessor (i.e. Macro) */
+.sourceCode .pp { color: #DC322F; font-weight: bold; }
