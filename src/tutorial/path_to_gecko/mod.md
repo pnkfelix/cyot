@@ -39,3 +39,15 @@ presentation order in the slideshow. In particular, the slides will be
 presented according to the alphabetical sorting of the paths; that's
 why I am choosing the module names carefully so that when sorted,
 `part_01_sect_010` will come immediately after `part_01`.
+
+## Formatting Notes
+
+Every H2 (i.e. `## Title`, followed by content) starts off a new
+slide.
+
+An hline (`----`) will immediate end a slide, so that follow-on
+content is on its own successor slide.
+
+An H1 (i.e. `# Title`) is used to delimit a new vertical section.  It
+*must* be followed by an H2, or else it screws up pandoc's inference
+of what header level defines the start of a slide.
