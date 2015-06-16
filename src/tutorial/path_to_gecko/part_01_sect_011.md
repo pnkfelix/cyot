@@ -1,5 +1,21 @@
 # Ownership and Move Semantics
 
+## Owned vs Copied
+  * Consider assignment
+    ``` {.rust}
+    left_side = right_side;
+    ```
+
+  * Owned data
+    * *moves* `right_side` into `left_side`
+    * `right_side` becomes inaccessible
+    * one can still opt into explicit duplication,
+      e.g. '`new = owned.clone();`{.rust}'
+
+  * Copied data
+    * *memcpy's* `right_side` into `left_side`
+    * one can freely keep using the original
+
 ## Creating an owned value
 
 ```rust
