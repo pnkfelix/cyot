@@ -24,6 +24,9 @@
 /* DataTypeTok */
 .sourceCode .dt { color: #36ABE2; }
 
+/* CoNstructorTok */
+.sourceCode .cn { color: #D33682; }
+
 /* DecValTok (decimal value), BaseNTok, FloatTok */
 .sourceCode .dv, .sourceCode .bn, .sourceCode .fl { color: #D33682; }
 /* CharTok */
