@@ -21,6 +21,7 @@ pub mod part_02;
 pub mod part_03;
 pub mod part_04;
 
+#[allow(dead_code)]
 pub mod part_01_sect_010;
 pub mod part_01_sect_011;
 pub mod part_01_sect_020;
