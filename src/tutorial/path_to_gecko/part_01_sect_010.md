@@ -31,16 +31,28 @@ fn print_ten() {
 ## Unusual stuff
 
   * Blocks have optional tail expressions
-    `fn add8(x: i32) { println!("add8"); return x + 8; }`{.rust}
-    `fn add8(x: i32) { println!("add8"); x + 8 }`{.rust}
 
   * Tuples, Pattern binding
+
+  * Algebraic Data, Pattern matching
+
+``` {.rust}
+fn add8(x: i32) { println!("add8"); return x + 8; }
+fn add8(x: i32) { println!("add8"); x + 8 }
+```
 
 ```rust
 fn add_pair8(p: (i32, i32)) -> (i32, i32) {
     let (x,y) = p;
     (x + 8, y + 8)
 }
+```
+
+``` {.rust}
+let v = match number_result {
+    Ok(x)  => x + 8,
+    Err(e) => { println!("error: {}", e); break; }
+};
 ```
 
 ## Language and API docs
