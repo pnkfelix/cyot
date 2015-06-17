@@ -1,3 +1,7 @@
+```rust
+#![feature(scoped)]
+```
+
 This is a demonstration library.
 
 This is a unit-test in Rust:
