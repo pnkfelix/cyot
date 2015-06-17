@@ -28,6 +28,12 @@ pub mod part_01_sect_020;
 pub mod part_01_sect_030;
 pub mod part_01_sect_040;
 pub mod part_01_sect_050;
+
+pub mod part_02_sect_010;
+pub mod part_02_sect_020;
+pub mod part_02_sect_021;
+pub mod part_02_sect_022;
+pub mod part_02_sect_030;
 ```
 
 Thus, if you have a file that you want to be in the slideshow but do
