@@ -28,7 +28,7 @@
     * (not even an appetizer)
 
   * Do not worry if it goes too fast
-  
+
 ## High-level, but fast
 
 The below [loop demo] compiles down to tight code:
