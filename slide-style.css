@@ -1,14 +1,16 @@
-.reveal h1 {
-    font-size: 1.2em;
-}
+.reveal .level2 h1 { font-size: 1.2em; }
+
+.reveal .filename { font-size: 50%; line-height: 0; float: right }
 
 /* Below is based off of: 
  *     http://benjeffrey.com/pandoc-syntax-highlighting-css
  */
 
 /* .sourceCode pre code { background-color: #FDF6E3; } */
+.sourceCode .bash { background-color: #0D0603; }
 
-.sourceCode .rust { overflow: visible; }
+/* .sourceCode .rust { overflow: visible; } */
+.sourceCode { overflow: visible; }
 
 /* .sourceCode .rust { font-size: 0.90em; } */
 /* .sourceCode .rust { font-size: 90%; } */
@@ -48,3 +50,5 @@
 
 /* PreProcessor (i.e. Macro) */
 .sourceCode .pp { color: #DC322F; font-weight: bold; }
+/* ATtribute */
+.sourceCode .at { color: #DC322F; font-weight: bold; }
