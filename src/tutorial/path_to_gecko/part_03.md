@@ -21,7 +21,7 @@ struct Pair<X,Y>(X, Y);
 
   * FIXME does this slide actually pay for itself?
     * (`impl` alone?)
-    
+
 ```{.rust}
 fn proj_x_axis(p: &Point) -> Point {
     Point { x: p.x, y: 0 }
@@ -41,7 +41,7 @@ fn proj_x_axis_check(p: &Point) -> Point {
 }
 ```
 -->
-    
+
 ```rust
 impl Point {
     fn proj_x_axis(&self) -> Point {
