@@ -1,5 +1,5 @@
-% Path to Gecko
-% Felix Klock
+% A Rusty Path to Gecko
+% Felix Klock (`pnkfelix`) and the Rust Team
 % Thursday 25 June
 
 # Rust: How do we get to Gecko?
