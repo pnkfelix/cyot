@@ -22,25 +22,28 @@
 
 ## module hierarchy and file system
 
-```rust
-mod a { mod b { pub type I = i32; }
-        mod c { use super::b::I;
-    			pub fn add3(x: I) -> I { x + 3 }
-		}
+``` {.rust}
+mod a {
+	mod b { pub type I = i32; }
+    mod c {
+		use super::b::I;
+    	pub fn add3(x: I) -> I { x + 3 }
+	}
 }
 ```
 
-Or '`mod name;`{.rust}' and subfiles at proper paths
+Or '`mod name;`{.rust}' with subfiles at proper paths
 
 `src/lib.rs`{.filename}
-``` {.rust}
-mod a { mod b { pub type I = i32; }
-        mod c;
+```rust
+mod a {
+    mod b { pub type I = i32; }
+    mod c;
 }
 ```
 
 `src/a/c.rs`{.filename}
 ``` {.rust}
-                use super::b::I;
-                pub fn add3(x: I) -> I { x + 3 }
+        use super::b::I;
+        pub fn add3(x: I) -> I { x + 3 }
 ```
