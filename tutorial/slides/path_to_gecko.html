@@ -152,7 +152,7 @@ fn main() {
 </section><section id="memory-safety" class="slide level2">
 <h1>Memory safety</h1>
 <p>Example: catches iterator invalidation bugs</p>
-<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="kw">fn</span> this_wont_compile(v: &amp;<span class="kw">mut</span> <span class="dt">Vec</span>&lt;<span class="dt">i32</span>&gt;) -&gt; <span class="dt">i32</span> {
+<div class="sourceCode"><pre class="sourceCode rust compile_error"><code class="sourceCode rust"><span class="kw">fn</span> this_wont_compile(v: &amp;<span class="kw">mut</span> <span class="dt">Vec</span>&lt;<span class="dt">i32</span>&gt;) -&gt; <span class="dt">i32</span> {
     <span class="kw">let</span> <span class="kw">mut</span> sum = <span class="dv">0</span>;
     <span class="kw">for</span> &amp;i <span class="kw">in</span> v.iter() {
         <span class="kw">if</span> i &gt; <span class="dv">0</span> { v.push(<span class="dv">0</span>); } sum += i;
@@ -506,7 +506,7 @@ Hello, world!
     <span class="kw">pub</span> <span class="kw">fn</span> add3(x: I) -&gt; I { add3priv(x) }
     <span class="kw">fn</span> add3priv(x: I) -&gt; I { x + <span class="dv">3</span> }
 }</code></pre></div>
-<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="kw">mod</span> f {
+<div class="sourceCode"><pre class="sourceCode rust compile_error"><code class="sourceCode rust"><span class="kw">mod</span> f {
     <span class="kw">use</span> <span class="kw">super</span>::d::add3priv;
     <span class="at">#[</span>test<span class="at">]</span> <span class="kw">fn</span> t() { <span class="pp">assert_eq!</span>(add3priv(<span class="dv">1</span>), <span class="dv">4</span>); }
 }</code></pre></div>
@@ -918,7 +918,7 @@ note:    parameters for function</code></pre>
     <span class="kw">fn</span> height(&amp;<span class="kw">self</span>) -&gt; <span class="dt">u32</span> { <span class="kw">self</span>.h }
     <span class="kw">fn</span> width(&amp;<span class="kw">self</span>) -&gt; <span class="dt">u32</span> { <span class="kw">self</span>.w }
 }
-    
+
 <span class="kw">impl</span> Dimensioned <span class="kw">for</span> Circle {
     <span class="kw">fn</span> height(&amp;<span class="kw">self</span>) -&gt; <span class="dt">u32</span> { <span class="kw">self</span>.r * <span class="dv">2</span> }
     <span class="kw">fn</span> width(&amp;<span class="kw">self</span>) -&gt; <span class="dt">u32</span> { <span class="kw">self</span>.r * <span class="dv">2</span> }
