@@ -91,7 +91,7 @@ Generated x86_64 machine code for `fn sum_pos`{.rust}:
 
 Example: catches iterator invalidation bugs
 
-``` {.rust}
+``` {.rust .compile_error}
 fn this_wont_compile(v: &mut Vec<i32>) -> i32 {
     let mut sum = 0;
     for &i in v.iter() {

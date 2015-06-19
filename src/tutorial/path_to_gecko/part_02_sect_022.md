@@ -8,7 +8,7 @@ mod d {
 }
 ```
 
-``` {.rust}
+``` {.rust .compile_error}
 mod f {
 	use super::d::add3priv;
 	#[test] fn t() { assert_eq!(add3priv(1), 4); }
