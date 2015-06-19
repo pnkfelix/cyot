@@ -607,16 +607,396 @@ fn proj_x_axis_check(p: &Point) -> Point {
 }</code></pre></div>
 </section><section id="scopes-and-lifetimes." class="slide level2">
 <h1>Scopes and Lifetimes.</h1>
-</section><section id="lifetime-bindings." class="slide level2">
-<h1>Lifetime bindings.</h1>
+<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="at">#[</span>test<span class="at">]</span>
+<span class="kw">fn</span> show_some_lifetimes() {
+    <span class="kw">let</span> v1 = <span class="pp">vec!</span>[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]; <span class="co">//                 +</span>
+    <span class="kw">let</span> v2 = <span class="pp">vec!</span>[<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>]; <span class="co">//            +    |</span>
+    <span class="kw">let</span> b1 = &amp;v1;           <span class="co">//       +    |    |</span>
+    <span class="kw">let</span> b2 = &amp;v2;           <span class="co">//  +    |    |    |</span>
+    foo(b1);                <span class="co">//  |    |    |    |  </span>
+    foo(b2);                <span class="co">// &#39;b2  &#39;b1  &#39;v2  &#39;v1</span>
+                            <span class="co">//  |    |    |    | </span>
+}                           <span class="co">//  +    +    +    +</span>
+
+<span class="kw">fn</span> foo(v: &amp;<span class="dt">Vec</span>&lt;<span class="dt">i32</span>&gt;) { <span class="pp">println!</span>(<span class="st">&quot;v[1]: {}&quot;</span>, v[<span class="dv">1</span>]); }</code></pre></div>
+</section><section id="lifetime-nesting" class="slide level2">
+<h1>Lifetime nesting</h1>
+<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="at">#[</span>test<span class="at">]</span>
+<span class="kw">fn</span> lifetime_nesting() {
+    <span class="kw">fn</span> read(v: &amp;<span class="dt">Vec</span>&lt;<span class="dt">i32</span>&gt;) { <span class="pp">println!</span>(<span class="st">&quot;v[1]: {}&quot;</span>, v[<span class="dv">1</span>]); }
+    <span class="kw">let</span> v1 = <span class="pp">vec!</span>[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>];         <span class="co">//                      +</span>
+    <span class="kw">let</span> b1;                         <span class="co">//                      |</span>
+    {                               <span class="co">//                      |</span>
+        <span class="kw">let</span> v2 = <span class="pp">vec!</span>[<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>];     <span class="co">//                 +    |</span>
+        {                           <span class="co">//                 |    |</span>
+            <span class="kw">let</span> b2 = &amp;v2;           <span class="co">//  +              |    |</span>
+            <span class="kw">let</span> v3 = <span class="pp">vec!</span>[<span class="dv">7</span>,<span class="dv">8</span>,<span class="dv">9</span>];   <span class="co">//  |         +   &#39;v2  &#39;v1</span>
+            b1 = &amp;v1;               <span class="co">// &#39;b2   +   &#39;v3   |    |</span>
+            read(b2);               <span class="co">//  |    |    |    |    |</span>
+        }                           <span class="co">//  +   &#39;b1   +    |    |  </span>
+    }                               <span class="co">//       |         +    |  </span>
+    read(b1);                       <span class="co">//       |              | </span>
+}                                   <span class="co">//       +              +</span></code></pre></div>
+</section><section id="borrow-checking-prevents-errors" class="slide level2" data-transition="fade-out">
+<h1>Borrow Checking Prevents Errors</h1>
+<div class="sourceCode"><pre class="sourceCode rust compile_error"><code class="sourceCode rust"><span class="kw">fn</span> borrow_checking_prevents_errors() {
+    <span class="kw">fn</span> read(v: &amp;<span class="dt">Vec</span>&lt;<span class="dt">i32</span>&gt;) { <span class="pp">println!</span>(<span class="st">&quot;v[1]: {}&quot;</span>, v[<span class="dv">1</span>]); }
+    <span class="kw">fn</span> consume(v: <span class="dt">Vec</span>&lt;<span class="dt">i32</span>&gt;) { }
+    <span class="kw">let</span> v1 = <span class="pp">vec!</span>[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>];      <span class="co">//        +</span>
+                                 <span class="co">//        |</span>
+    <span class="kw">let</span> b1 = &amp;v1;                <span class="co">//  +    &#39;v1</span>
+                                 <span class="co">//  |     |</span>
+    consume(v1);                 <span class="co">// &#39;b1   (moved)</span>
+    read(b1);                    <span class="co">//  |</span>
+}                                <span class="co">//  +</span></code></pre></div>
+<pre class="fragment"><code>error: cannot move out of `v1` because it is borrowed
+    consume(v1);                 // &#39;b1   (moved)
+            ^~
+note: borrow of `v1` occurs here
+    let b1 = &amp;v1;                //  +    &#39;v1
+              ^~</code></pre>
+</section><section id="lifetimes-and-lexical-scope" class="slide level2" data-transition="fade-in">
+<h1>Lifetimes and Lexical Scope</h1>
+<div class="sourceCode"><pre class="sourceCode rust compile_error"><code class="sourceCode rust"><span class="kw">fn</span> borrow_checking_may_seem_simple_minded() {
+    <span class="kw">fn</span> read(v: &amp;<span class="dt">Vec</span>&lt;<span class="dt">i32</span>&gt;) { <span class="pp">println!</span>(<span class="st">&quot;v[1]: {}&quot;</span>, v[<span class="dv">1</span>]); }
+    <span class="kw">fn</span> consume(v: <span class="dt">Vec</span>&lt;<span class="dt">i32</span>&gt;) { }
+    <span class="kw">let</span> v1 = <span class="pp">vec!</span>[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>];      <span class="co">//        +</span>
+                                 <span class="co">//        |</span>
+    <span class="kw">let</span> b1 = &amp;v1;                <span class="co">//  +    &#39;v1</span>
+                                 <span class="co">//  |     |</span>
+    consume(v1);                 <span class="co">// &#39;b1   (moved)</span>
+    <span class="co">// (no call to read)         //  |</span>
+}                                <span class="co">//  +</span></code></pre></div>
+<pre><code>error: cannot move out of `v1` because it is borrowed
+    consume(v1);                 // &#39;b1   (moved)
+            ^~
+note: borrow of `v1` occurs here
+    let b1 = &amp;v1;                //  +    &#39;v1
+              ^~</code></pre>
+</section><section id="lifetimes-nonetheless-nontrivial" class="slide level2" data-transition="fade-out">
+<h1>Lifetimes: Nonetheless Nontrivial</h1>
+<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="at">#[</span>test<span class="at">]</span>
+<span class="kw">fn</span> copying_can_extend_a_borrows_lifetime() {
+    <span class="kw">fn</span> foo(v: &amp;<span class="dt">Vec</span>&lt;<span class="dt">i32</span>&gt;) {
+        <span class="pp">println!</span>(<span class="st">&quot;v[1]: {}&quot;</span>, v[<span class="dv">1</span>]);
+    }
+    <span class="kw">let</span> v1 = <span class="pp">vec!</span>[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]; <span class="co">//         +</span>
+    <span class="kw">let</span> b2 = {              <span class="co">//         |</span>
+        <span class="kw">let</span> b1 = &amp;v1;       <span class="co">//  +      |</span>
+        <span class="co">//       ^~~        //  |      |</span>
+        foo(b1);            <span class="co">// &#39;b1     |</span>
+        b1                  <span class="co">//  |     &#39;v1</span>
+    };                      <span class="co">//  +  +   |</span>
+                            <span class="co">//     |   |</span>
+    foo(b2);                <span class="co">//    &#39;b2  |</span>
+                            <span class="co">//     |   |</span>
+}                           <span class="co">//     +   +</span></code></pre></div>
+</section><section id="lifetimes-nonetheless-nontrivial-1" class="slide level2" data-transition="fade-in">
+<h1>Lifetimes: Nonetheless Nontrivial</h1>
+<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="at">#[</span>test<span class="at">]</span>
+<span class="kw">fn</span> copying_can_extend_a_borrows_lifetime() {
+    <span class="kw">fn</span> foo(v: &amp;<span class="dt">Vec</span>&lt;<span class="dt">i32</span>&gt;) {
+        <span class="pp">println!</span>(<span class="st">&quot;v[1]: {}&quot;</span>, v[<span class="dv">1</span>]);
+    }
+    <span class="kw">let</span> v1 = <span class="pp">vec!</span>[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>]; <span class="co">//         +</span>
+    <span class="kw">let</span> b2 = {              <span class="co">//         |</span>
+        <span class="kw">let</span> b1 = &amp;<span class="ot">&#39;a</span> v1;    <span class="co">//  +      |</span>
+        <span class="co">//       ^~~~~~     //  |      |</span>
+        foo(b1);<span class="co">//  |       // &#39;b1     |</span>
+        b1      <span class="co">// (caveat) //  |     &#39;v1 == &#39;a</span>
+    };                      <span class="co">//  +  +   |</span>
+                            <span class="co">//     |   |</span>
+    foo(b2);                <span class="co">//    &#39;b2  |</span>
+                            <span class="co">//     |   |</span>
+}                           <span class="co">//     +   +</span></code></pre></div>
+</section><section id="lifetime-bindings-1" class="slide level2">
+<h1>Lifetime Bindings 1</h1>
+<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="at">#[</span>test<span class="at">]</span>
+<span class="kw">fn</span> explicit_lifetime_binding_1() {
+    <span class="kw">fn</span> print&lt;<span class="ot">&#39;a</span>&gt;(ints: &amp;<span class="ot">&#39;a</span> <span class="dt">Vec</span>&lt;<span class="dt">i32</span>&gt;) {
+        <span class="pp">println!</span>(<span class="st">&quot;v_1: {}&quot;</span>, ints[<span class="dv">1</span>]);
+    }
+    <span class="kw">let</span> v1 = <span class="pp">vec!</span>[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>];
+    print(&amp;v1)
+}</code></pre></div>
+</section><section id="lifetime-bindings-2" class="slide level2" data-transition="fade-out">
+<h1>Lifetime Bindings 2</h1>
+<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="at">#[</span>test<span class="at">]</span>
+<span class="kw">fn</span> explicit_lifetime_binding_2() {
+    <span class="kw">fn</span> print&lt;<span class="ot">&#39;a</span>, <span class="ot">&#39;b</span>&gt;(ptrs: &amp;<span class="ot">&#39;a</span> <span class="dt">Vec</span>&lt;&amp;<span class="ot">&#39;b</span> <span class="dt">i32</span>&gt;) {
+        <span class="pp">println!</span>(<span class="st">&quot;v_1: {}&quot;</span>, ptrs[<span class="dv">1</span>]);
+
+    }
+    <span class="kw">let</span> one = <span class="dv">1</span>;
+    <span class="kw">let</span> two = <span class="dv">2</span>;
+    <span class="kw">let</span> three = <span class="dv">3</span>;
+    <span class="kw">let</span> four = <span class="dv">4</span>;
+    <span class="kw">let</span> v1 = <span class="pp">vec!</span>[&amp;one, &amp;two, &amp;three];
+    print(&amp;v1)
+}</code></pre></div>
+</section><section id="lifetime-bindings-3" class="slide level2" data-transition="fade">
+<h1>Lifetime Bindings 3</h1>
+<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="at">#[</span>test<span class="at">]</span>
+<span class="kw">fn</span> explicit_lifetime_binding_3() {
+    <span class="kw">fn</span> print&lt;<span class="ot">&#39;a</span>, <span class="ot">&#39;b</span>&gt;(ptrs: &amp;<span class="ot">&#39;a</span> <span class="kw">mut</span> <span class="dt">Vec</span>&lt;&amp;<span class="ot">&#39;b</span> <span class="dt">i32</span>&gt;, ptr: &amp;<span class="ot">&#39;b</span> <span class="dt">i32</span>) {
+        <span class="pp">println!</span>(<span class="st">&quot;v_1: {}&quot;</span>, ptrs[<span class="dv">1</span>]);
+        ptrs.push(ptr);
+    }
+    <span class="kw">let</span> one = <span class="dv">1</span>;
+    <span class="kw">let</span> two = <span class="dv">2</span>;
+    <span class="kw">let</span> three = <span class="dv">3</span>;
+    <span class="kw">let</span> four = <span class="dv">4</span>;
+    <span class="kw">let</span> <span class="kw">mut</span> v1 = <span class="pp">vec!</span>[&amp;one, &amp;two, &amp;three];
+    print(&amp;<span class="kw">mut</span> v1, &amp;four);
+}</code></pre></div>
+</section><section id="lifetime-bindings-4" class="slide level2" data-transition="fade-in">
+<h1>Lifetime Bindings 4</h1>
+<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="at">#[</span>test<span class="at">]</span>
+<span class="kw">fn</span> explicit_lifetime_binding_4() {
+    <span class="kw">fn</span> print&lt;<span class="ot">&#39;a</span>, <span class="ot">&#39;b</span>&gt;(ptrs: &amp;<span class="ot">&#39;a</span> <span class="kw">mut</span> <span class="dt">Vec</span>&lt;&amp;<span class="ot">&#39;b</span> <span class="dt">i32</span>&gt;, ptr: &amp;<span class="ot">&#39;b</span> <span class="dt">i32</span>) {
+        <span class="pp">println!</span>(<span class="st">&quot;v_1: {}&quot;</span>, ptrs[<span class="dv">1</span>]);<span class="co">//~~~            ~~~</span>
+        ptrs.push(ptr);            <span class="co">//   |              |</span>
+    }                              <span class="co">// this must match that,</span>
+    <span class="kw">let</span> one = <span class="dv">1</span>;                   <span class="co">// otherwise push is bogus</span>
+    <span class="kw">let</span> two = <span class="dv">2</span>;
+    <span class="kw">let</span> three = <span class="dv">3</span>;
+    <span class="kw">let</span> four = <span class="dv">4</span>;
+    <span class="kw">let</span> <span class="kw">mut</span> v1 = <span class="pp">vec!</span>[&amp;one, &amp;two, &amp;three];
+    print(&amp;<span class="kw">mut</span> v1, &amp;four);
+}</code></pre></div>
+</section><section id="lifetime-bindings-5" class="slide level2" data-transition="fade-in">
+<h1>Lifetime Bindings 5</h1>
+<div class="sourceCode"><pre class="sourceCode rust compile_error"><code class="sourceCode rust"><span class="at">#[</span>test<span class="at">]</span>
+<span class="kw">fn</span> explicit_lifetime_binding_5() {
+    <span class="kw">fn</span> print&lt;<span class="ot">&#39;a</span>, <span class="ot">&#39;b</span>, <span class="ot">&#39;c</span>&gt;(ptrs: &amp;<span class="ot">&#39;a</span> <span class="kw">mut</span> <span class="dt">Vec</span>&lt;&amp;<span class="ot">&#39;b</span> <span class="dt">i32</span>&gt;, ptr: &amp;<span class="ot">&#39;c</span> <span class="dt">i32</span>) {
+        <span class="pp">println!</span>(<span class="st">&quot;v_1: {}&quot;</span>, ptrs[<span class="dv">1</span>]);  <span class="co">//  ~~~            ~~~</span>
+        ptrs.push(ptr);                <span class="co">//   |              |</span>
+    }                                  <span class="co">// this must match that,</span>
+    <span class="kw">let</span> one = <span class="dv">1</span>;                       <span class="co">// otherwise push is bogus</span>
+}</code></pre></div>
+<pre class="fragment"><code>error: cannot infer an appropriate lifetime for automatic coercion due to conflicting requirements
+        ptrs.push(ptr);
+                  ^~~
+help: consider using an explicit lifetime parameter as shown:
+    fn print&lt;&#39;a, &#39;b&gt;(ptrs: &amp;&#39;a mut Vec&lt;&amp;&#39;b i32&gt;, ptr: &amp;&#39;b i32)</code></pre>
 </section><section id="borrowed-return-values." class="slide level2">
 <h1>Borrowed return values.</h1>
+<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="at">#[</span>test<span class="at">]</span>
+<span class="kw">fn</span> borrowed_return_values() {
+    <span class="kw">fn</span> first_and_last&lt;<span class="ot">&#39;a</span>&gt;(ints: &amp;<span class="ot">&#39;a</span> <span class="dt">Vec</span>&lt;<span class="dt">i32</span>&gt;) -&gt; (&amp;<span class="ot">&#39;a</span> <span class="dt">i32</span>, &amp;<span class="ot">&#39;a</span> <span class="dt">i32</span>) {
+        (&amp;ints[<span class="dv">0</span>], &amp;ints[ints.len() - <span class="dv">1</span>])
+    }
+}</code></pre></div>
+<p>TODO: Exercise idea: Try to write <code>fn first_and_last_mut</code>. Why is it impossible in general?</p>
+</section><section class="slide level2">
+
+<p>How about:</p>
+<div class="sourceCode"><pre class="sourceCode rust compile_error"><code class="sourceCode rust"><span class="at">#[</span>test<span class="at">]</span>
+<span class="kw">fn</span> borrowed_return_values_bad() {
+    <span class="kw">fn</span> first_and_last&lt;<span class="ot">&#39;a</span>&gt;(ints: <span class="dt">Vec</span>&lt;<span class="dt">i32</span>&gt;) -&gt; (&amp;<span class="ot">&#39;a</span> <span class="dt">i32</span>, &amp;<span class="ot">&#39;a</span> <span class="dt">i32</span>) {
+        (&amp;ints[<span class="dv">0</span>], &amp;ints[ints.len() - <span class="dv">1</span>])
+    }
+}</code></pre></div>
+<p>Why doesn't this work?</p>
+<pre class="fragment"><code>error: `ints` does not live long enough
+        (&amp;ints[0], &amp;ints[ints.len() - 1])
+          ^~~~
+note: reference must be valid for the lifetime &#39;a ...
+note: ...but borrowed value is only valid for the scope of
+note:    parameters for function</code></pre>
+</section><section id="lifetime-elision-1" class="slide level2" data-transition="fade-out">
+<h1>Lifetime Elision 1</h1>
+<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="at">#[</span>test<span class="at">]</span>
+<span class="kw">fn</span> lifetime_elision_1() {
+    <span class="kw">fn</span> print1&lt;<span class="ot">&#39;a</span>&gt;(ints: &amp;<span class="ot">&#39;a</span> <span class="dt">Vec</span>&lt;<span class="dt">i32</span>&gt;) {
+        <span class="pp">println!</span>(<span class="st">&quot;v_1: {}&quot;</span>, ints[<span class="dv">1</span>]);
+    }
+    <span class="kw">fn</span> print2&lt;<span class="ot">&#39;a</span>, <span class="ot">&#39;b</span>&gt;(ptrs: &amp;<span class="ot">&#39;a</span> <span class="dt">Vec</span>&lt;&amp;<span class="ot">&#39;b</span> <span class="dt">i32</span>&gt;) {
+        <span class="pp">println!</span>(<span class="st">&quot;v_1: {}&quot;</span>, ptrs[<span class="dv">1</span>]);
+
+    }
+    <span class="kw">fn</span> print3&lt;<span class="ot">&#39;a</span>, <span class="ot">&#39;b</span>&gt;(ptrs: &amp;<span class="ot">&#39;a</span> <span class="kw">mut</span> <span class="dt">Vec</span>&lt;&amp;<span class="ot">&#39;b</span> <span class="dt">i32</span>&gt;, ptr: &amp;<span class="ot">&#39;b</span> <span class="dt">i32</span>) {
+        <span class="pp">println!</span>(<span class="st">&quot;v_1: {}&quot;</span>, ptrs[<span class="dv">1</span>]);
+        ptrs.push(ptr);
+    }
+}</code></pre></div>
+</section><section id="lifetime-elision-2" class="slide level2" data-transition="fade">
+<h1>Lifetime Elision 2</h1>
+<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="at">#[</span>test<span class="at">]</span>
+<span class="kw">fn</span> lifetime_elision_2() {
+    <span class="kw">fn</span> print1    (ints: &amp;   <span class="dt">Vec</span>&lt;<span class="dt">i32</span>&gt;) {
+        <span class="pp">println!</span>(<span class="st">&quot;v_1: {}&quot;</span>, ints[<span class="dv">1</span>]);
+    }
+    <span class="kw">fn</span> print2        (ptrs: &amp;   <span class="dt">Vec</span>&lt;&amp;   <span class="dt">i32</span>&gt;) {
+        <span class="pp">println!</span>(<span class="st">&quot;v_1: {}&quot;</span>, ptrs[<span class="dv">1</span>]);
+
+    }
+    <span class="kw">fn</span> print3&lt;    <span class="ot">&#39;b</span>&gt;(ptrs: &amp;   <span class="kw">mut</span> <span class="dt">Vec</span>&lt;&amp;<span class="ot">&#39;b</span> <span class="dt">i32</span>&gt;, ptr: &amp;<span class="ot">&#39;b</span> <span class="dt">i32</span>) {
+        <span class="pp">println!</span>(<span class="st">&quot;v_1: {}&quot;</span>, ptrs[<span class="dv">1</span>]);
+        ptrs.push(ptr);
+    }
+}</code></pre></div>
+</section><section id="lifetime-elision-3" class="slide level2" data-transition="fade-in">
+<h1>Lifetime Elision 3</h1>
+<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="at">#[</span>test<span class="at">]</span>
+<span class="kw">fn</span> lifetime_elision_3() {
+    <span class="kw">fn</span> print1(ints: &amp;<span class="dt">Vec</span>&lt;<span class="dt">i32</span>&gt;) {
+        <span class="pp">println!</span>(<span class="st">&quot;v_1: {}&quot;</span>, ints[<span class="dv">1</span>]);
+    }
+    <span class="kw">fn</span> print2(ptrs: &amp;<span class="dt">Vec</span>&lt;&amp;<span class="dt">i32</span>&gt;) {
+        <span class="pp">println!</span>(<span class="st">&quot;v_1: {}&quot;</span>, ptrs[<span class="dv">1</span>]);
+
+    }
+    <span class="kw">fn</span> print3&lt;<span class="ot">&#39;b</span>&gt;(ptrs: &amp;<span class="kw">mut</span> <span class="dt">Vec</span>&lt;&amp;<span class="ot">&#39;b</span> <span class="dt">i32</span>&gt;, ptr: &amp;<span class="ot">&#39;b</span> <span class="dt">i32</span>) {
+        <span class="pp">println!</span>(<span class="st">&quot;v_1: {}&quot;</span>, ptrs[<span class="dv">1</span>]);
+        ptrs.push(ptr);
+    }
+}</code></pre></div>
 </section><section id="generic-items" class="slide level2">
 <h1>Generic items</h1>
+</section><section id="generic-items-1" class="slide level2" data-transition="fade-out">
+<h1>Generic items 1</h1>
+<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="at">#[</span>test<span class="at">]</span>
+<span class="kw">fn</span> generic_items_1() {
+    <span class="kw">fn</span> push_twice&lt;<span class="ot">&#39;b</span>&gt;(ptrs: &amp;<span class="kw">mut</span> <span class="dt">Vec</span>&lt;&amp;<span class="ot">&#39;b</span> <span class="dt">i32</span>&gt;, ptr: &amp;<span class="ot">&#39;b</span> <span class="dt">i32</span>) {
+        ptrs.push(ptr);
+        ptrs.push(ptr);
+    }
+    <span class="kw">let</span> (one, two, three, four) = (<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>);
+    <span class="kw">let</span> <span class="kw">mut</span> v = <span class="pp">vec!</span>[&amp;one, &amp;two, &amp;three];
+    push_twice(&amp;<span class="kw">mut</span> v, &amp;four);
+}</code></pre></div>
+<p>This obviously generalizes beyond <code>i32</code>!</p>
+</section><section id="generic-items-2" class="slide level2" data-transition="fade-in">
+<h1>Generic items 2</h1>
+<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="at">#[</span>test<span class="at">]</span>
+<span class="kw">fn</span> generic_items_2() {
+    <span class="kw">fn</span> push_twice&lt;<span class="ot">&#39;b</span>, T&gt;(ptrs: &amp;<span class="kw">mut</span> <span class="dt">Vec</span>&lt;&amp;<span class="ot">&#39;b</span> T&gt;, ptr: &amp;<span class="ot">&#39;b</span> T) {
+        ptrs.push(ptr);
+        ptrs.push(ptr);
+    }
+    <span class="kw">let</span> (one, two, three, four) = (<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>);
+    <span class="kw">let</span> <span class="kw">mut</span> v = <span class="pp">vec!</span>[&amp;one, &amp;two, &amp;three];
+    push_twice(&amp;<span class="kw">mut</span> v, &amp;four);
+}</code></pre></div>
+<p>This is going so smoothly; lets try printing <code>v_1</code> again!</p>
+</section><section id="generic-items-3" class="slide level2">
+<h1>Generic items 3</h1>
+<div class="sourceCode"><pre class="sourceCode rust compile_error"><code class="sourceCode rust"><span class="at">#[</span>test<span class="at">]</span>
+<span class="kw">fn</span> generic_items_3() {
+    <span class="kw">fn</span> push_twice&lt;<span class="ot">&#39;b</span>, T&gt;(ptrs: &amp;<span class="kw">mut</span> <span class="dt">Vec</span>&lt;&amp;<span class="ot">&#39;b</span> T&gt;, ptr: &amp;<span class="ot">&#39;b</span> T) {
+        <span class="pp">println!</span>(<span class="st">&quot;v_1: {}&quot;</span>, ptrs[<span class="dv">1</span>]);
+        ptrs.push(ptr);
+        ptrs.push(ptr);
+    }
+    <span class="kw">let</span> (one, two, three, four) = (<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>);
+    <span class="kw">let</span> <span class="kw">mut</span> v = <span class="pp">vec!</span>[&amp;one, &amp;two, &amp;three];
+    push_twice(&amp;<span class="kw">mut</span> v, &amp;four);
+}</code></pre></div>
+<pre class="fragment"><code>error: trait `core::fmt::Display` not implemented for the type `T`
+        println!(&quot;v_1: {}&quot;, ptrs[1]);
+                            ^~~~~~~</code></pre>
+<p>(Reminder: Rust is not C++)</p>
 </section><section id="trait-bounded-polymorphism" class="slide level2">
 <h1>Trait-bounded polymorphism</h1>
-</section><section id="traits-as-objects" class="slide level2">
-<h1>Traits as Objects</h1>
+<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="kw">trait</span> Dimensioned {
+    <span class="kw">fn</span> height(&amp;<span class="kw">self</span>) -&gt; <span class="dt">u32</span>;
+    <span class="kw">fn</span> width(&amp;<span class="kw">self</span>) -&gt; <span class="dt">u32</span>;
+}
+
+<span class="kw">fn</span> stacked_height&lt;S&gt;(v: &amp;[S]) -&gt; <span class="dt">u32</span> <span class="kw">where</span> S: Dimensioned {
+    <span class="kw">let</span> <span class="kw">mut</span> accum = <span class="dv">0</span>;
+    <span class="kw">for</span> s <span class="kw">in</span> v { accum += s.height() }
+    accum
+}</code></pre></div>
+</section><section id="trait-impls" class="slide level2">
+<h1>Trait Impls</h1>
+<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="kw">struct</span> Rect { w: <span class="dt">u32</span>, h: <span class="dt">u32</span> }
+<span class="kw">struct</span> Circle { r: <span class="dt">u32</span> }
+
+<span class="kw">impl</span> Dimensioned <span class="kw">for</span> Rect {
+    <span class="kw">fn</span> height(&amp;<span class="kw">self</span>) -&gt; <span class="dt">u32</span> { <span class="kw">self</span>.h }
+    <span class="kw">fn</span> width(&amp;<span class="kw">self</span>) -&gt; <span class="dt">u32</span> { <span class="kw">self</span>.w }
+}
+    
+<span class="kw">impl</span> Dimensioned <span class="kw">for</span> Circle {
+    <span class="kw">fn</span> height(&amp;<span class="kw">self</span>) -&gt; <span class="dt">u32</span> { <span class="kw">self</span>.r * <span class="dv">2</span> }
+    <span class="kw">fn</span> width(&amp;<span class="kw">self</span>) -&gt; <span class="dt">u32</span> { <span class="kw">self</span>.r * <span class="dv">2</span> }
+}</code></pre></div>
+</section><section id="traits-in-action" class="slide level2">
+<h1>Traits in Action</h1>
+<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="kw">impl</span> Rect {
+    <span class="kw">fn</span> square(l: <span class="dt">u32</span>) -&gt; Rect { Rect { w: l, h: l } }
+}
+<span class="kw">impl</span> Circle {
+    <span class="kw">fn</span> with_radius(r: <span class="dt">u32</span>) -&gt; Circle { Circle { r: r } }
+}
+
+<span class="at">#[</span>test<span class="at">]</span>
+<span class="kw">fn</span> trait_bounded_polymorphism() {
+    <span class="kw">let</span> squares = [ Rect::square(<span class="dv">1</span>), Rect::square(<span class="dv">2</span>) ];
+    <span class="kw">let</span> circles = [ Circle::with_radius(<span class="dv">1</span>), Circle::with_radius(<span class="dv">2</span>)];
+    <span class="pp">assert_eq!</span>(stacked_height(&amp;squares), <span class="dv">3</span>);
+    <span class="pp">assert_eq!</span>(stacked_height(&amp;circles), <span class="dv">6</span>);
+}</code></pre></div>
+</section><section id="generics-do-not-suffice" class="slide level2">
+<h1>Generics do not suffice</h1>
+<div class="sourceCode"><pre class="sourceCode rust compile_error"><code class="sourceCode rust"><span class="at">#[</span>test<span class="at">]</span>
+<span class="kw">fn</span> parametric_fail() {
+    <span class="kw">let</span> shapes = [Rect::square(<span class="dv">1</span>), Circle::with_radius(<span class="dv">2</span>)];
+    <span class="pp">assert_eq!</span>(stacked_height(&amp;shapes), <span class="dv">5</span>);
+}</code></pre></div>
+<pre class="fragment"><code>error: mismatched types:
+ expected `Rect`,
+    found `Circle`
+    let shapes = [Rect::square(1), Circle::with_radius(2)];
+                                   ^~~~~~~~~~~~~~~~~~~~~~</code></pre>
+</section><section id="monomorphization-is-why" class="slide level2">
+<h1>Monomorphization is why</h1>
+<div class="sourceCode"><pre class="sourceCode rust compile_error"><code class="sourceCode rust"><span class="kw">struct</span> Rect { w: <span class="dt">u32</span>, h: <span class="dt">u32</span> }
+<span class="kw">struct</span> Circle { r: <span class="dt">u32</span> }
+
+<span class="kw">fn</span> parametric_fail() {
+    <span class="kw">let</span> shapes = [Rect::square(<span class="dv">1</span>), Circle::with_radius(<span class="dv">2</span>)];
+    <span class="co">//  ~~~~~~    ~~~~~~~~~~~~~~~  ~~~~~~~~~~~~~~~~~~~~~~</span>
+    <span class="co">//    |              |                    |</span>
+    <span class="co">//    |       This is 8 bytes     This is 4-bytes</span>
+    <span class="co">//    |</span>
+    <span class="co">//  There&#39;s no uniform array</span>
+    <span class="co">//  type to hold both in-line.</span>
+}</code></pre></div>
+</section><section id="this-is-a-job-for-..." class="slide level2">
+<h1>This is a job for ...</h1>
+<h3 id="object-oriented-programming" class="fragment">Object-Oriented Programming!</h3>
+</section><section id="traits-as-objects-1" class="slide level2">
+<h1>Traits as Objects 1</h1>
+<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="kw">fn</span> stacked_obj_refs(v: &amp;[&amp;Dimensioned]) -&gt; <span class="dt">u32</span> {
+    <span class="kw">let</span> <span class="kw">mut</span> accum = <span class="dv">0</span>;
+    <span class="kw">for</span> s <span class="kw">in</span> v { accum += s.height() }
+    accum
+}
+
+<span class="at">#[</span>test<span class="at">]</span>
+<span class="kw">fn</span> demo_objs_1() {
+    <span class="kw">let</span> r = Rect::square(<span class="dv">1</span>);
+    <span class="kw">let</span> c = Circle::with_radius(<span class="dv">2</span>);
+    <span class="kw">let</span> shapes: [&amp;Dimensioned; <span class="dv">2</span>] = [&amp;r, &amp;c];
+    <span class="pp">assert_eq!</span>(stacked_obj_refs(&amp;shapes), <span class="dv">5</span>);
+}</code></pre></div>
+</section><section id="traits-as-objects-2" class="slide level2">
+<h1>Traits as Objects 2</h1>
+<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="kw">fn</span> stacked_obj_boxes(v: &amp;[<span class="dt">Box</span>&lt;Dimensioned&gt;]) -&gt; <span class="dt">u32</span> {
+    <span class="kw">let</span> <span class="kw">mut</span> accum = <span class="dv">0</span>;
+    <span class="kw">for</span> s <span class="kw">in</span> v { accum += s.height() }
+    accum
+}
+
+<span class="at">#[</span>test<span class="at">]</span>
+<span class="kw">fn</span> demo_objs_2() {
+    <span class="kw">let</span> shapes: [<span class="dt">Box</span>&lt;Dimensioned&gt;; <span class="dv">2</span>] =
+        [<span class="dt">Box</span>::new(Rect::square(<span class="dv">1</span>)), <span class="dt">Box</span>::new(Circle::with_radius(<span class="dv">2</span>))];
+    <span class="pp">assert_eq!</span>(stacked_obj_boxes(&amp;shapes), <span class="dv">5</span>);
+}</code></pre></div>
 </section></section>
 <section><section id="part-4-systems-development" class="titleslide slide level1"><h1>Part 4: Systems Development</h1></section><section id="concurrency-send-sync-threadscoped" class="slide level2">
 <h1>Concurrency: <code>Send</code>, <code>Sync</code>, <code>thread::scoped</code></h1>
