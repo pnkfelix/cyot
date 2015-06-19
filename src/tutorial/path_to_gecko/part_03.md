@@ -484,7 +484,7 @@ impl Dimensioned for Rect {
     fn height(&self) -> u32 { self.h }
     fn width(&self) -> u32 { self.w }
 }
-    
+
 impl Dimensioned for Circle {
     fn height(&self) -> u32 { self.r * 2 }
     fn width(&self) -> u32 { self.r * 2 }
