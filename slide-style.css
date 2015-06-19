@@ -1,3 +1,4 @@
+.reveal h1 { font-family: sans-serif; }
 .reveal .level2 h1 { font-size: 1.2em; }
 
 .reveal .filename { font-size: 50%; line-height: 0; float: right }
@@ -7,7 +8,9 @@
  */
 
 /* .sourceCode pre code { background-color: #FDF6E3; } */
+.sourceCode .compile_error code { background-color: #3F1F1F; }
 .sourceCode .bash { background-color: #0D0603; }
+
 
 /* .sourceCode .rust { overflow: visible; } */
 .sourceCode { overflow: visible; }
@@ -18,7 +21,7 @@
 /* .sourceCode .rust { font-size: smaller; line-height: initial; } */
 /* .sourceCode .rust { font-size: 100%; line-height: initial; } */
 /* .sourceCode .rust { line-height: initial; } */
-.sourceCode .rust { font-size: 85%; line-height: initial; }
+.sourceCode .rust { font-size: 75%; line-height: initial; }
 /* .sourceCode .rust { background: #3F3F3F; display: block; } */
 
 /* KeyWordTok */
