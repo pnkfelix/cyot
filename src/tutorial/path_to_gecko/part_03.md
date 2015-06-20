@@ -582,3 +582,53 @@ fn demo_objs_2() {
     assert_eq!(stacked_obj_boxes(&shapes), 5);
 }
 ```
+
+## ... and Functional Programming?
+
+## Closures 1
+
+* Can pass functions around as first class entities
+
+* Functions can *close* over externally defined state
+
+Reminder from Javascript:
+
+`closures.js`{.filename}
+```javascript
+function add3(x) { return x + 3; }
+
+// take function as parameter:
+function do_twice(f, y) { return f(f(y)); }
+
+// return function that references outer parameter `z`
+function make_adder(z) {
+    return function(w) { return w + z; };
+}
+
+var add4 = make_adder(4);
+var ten = do_twice(add4, 2);
+```
+
+## Closures 2
+
+```rust
+#[test]
+fn demo_closure() {
+    fn add3(x: i32) -> i32 { x + 3 }
+    fn do_twice1<F:Fn(i32) -> i32>(f: F, x: i32) -> i32 { f(f(x)) }
+    //             ~~~~~~~~~~~~~~ closure type
+    fn do_twice2(f: &Fn(i32) -> i32, x: i32) -> i32 { f(f(x)) }
+
+    fn make_adder(y: i32) -> Box<Fn(i32) -> i32> {
+        Box::new(move |x| { x + y })
+            //   ~~~~~~~~~~~~~~~~~~ closure expression
+    }
+
+    let add4 = make_adder(4);
+
+    let six = do_twice1(&add3, 0); let ten = do_twice1(&*add4, 2);
+    assert_eq!((six, ten), (6, 10));
+    let six = do_twice2(&add3, 0); let ten = do_twice2(&*add4, 2);
+    assert_eq!((six, ten), (6, 10));
+}
+```
