@@ -3,6 +3,8 @@
 
 .reveal .filename { font-size: 50%; line-height: 0; float: right }
 
+.reveal .heads_up { position: absolute; right: 0; top: 20ex; z-index: 10; }
+
 /* Below is based off of: 
  *     http://benjeffrey.com/pandoc-syntax-highlighting-css
  */
