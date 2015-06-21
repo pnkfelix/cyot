@@ -583,7 +583,7 @@ fn demo_objs_2() {
 }
 ```
 
-## ... and Functional Programming?
+## OOP is nice; how about Functional Programming?
 
 ## Closures 1
 
