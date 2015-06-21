@@ -6,10 +6,11 @@ Turn on access to the `thread::scoped` function.
 
 I will include the `libc` crate provided on crates.io here
 so that any submodule in the presentation(s) can pull it in
-via just `use libc;`{.rust}
+via just `use libc;`{.rust} (and likewise for `use test;`{.rust})
 
 ```rust
 extern crate libc;
+extern crate test;
 ```
 
 This is a demonstration library.
