@@ -47,6 +47,30 @@ presented according to the alphabetical sorting of the paths; that's
 why I am choosing the module names carefully so that when sorted,
 `part_01_sect_010` will come immediately after `part_01`.
 
+## Testing
+
+Most of the slides are written with `#[test]` markers explicitly
+on them.
+
+However, some are really only intended to be used as standalone
+programs (e.g. in the playpen or on a local machine). To ensure
+that I at least exercise those code paths as well regularly,
+I am explicitly including calls to those `main` functions here.
+
+If need be, this single monolithic function can later be factored into
+individual calls so that the testing report is more finely
+grained. But I do not yet know if that is necessary.
+
+```
+#[test]
+fn main_functions() {
+    overview::main();
+    part_01_sect_010::main();
+    part_01_sect_011::main();
+    part_04::main();
+}
+```
+
 ## Formatting Notes
 
 Every H2 (i.e. `## Title`, followed by content) starts off a new
