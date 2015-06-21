@@ -1,5 +1,15 @@
+Turn on access to the `thread::scoped` function.
+
 ```rust
-#![feature(scoped)]
+#![feature(scoped, test)]
+```
+
+I will include the `libc` crate provided on crates.io here
+so that any submodule in the presentation(s) can pull it in
+via just `use libc;`{.rust}
+
+```rust
+extern crate libc;
 ```
 
 This is a demonstration library.
