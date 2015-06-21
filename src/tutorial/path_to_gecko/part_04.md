@@ -203,32 +203,61 @@ fn par_max(data: &[u8]) -> u8 {
     * (caveat: `thread::scoped` API is unstable, and undergoing revision due
       to subtle soundness issue)
 
-## Benchmarking `par_max`
+## Benchmarking `par_max` 1
 
 ```rust
-extern crate test; use self::test::Bencher as B; use std::iter;
-const LIL: usize = 20 * 1024; const BIG: usize = LIL * 1024;
-fn mk(count: usize) -> Vec<u8> {
+extern crate test; use std::iter;
+const LIL: usize = 20 * 1024;
+const BIG: usize = LIL * 1024;
+
+fn make_data(count: usize) -> Vec<u8> {
     let mut data: Vec<u8> = iter::repeat(10).take(count).collect();
     data.push(200); data.push(3); return data;
 }
-#[bench] fn bench_big_seq(b: &mut B) { let d = mk(BIG);
-    b.iter(|| assert_eq!(seq_max(&d), 200));
+
+#[bench]
+fn bench_big_seq(b: &mut test::Bencher) {
+    let data = make_data(BIG);
+    b.iter(|| assert_eq!(seq_max(&data), 200));
 }
-#[bench] fn bench_big_par(b: &mut B) { let d = mk(BIG);
-    b.iter(|| assert_eq!(par_max(&d), 200));
-}
-#[bench] fn bench_lil_seq(b: &mut B) { let d = mk(LIL);
-    b.iter(|| assert_eq!(seq_max(&d), 200));
-}
-#[bench] fn bench_lil_par(b: &mut B) { let d = mk(LIL);
-    b.iter(|| assert_eq!(par_max(&d), 200));
+#[bench]
+fn bench_big_par(b: &mut test::Bencher) {
+    let data = make_data(BIG);
+    b.iter(|| assert_eq!(par_max(&data), 200));
 }
 ```
 
 ```
 bench_big_par ... bench:   3,763,711 ns/iter (+/- 1,140,321)
 bench_big_seq ... bench:  21,633,799 ns/iter (+/- 2,522,262)
+```
+
+## Benchmarking `par_max` 2
+
+```{.rust}
+const LIL: usize = 20 * 1024;
+const BIG: usize = LIL * 1024;
+```
+
+```
+bench_big_par ... bench:   3,763,711 ns/iter (+/- 1,140,321)
+bench_big_seq ... bench:  21,633,799 ns/iter (+/- 2,522,262)
+```
+
+```rust
+#[bench]
+fn bench_lil_seq(b: &mut test::Bencher) {
+    let data = make_data(LIL);
+    b.iter(|| assert_eq!(seq_max(&data), 200));
+}
+#[bench]
+fn bench_lil_par(b: &mut test::Bencher) {
+    let data = make_data(LIL);
+    b.iter(|| assert_eq!(par_max(&data), 200));
+}
+```
+
+```
 bench_lil_par ... bench:      59,274 ns/iter (+/- 7,756)
 bench_lil_seq ... bench:      15,432 ns/iter (+/- 1,961)
 ```
