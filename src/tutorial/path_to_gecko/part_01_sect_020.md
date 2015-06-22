@@ -13,9 +13,7 @@ fn show_some_borrows() {
     foo(b2);
 
 }
-```
 
-```rust
 fn foo<'a>(v: &'a Vec<i32>) { println!("v[1]: {}", v[1]); }
 ```
 
@@ -151,9 +149,13 @@ fn copying_can_extend_a_borrows_lifetime() {
 }                           //     +   +
 ```
 
+``` {.rust}
+fn foo<'a>(v: &'a Vec<i32>) { println!("v[1]: {}", v[1]); }
+```
+
 (How long does the borrow `&v1` last? Does `'b1` suffice?)
 
-## Lexical Scopes: But Nontrivial { data-transition="fade-in" }
+## Lexical Scopes, But Nontrivial { data-transition="fade-in" }
 
 ``` {.rust}
 #[test]
@@ -172,6 +174,10 @@ fn copying_can_extend_a_borrows_lifetime() {
     foo(b2);                //    'b2  |
                             //     |   |
 }                           //     +   +
+```
+
+``` {.rust}
+fn foo<'a>(v: &'a Vec<i32>) { println!("v[1]: {}", v[1]); }
 ```
 
 `'b1` too short (caveat: above is not legal Rust)
