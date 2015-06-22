@@ -6,7 +6,7 @@ Create (and modify) owned:
 ```rust
 #[test]
 pub fn create_owned() {
-    let mut vec = Vec::new();         //  +
+    let mut vec = Vec::new();         //  + (`vec` initialized)
     vec.push(2000);                   //  |
     vec.push( 400);                   // 'vec
     vec.push(  60);                   //  |
@@ -18,11 +18,11 @@ pub fn create_owned() {
 
 Consume owned:
 ```rust
-fn sum(v: Vec<i32>) -> i32 {
-   let mut accum = 0;
-   for i in v { accum += i; }
-   accum
-}
+fn sum(v: Vec<i32>) -> i32 {          //  +
+   let mut accum = 0;                 //  |
+   for i in v { accum += i; }         // 'v
+   accum                              //  |
+}                                     //  + (`v` destroyed/freed)
 ```
 
 ## Move vs Copy
