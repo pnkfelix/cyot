@@ -207,43 +207,54 @@ help: consider using an explicit lifetime parameter as shown:
     fn print<'a, 'b>(ptrs: &'a mut Vec<&'b i32>, ptr: &'b i32)
 ```
 
-## Borrowed return values.
+## Borrowed return values 1 { data-transition="fade-out" }
 
 ```rust
-#[test]
-fn borrowed_return_values() {
-    fn first_and_last<'a>(ints: &'a Vec<i32>) -> (&'a i32, &'a i32) {
-        (&ints[0], &ints[ints.len() - 1])
-    }
+fn first_n_last<'a>(ints: &'a Vec<i32>) -> (&'a i32, &'a i32) {
+
+    (&ints[0], &ints[ints.len() - 1])
 }
 ```
 
+<!--
 TODO: Exercise idea: Try to write `fn first_and_last_mut`. Why is it impossible
 in general?
+-->
 
-----
+```rust
+#[test]
+fn demo_borrowed_return_values() {
+	let v = vec![1, 2, 3, 4];
+	let (first, fourth) = first_n_last(&v);
+	assert_eq!(*first, 1);
+	assert_eq!(*fourth, 4);
+}
+```
 
-How about:
+(compiler ensures borrow `&v` lasts long enough to satisfy
+ reads of `first` and `fourth`)
+
+## Borrowed return values 2  { data-transition="fade-in" }
 
 ``` {.rust .compile_error}
-#[test]
-fn borrowed_return_values_bad() {
-    fn first_and_last<'a>(ints: Vec<i32>) -> (&'a i32, &'a i32) {
-        (&ints[0], &ints[ints.len() - 1])
-    }
+fn first_n_last<'a>(ints: Vec<i32>) -> (&'a i32, &'a i32) {
+    //                    ~~~~~~~~ (hint)
+    (&ints[0], &ints[ints.len() - 1])
 }
 ```
 
 Why doesn't this work?
 
-``` {.fragment}
+``` {.fragment data-fragment-index="1" }
 error: `ints` does not live long enough
-        (&ints[0], &ints[ints.len() - 1])
-          ^~~~
+    (&ints[0], &ints[ints.len() - 1])
+      ^~~~
 note: reference must be valid for the lifetime 'a ...
 note: ...but borrowed value is only valid for the scope of
 note:    parameters for function
 ```
+
+#### caller chooses `'a`; must work for any { .fragment data-fragment-index="1" }
 
 ## Lifetime Elision 1 { data-transition="fade-out" }
 
