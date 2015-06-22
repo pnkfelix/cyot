@@ -48,6 +48,8 @@ fn modify(v: &mut Vec<i32>) {
 v1: [1, 2, 3, 4]
 ```
 
+## `&mut` compilation errors
+
 ## Data has at most one `&mut` borrow { data-transition="slide-in fade-out" }
 
 ``` { .rust .compile_error }
