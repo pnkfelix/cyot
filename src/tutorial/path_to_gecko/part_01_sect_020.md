@@ -166,12 +166,12 @@ fn copying_can_extend_a_borrows_lifetime() {
         println!("v[1]: {}", v[1]);
     }
     let v1 = vec![1, 2, 3]; //         +
-    let b2: &'z Vec<i32> = {//         |
-        let b1 = &'z v1;    //  +      |
+    let b2: &'y Vec<i32> = {//         |         'y >= 'b2
+        let b1 = &'z v1;    //  +      |  'v1 >= 'z >= 'b1
         //       ^~~~~~     //  |      |
         foo(b1);//  |       // 'b1     |
-        b1      // (caveat) //  |     'v1 == 'z
-    };                      //  +  +   |
+        b1      // (caveat) //  |     'v1
+    };                      //  +  +   |         'z == 'y
                             //     |   |
     foo(b2);                //    'b2  |
                             //     |   |
@@ -182,4 +182,4 @@ fn copying_can_extend_a_borrows_lifetime() {
 fn foo<'a>(v: &'a Vec<i32>) { println!("v[1]: {}", v[1]); }
 ```
 
-`'b1` too short (caveat: above is not legal Rust)
+`'b1` too short! (caveat: above is not legal Rust)
