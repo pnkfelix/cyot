@@ -83,8 +83,8 @@ fn demo_slice() {
 
     // Some iterators are made by *borrowing* input:
     for elem in &zvecs {
-        let elem: Vec<i32> = elem;
-        assert_eq!(elem, vec![0,0]);
+        let elem: Vec<i32> = elem;     // <-- errors here
+        assert_eq!(elem, vec![0,0]);   // <--- and here
     }
 }
 ```
@@ -105,8 +105,8 @@ fn demo_slice() {
 
     // Some iterators are made by *borrowing* input:
     for elem in &zvecs {
-        let elem: &Vec<i32> = elem;
-        assert_eq!(elem, &vec![0, 0]);
+        let elem: &Vec<i32> = elem;    // <-- this is (one)
+        assert_eq!(elem, &vec![0,0]); // <--- way to fix
     }
 }
 ```
@@ -146,7 +146,7 @@ Every iterator inherits many [high-level methods][iter API]
 #[test]
 fn demo_iter_methods_1() {
     let v1: Vec<&str> = vec!["Hello", "to", "all", "da", "World!"];
-    let v2: Vec<&str> = v1.iter()
+    let v2: Vec<&str> = v1.iter()    // borrowing iterator for vec
         .filter(|w| { w.len() > 3 }) // del entries of length <= 3 
         .map(|p| -> &str { *p })     // deref each by one level
         .collect();                  // collect into target vec
@@ -171,7 +171,7 @@ There is some cool type-based magic
 #[test]
 fn demo_iter_methods_2() {
     let v1: Vec<&str> = vec!["Hello", "to", "all", "da", "World!"];
-    let s2: String    = v1.iter()
+    let s2: String    = v1.iter()    // borrowing iterator for vec
         .filter(|w| { w.len() > 3 }) // del entries of length <= 3 
         .map(|p| -> &str { *p })     // deref each by one level
         .collect();                  // collect into target string
@@ -190,13 +190,13 @@ fn demo_iter_methods_2() {
 
 ## Iterator API  { data-transition="fade" }
 
-Magic does need magic ingredients (types) to work
+All magic needs ingredients to work:
 
 ``` { .rust .compile_error }
 #[test]
 fn demo_iter_methods_3() {
     let v1            = vec!["Hello", "to", "all", "da", "World!"];
-    let x2            = v1.iter()
+    let x2            = v1.iter()    // borrowing iterator for vec
         .filter(|w| { w.len() > 3 }) // del entries of length <= 3 
         .map(|p| -> &str { *p })     // deref each by one level
         .collect();                  // collect into target ?????
