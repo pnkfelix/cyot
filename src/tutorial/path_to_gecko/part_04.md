@@ -10,17 +10,29 @@ fn proj_x_axis(p: &Point) -> Point {
     Point { x: p.x, y: 0 } }
 
 fn nudge_left(p: &mut Point) { p.x -= 10; }
-
-#[derive(Copy, Clone)]
-struct Angle(pub f64);
-
-struct Pair<X,Y>(X, Y);
 ```
 
-----
+Or add a method:
 
-  * FIXME does this slide actually pay for itself?
-    * (`impl` alone?)
+```rust
+impl Point {
+    fn proj_x_axis(&self) -> Point {
+        Point { x: self.x, y: 0 }
+    }
+}
+```
+
+Tuple-structs, Generics:
+
+```rust
+#[derive(Copy, Clone)]
+struct Angle(pub f64);   // construct with e.g. `Angle(90.0)`
+
+struct Pair<X,Y>(X, Y);  // now `Pair(1,2)` or `Pair("a","b")` work
+```
+
+
+<!--
 
 ```{.rust}
 fn proj_x_axis(p: &Point) -> Point {
@@ -33,6 +45,7 @@ fn proj_x_axis(p: &Point) -> Point {
     Point { y: 0, ..p }
 }
 ```
+-->
 
 <!--
 ```{.rust}
@@ -42,14 +55,6 @@ fn proj_x_axis_check(p: &Point) -> Point {
 ```
 -->
 
-```rust
-impl Point {
-    fn proj_x_axis(&self) -> Point {
-        Point { x: self.x, y: 0 }
-    }
-}
-```
-
 ## enums
 
 ```rust
@@ -57,7 +62,10 @@ enum Line {
     Segment { start: Point, end: Point },
     Vector(Point, Angle),
 }
+```
 
+Pattern-matching:
+```rust
 fn start(l: &Line) -> Point {
     match *l {
         Line::Vector(s, _) => s,
@@ -66,12 +74,23 @@ fn start(l: &Line) -> Point {
 }
 ```
 
+Richer than C-style `switch`:
+``` {.rust}
+    match *l { // (not doing anything meaningful)
+        Line::Vector(Point { x: 0, y }, _) => y,
+        Line::Segment { start: Point { x, y: 0 }, .. } => x,
+        _ => false,
+    }
+```
+
 ## Option and Result
 
 ``` {.rust}
 enum Option<T> { Some(T), None }
 
 enum Result<T, E> { Ok(T), Err(E) }
+
+// impl<T, E> Result<T, E> { pub fn ok(self) -> Option<T> { ... } }
 ```
 
 ```rust
@@ -79,6 +98,7 @@ use std::num::ParseIntError;
 fn read_u32(s: &str) -> Result<u32, ParseIntError> {
     s.parse()
 }
+
 #[test]
 fn demo() {
     assert_eq!(read_u32("4"), Ok(4));
