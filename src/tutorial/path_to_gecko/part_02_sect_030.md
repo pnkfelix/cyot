@@ -1,9 +1,27 @@
 ## crates.io
 
-Cargo's main feature: dependency management
+* Cargo's main feature: dependency management
 
-FIXME do not jump straight into diamond problem
+* Before hacking something up, check [crates.io] first
 
+* Adding a third-party crate like `quickcheck` is as simple as
+  adding this to the `Cargo.toml`
+
+`Cargo.toml`{.filename}
+```INI
+[dependencies]
+quickcheck = "0.2.20"
+```
+
+And that's it!
+
+> `extern crate quickcheck;`{.rust}
+
+now works
+
+[crates.io]: http://crates.io/
+
+<!--
 ## Diamonds
 
 `add3/src/lib.rs (v1.0.0)`{.filename}
@@ -36,3 +54,4 @@ path = "/Users/fklock/Dev/Rust/add6_64/"
 [dependencies.add6]
 path = "/Users/fklock/Dev/Rust/add6/"
 ```
+-->
