@@ -14,7 +14,7 @@ fn show_some_borrows() {
 
 }
 ```
-
+<!-- -->
 ```rust
 fn foo<'a>(v: &'a Vec<i32>) { println!("v[1]: {}", v[1]); }
 ```
