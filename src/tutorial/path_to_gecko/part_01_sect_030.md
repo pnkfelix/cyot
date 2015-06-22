@@ -1,12 +1,19 @@
 ## Immutable versus Mutable Borrows
 
-## imm-borrows: assumed aliased
+## imm-borrows: can copy freely
+
+Implications:
+
+  * must assume aliased
+  * therefore *not safe* to mutate
 
 ``` {.rust .compile_error}
 #[test]
 fn demo_cannot_mutate_imm_borrow() {
     let mut v1 = vec![1, 2, 3];
-    try_modify(&v1);
+    let b = &v1;
+    let (b1, b2, b3) = (b, b, b);
+    try_modify(b);
     println!("v1: {:?}", v1);
 }
 
@@ -28,11 +35,11 @@ error: cannot borrow immutable borrowed content `*v` as mutable
 #[test]
 fn demo_can_mutate_mut_borrow() {
     let mut v1 = vec![1, 2, 3];
-    try_modify(&mut v1);
+    modify(&mut v1);
     println!("v1: {:?}", v1);
 }
 
-fn try_modify(v: &mut Vec<i32>) {
+fn modify(v: &mut Vec<i32>) {
     v.push(4);
 }
 ```
