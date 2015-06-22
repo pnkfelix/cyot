@@ -1,4 +1,4 @@
-## privacy
+## privacy { data-transition="fade-in" }
 
 ```rust
 mod d {
