@@ -2,7 +2,7 @@
 % Felix Klock (`pnkfelix`) and the Rust Team
 % Thursday 25 June
 
-# Rust: How do we get to Gecko?
+# Rust: Why? (How?)
 
 ## Goals for today
 
