@@ -18,6 +18,7 @@ pub mod overview;
 
 pub mod part_01;
 pub mod part_02;
+pub mod part_03;
 pub mod part_04;
 pub mod part_05;
 
@@ -26,7 +27,6 @@ pub mod part_01_sect_010;
 pub mod part_01_sect_011;
 pub mod part_01_sect_020;
 pub mod part_01_sect_030;
-pub mod part_01_sect_040;
 
 pub mod part_02_sect_010;
 pub mod part_02_sect_020;

@@ -1,4 +1,4 @@
-# Sequence Types and Iteration
+# Part 3: Sequence Types and Iteration
 
 ## Vectors and Arrays { data-transition="fade-out" }
 
