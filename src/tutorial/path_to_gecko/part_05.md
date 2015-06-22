@@ -96,7 +96,9 @@ pub fn main() {
 }
 ```
 
-## No data races 1: direct mutation attempt
+## No data races: What about our precious mutation?
+
+## No data races 1: "direct" assign { data-transition="fade-out" }
 
 ``` {.rust}
 #[test]
@@ -107,23 +109,24 @@ fn demo_catch_direct() {
     use std::thread;
     let al = "al";
     let mut f_10_recv = (0, 0);
+
     thread::spawn(move || {
         f_10_recv = fib(10);
         println!("you can call me {}", al);
     });
     let f_15 = fib(15).1;
-    while f_10_recv.0 == 0 { }
+    while f_10_recv.0 == 0 { }  // <-- many alarm bells
     let f_10 = f_10_recv.1;
     println!("why am i short of attention");
     assert_eq!((f_10, f_15), (89, 987));
 }
 ```
 
-#### compiles, but doesn't work (no communication happens; implicit copying) {.fragment}
+#### compiles, but doesn't work (no communication happens; implicit copying) {.fragment }
 
-## No data races 2: `&mut T`
+## No data races 2: mut-ref  { data-transition="fade-in" }
 
-``` {.rust}
+``` {.rust .compile_error}
 #[test]
 fn demo_catch_mutref() {
     fn fib(x: i64) -> (i64, i64) {
@@ -132,13 +135,13 @@ fn demo_catch_mutref() {
     use std::thread;
     let al = "al";
     let mut f_10_recv = (0, 0);
-    let ptr_recv = &mut f_10_recv;
+    let ptr_recv = &mut f_10_recv; // <-- Okay, say what we meant
     thread::spawn(move || {
         *ptr_recv = fib(10);
         println!("you can call me {}", al);
     });
     let f_15 = fib(15).1;
-    while f_10_recv.0 == 0 { }
+    while f_10_recv.0 == 0 { }  // <-- many alarm bells
     let f_10 = f_10_recv.1;
     println!("why am i short of attention");
     assert_eq!((f_10, f_15), (89, 987));
@@ -169,6 +172,8 @@ fn demo_channel() {
     assert_eq!((f_10, f_15), (89, 987));
 }
 ```
+
+#### channels are abstraction, data-race free {.fragment}
 
 ## Here's a totally different concurrency API
 
@@ -272,9 +277,11 @@ bench_lil_seq ... bench:      15,432 ns/iter (+/- 1,961)
 
   * If `T: Sync`, then copying a `&T` to another thread is safe.
 
-  * (In Rust, "safe" always includes "no data races exposed.")
+  * (For Rust, "safe" includes "no data races exposed.")
 
-FIXME: elaborate, add e.g. counter-examples
+<!-- FIXME: elaborate, add e.g. counter-examples
+Or maybe just drop this slide entirely.
+-->
 
 ## unsafe code
 
