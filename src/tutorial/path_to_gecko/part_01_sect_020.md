@@ -13,7 +13,9 @@ fn show_some_borrows() {
     foo(b2);
 
 }
+```
 
+```rust
 fn foo<'a>(v: &'a Vec<i32>) { println!("v[1]: {}", v[1]); }
 ```
 
@@ -128,7 +130,7 @@ fn foo<'a>(v: &'a Vec<i32>) { println!("v[1]: {}", v[1]); }
 
 borrow `&v2` is for at least `'b2`, but at most `'v2`
 
-## Lexical scopes, but Nontrivial { data-transition="fade-out" }
+## Lexical scopes, but Nontrivial { data-transition="slide-in fade-out" }
 
 ```rust
 #[test]
