@@ -88,135 +88,10 @@ fn demo() {
 }
 ```
 
-## Scopes and Lifetimes.
-
-```rust
-#[test]
-fn show_some_lifetimes() {
-    let v1 = vec![1, 2, 3]; //                 +
-    let v2 = vec![4, 5, 6]; //            +    |
-    let b1 = &v1;           //       +    |    |
-    let b2 = &v2;           //  +    |    |    |
-    foo(b1);                //  |    |    |    |  
-    foo(b2);                // 'b2  'b1  'v2  'v1
-                            //  |    |    |    | 
-}                           //  +    +    +    +
-
-fn foo(v: &Vec<i32>) { println!("v[1]: {}", v[1]); }
-```
-
-## Lifetime nesting
-
-```rust
-#[test]
-fn lifetime_nesting() {
-    fn read(v: &Vec<i32>) { println!("v[1]: {}", v[1]); }
-    let v1 = vec![1, 2, 3];         //                      +
-    let b1;                         //                      |
-    {                               //                      |
-        let v2 = vec![4, 5, 6];     //                 +    |
-        {                           //                 |    |
-            let b2 = &v2;           //  +              |    |
-            let v3 = vec![7,8,9];   //  |         +   'v2  'v1
-            b1 = &v1;               // 'b2   +   'v3   |    |
-            read(b2);               //  |    |    |    |    |
-        }                           //  +   'b1   +    |    |  
-    }                               //       |         +    |  
-    read(b1);                       //       |              | 
-}                                   //       +              +
-```
-
-## Borrow Checking Prevents Errors { data-transition="fade-out" }
-
-``` {.rust .compile_error}
-fn borrow_checking_prevents_errors() {
-    fn read(v: &Vec<i32>) { println!("v[1]: {}", v[1]); }
-    fn consume(v: Vec<i32>) { }
-    let v1 = vec![1, 2, 3];      //        +
-                                 //        |
-    let b1 = &v1;                //  +    'v1
-                                 //  |     |
-    consume(v1);                 // 'b1   (moved)
-    read(b1);                    //  |
-}                                //  +
-```
-
-``` {.fragment}
-error: cannot move out of `v1` because it is borrowed
-    consume(v1);                 // 'b1   (moved)
-            ^~
-note: borrow of `v1` occurs here
-    let b1 = &v1;                //  +    'v1
-              ^~
-```
-
-## Lifetimes and Lexical Scope { data-transition="fade-in" }
-
-``` {.rust .compile_error}
-fn borrow_checking_may_seem_simple_minded() {
-    fn read(v: &Vec<i32>) { println!("v[1]: {}", v[1]); }
-    fn consume(v: Vec<i32>) { }
-    let v1 = vec![1, 2, 3];      //        +
-                                 //        |
-    let b1 = &v1;                //  +    'v1
-                                 //  |     |
-    consume(v1);                 // 'b1   (moved)
-    // (no call to read)         //  |
-}                                //  +
-```
-
-```
-error: cannot move out of `v1` because it is borrowed
-    consume(v1);                 // 'b1   (moved)
-            ^~
-note: borrow of `v1` occurs here
-    let b1 = &v1;                //  +    'v1
-              ^~
-```
-
-## Lifetimes: Nonetheless Nontrivial { data-transition="fade-out" }
-
-```rust
-#[test]
-fn copying_can_extend_a_borrows_lifetime() {
-    fn foo(v: &Vec<i32>) {
-        println!("v[1]: {}", v[1]);
-    }
-    let v1 = vec![1, 2, 3]; //         +
-    let b2 = {              //         |
-        let b1 = &v1;       //  +      |
-        //       ^~~        //  |      |
-        foo(b1);            // 'b1     |
-        b1                  //  |     'v1
-    };                      //  +  +   |
-                            //     |   |
-    foo(b2);                //    'b2  |
-                            //     |   |
-}                           //     +   +
-```
-
-## Lifetimes: Nonetheless Nontrivial { data-transition="fade-in" }
-
-``` {.rust}
-#[test]
-fn copying_can_extend_a_borrows_lifetime() {
-    fn foo(v: &Vec<i32>) {
-        println!("v[1]: {}", v[1]);
-    }
-    let v1 = vec![1, 2, 3]; //         +
-    let b2 = {              //         |
-        let b1 = &'a v1;    //  +      |
-        //       ^~~~~~     //  |      |
-        foo(b1);//  |       // 'b1     |
-        b1      // (caveat) //  |     'v1 == 'a
-    };                      //  +  +   |
-                            //     |   |
-    foo(b2);                //    'b2  |
-                            //     |   |
-}                           //     +   +
-```
 
 ## Lifetime Bindings 1
+
+We saw this kind of thing before:
 
 ```rust
 #[test]
@@ -230,6 +105,8 @@ fn explicit_lifetime_binding_1() {
 ```
 
 ## Lifetime Bindings 2  { data-transition="fade-out" }
+
+You can bind distinct lifetimes:
 
 ```rust
 #[test]
@@ -249,6 +126,8 @@ fn explicit_lifetime_binding_2() {
 
 ## Lifetime Bindings 3  { data-transition="fade" }
 
+Encode constraints by reusing same lifetime:
+
 ```rust
 #[test]
 fn explicit_lifetime_binding_3() {
@@ -267,6 +146,8 @@ fn explicit_lifetime_binding_3() {
 
 ## Lifetime Bindings 4  { data-transition="fade-in" }
 
+Encode constraints by reusing same lifetime:
+
 ```rust
 #[test]
 fn explicit_lifetime_binding_4() {
@@ -284,6 +165,8 @@ fn explicit_lifetime_binding_4() {
 ```
 
 ## Lifetime Bindings 5  { data-transition="fade-in" }
+
+Compiler catches missing neceessary constraints:
 
 ``` {.rust .compile_error}
 #[test]

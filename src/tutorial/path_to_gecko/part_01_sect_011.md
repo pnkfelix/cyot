@@ -1,25 +1,10 @@
 # Ownership and Move Semantics
 
-## Owned vs Copied
-  * Consider assignment
-    ``` {.rust}
-    left_side = right_side;
-    ```
-
-  * Owned data
-    * *moves* `right_side` into `left_side`
-    * `right_side` becomes inaccessible
-    * one can still opt into explicit duplication,
-      e.g. '`new = owned.clone();`{.rust}'
-
-  * Copied data
-    * *memcpy's* `right_side` into `left_side`
-    * one can freely keep using the original
-
 ## Creating an owned value
 
 ```rust
-pub fn main() {
+#[test]
+pub fn create_owned() {
     let mut vec = Vec::new();
     vec.push(2000);
     vec.push( 400);
@@ -39,3 +24,48 @@ fn sum(v: Vec<i32>) -> i32 {
    accum
 }
 ```
+
+## Move vs Copy
+
+``` {.rust .compile_error}
+#[test]
+fn demo_owned_vs_copied() {
+    let moving_value = vec![1, 2, 3];
+    let copied_value = 17;
+    let tuple = (moving_value, copied_value);
+
+    println!("copied_value: {:?}", copied_value);
+    println!("moving_value: {:?}", moving_value);
+}
+```
+
+``` {.compile_error}
+error: use of moved value: `moving_value` [E0382]
+    println!("moving_value: {:?}", moving_value);
+                                   ^~~~~~~~~~~~
+
+note: `moving_value` moved here because it has type
+      `collections::vec::Vec<i32>`, which is non-copyable
+    let tuple = (moving_value, copied_value);
+                 ^~~~~~~~~~~~
+```
+
+<!--
+----
+
+* Consider assignment
+    ``` {.rust}
+    left_side = right_side;
+    ```
+
+  * Owned data
+    * *moves* `right_side` into `left_side`
+    * `right_side` becomes inaccessible
+    * one can still opt into explicit duplication,
+      e.g. '`new = owned.clone();`{.rust}'
+
+  * Copied data
+    * *memcpy's* `right_side` into `left_side`
+    * one can freely keep using the original
+
+-->
