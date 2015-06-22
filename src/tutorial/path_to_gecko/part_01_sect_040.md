@@ -56,7 +56,7 @@ fn demo_slice() {
 
     let array: [i32; 4] = [2000, 400, 32, 4];
 
-    
+
 
     let slice_1: &[i32] = &vec[2..4];
     let slice_2: &[i32] = &array[2..4];
