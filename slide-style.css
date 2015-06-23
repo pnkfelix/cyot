@@ -3,6 +3,8 @@
 
 .reveal .filename { font-size: 50%; line-height: 0; float: right }
 
+.reveal .heads_up { position: absolute; right: 0; top: 20ex; z-index: 10; }
+
 /* Below is based off of: 
  *     http://benjeffrey.com/pandoc-syntax-highlighting-css
  */
@@ -10,6 +12,7 @@
 /* .sourceCode pre code { background-color: #FDF6E3; } */
 .sourceCode .compile_error code { background-color: #3F1F1F; }
 .sourceCode .bash { background-color: #0D0603; }
+.sourceCode .javascript { background-color: #1F1F0F; }
 
 
 /* .sourceCode .rust { overflow: visible; } */
