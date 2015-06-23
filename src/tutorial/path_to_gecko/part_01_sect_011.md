@@ -39,7 +39,7 @@ fn demo_owned_vs_copied() {
 }
 ```
 
-``` {.compile_error}
+``` {.compile_error .fragment}
 error: use of moved value: `moving_value` [E0382]
     println!("moving_value: {:?}", moving_value);
                                    ^~~~~~~~~~~~
