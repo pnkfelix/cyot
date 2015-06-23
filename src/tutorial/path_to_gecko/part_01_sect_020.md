@@ -157,7 +157,7 @@ fn foo<'a>(v: &'a Vec<i32>) { println!("v[1]: {}", v[1]); }
 
 (How long does the borrow `&v1` last? Does `'b1` suffice?)
 
-## Lexical Scopes, But Nontrivial { data-transition="fade-in" }
+## Lexical Scopes, but Nontrivial { data-transition="fade-in" }
 
 ``` {.rust}
 #[test]
