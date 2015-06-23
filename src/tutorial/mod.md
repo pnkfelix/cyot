@@ -26,6 +26,8 @@ Hello world
 
 ```rust
 pub mod path_to_gecko;
+pub mod ex_part_1;
+pub mod ex_part_2;
 ```
 
 ### FFI and callbacks

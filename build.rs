@@ -40,7 +40,7 @@ mod pandoc {
         }
     }
 
-    pub fn add_slide_args(pandoc: &mut Command) {
+    fn add_slide_args(pandoc: &mut Command) {
         {
             pandoc
                 .args(&["-t", "revealjs"])
@@ -52,7 +52,7 @@ mod pandoc {
         }
     }
 
-    pub fn add_exercise_args(pandoc: &mut Command) {
+    fn add_exercise_args(pandoc: &mut Command) {
         {
             pandoc;
         }
@@ -64,11 +64,22 @@ mod pandoc {
         mk_slide_dir.status().ok()
             .expect("we should be able to ensure `target/slides/` exists");
 
+        let mut mk_exercise_dir = Command::new("mkdir");
+        mk_exercise_dir.args(&["-p", "target/exercises/"]);
+        mk_exercise_dir.status().ok()
+            .expect("we should be able to ensure `target/exercises/` exists");
+
         let slide_sources = ["path_to_gecko"];
 
         for name in &slide_sources {
             try!(run_pandoc(PandocTarget::Slides, name));
         }
+
+        let exercises_sources = ["ex_part_1", "ex_part_2"];
+        for name in &exercises_sources {
+            try!(run_pandoc(PandocTarget::Exercises, name));
+        }
+
         Ok(())
     }
 

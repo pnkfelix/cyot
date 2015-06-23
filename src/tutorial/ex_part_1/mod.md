@@ -1,0 +1,3 @@
+```rust
+mod index;
+```
