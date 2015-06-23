@@ -14,6 +14,50 @@ mod pandoc {
     use std::io;
     use std::process::Command;
 
+    enum PandocTarget {
+        Slides,
+        Exercises,
+    }
+
+    impl PandocTarget {
+        fn subdir(&self) -> &'static str {
+            match *self {
+                PandocTarget::Slides => "slides",
+                PandocTarget::Exercises => "exercises",
+            }
+        }
+
+        fn add_args(&self, pandoc: &mut Command, tgt_path: &str) {
+            match *self {
+                PandocTarget::Slides =>
+                    add_slide_args(pandoc),
+                PandocTarget::Exercises =>
+                    add_exercise_args(pandoc),
+            };
+            pandoc
+                .args(&["-o", tgt_path])
+                .args(&["-s"]);
+        }
+    }
+
+    pub fn add_slide_args(pandoc: &mut Command) {
+        {
+            pandoc
+                .args(&["-t", "revealjs"])
+                .args(&["-V", "theme=black"])
+                // .args(&["--highlight-style=espresso"])
+                // .args(&["--highlight-style=pygments"])
+                .args(&["--highlight-style=kate"])
+                .args(&["--css", "../../slide-style.css"]);
+        }
+    }
+
+    pub fn add_exercise_args(pandoc: &mut Command) {
+        {
+            pandoc;
+        }
+    }
+
     pub fn process_root() -> io::Result<()> {
         let mut mk_slide_dir = Command::new("mkdir");
         mk_slide_dir.args(&["-p", "target/slides/"]);
@@ -23,7 +67,7 @@ mod pandoc {
         let slide_sources = ["path_to_gecko"];
 
         for name in &slide_sources {
-            try!(run_pandoc(name));
+            try!(run_pandoc(PandocTarget::Slides, name));
         }
         Ok(())
     }
@@ -38,7 +82,7 @@ mod pandoc {
         }
     }
 
-    pub fn run_pandoc(name: &str) -> io::Result<()> {
+    fn run_pandoc(target: PandocTarget, name: &str) -> io::Result<()> {
         {
             let src_dir_path = &format!("src/tutorial/{}", name);
             let mut src_paths = Vec::new();
@@ -49,17 +93,9 @@ mod pandoc {
                     src_paths.push(entry.path());
                 }
             }
-            let tgt_path = &format!("target/slides/{}.html", name);
+            let tgt_path = &format!("target/{}/{}.html", target.subdir(), name);
             let mut pandoc = Command::new("pandoc");
-            pandoc
-                .args(&["-t", "revealjs"])
-                .args(&["-V", "theme=black"])
-                // .args(&["--highlight-style=espresso"])
-                // .args(&["--highlight-style=pygments"])
-                .args(&["--highlight-style=kate"])
-                .args(&["--css", "../../slide-style.css"])
-                .args(&["-o", tgt_path])
-                .args(&["-s"]);
+            target.add_args(&mut pandoc, tgt_path);
 
             src_paths.sort();
             for p in src_paths {
