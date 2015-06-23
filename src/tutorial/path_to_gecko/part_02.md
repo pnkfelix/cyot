@@ -1,3 +1,5 @@
+# Exercises
+
 # Part 2: Programming in the Large
 
 ## Everyone's installed (right?)
