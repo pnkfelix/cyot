@@ -46,7 +46,7 @@ code > span.an { color: #808080; font-weight: bold; font-style: italic; } /* Ann
 code > span.cv { color: #808080; font-weight: bold; font-style: italic; } /* CommentVar */
 code > span.in { color: #808080; font-weight: bold; font-style: italic; } /* Information */
   </style>
-  <link rel="stylesheet" href="reveal.js/css/theme/black.css" id="theme">
+  <link rel="stylesheet" href="reveal.js/css/theme/simple.css" id="theme">
   <link rel="stylesheet" href="../../slide-style.css"/>
   <!-- If the query includes 'print-pdf', include the PDF print sheet -->
   <script>
@@ -326,7 +326,7 @@ fn hi() {
 <li>Starting points
 <ul>
 <li>The Book: <a href="https://doc.rust-lang.org/stable/book/" class="uri">https://doc.rust-lang.org/stable/book/</a></li>
-<li>Standard API: <a href="https://doc.rust-lang.org/stable/std/]">https://doc.rust-lang.org/stable/std/</a></li>
+<li>Standard API: <a href="https://doc.rust-lang.org/stable/std/" class="uri">https://doc.rust-lang.org/stable/std/</a></li>
 </ul></li>
 </ul>
 </section></section>
@@ -360,7 +360,7 @@ fn hi() {
     <span class="pp">println!</span>(<span class="st">&quot;copied_value: {:?}&quot;</span>, copied_value);
     <span class="pp">println!</span>(<span class="st">&quot;moving_value: {:?}&quot;</span>, moving_value);
 }</code></pre></div>
-<pre class="compile_error"><code>error: use of moved value: `moving_value` [E0382]
+<pre class="compile_error fragment"><code>error: use of moved value: `moving_value` [E0382]
     println!(&quot;moving_value: {:?}&quot;, moving_value);
                                    ^~~~~~~~~~~~
 
@@ -500,7 +500,7 @@ note: borrow of `v1` occurs here
 <div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="kw">fn</span> foo&lt;<span class="ot">&#39;a</span>&gt;(v: &amp;<span class="ot">&#39;a</span> <span class="dt">Vec</span>&lt;<span class="dt">i32</span>&gt;) { <span class="pp">println!</span>(<span class="st">&quot;v[1]: {}&quot;</span>, v[<span class="dv">1</span>]); }</code></pre></div>
 <p>(How long does the borrow <code>&amp;v1</code> last? Does <code>'b1</code> suffice?)</p>
 </section><section id="lexical-scopes-but-nontrivial-1" class="slide level2" data-transition="fade-in">
-<h1>Lexical Scopes, But Nontrivial</h1>
+<h1>Lexical Scopes, but Nontrivial</h1>
 <div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="at">#[</span>test<span class="at">]</span>
 <span class="kw">fn</span> copying_can_extend_a_borrows_lifetime() {
     <span class="kw">fn</span> foo&lt;<span class="ot">&#39;a</span>&gt;(v: &amp;<span class="ot">&#39;a</span> <span class="dt">Vec</span>&lt;<span class="dt">i32</span>&gt;) {
@@ -1788,7 +1788,7 @@ up with a simpler expression that still compiles and works.
         center: true,                       // Vertical centering of slides
         maxScale: 1.5,                  // Bounds for smallest/largest possible content scale
         slideNumber: false,                // Display the page number of the current slide
-        theme: 'black', // available themes are in /css/theme
+        theme: 'simple', // available themes are in /css/theme
         transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/zoom/linear/fade/none
 
         // Optional libraries used to extend on reveal.js
