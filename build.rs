@@ -20,14 +20,26 @@ mod pandoc {
         mk_slide_dir.status().ok()
             .expect("we should be able to ensure `target/slides/` exists");
 
-        let is_mod_md = |entry: &fs::DirEntry| -> bool {
+        let slide_sources = ["path_to_gecko"];
+
+        for name in &slide_sources {
+            try!(run_pandoc(name));
+        }
+        Ok(())
+    }
+
+    fn is_mod_md(entry: &fs::DirEntry) -> bool {
+        {
             if let Some("mod.md") = entry.path().file_name().and_then(|p|p.to_str()) {
                 true
             } else {
                 false
             }
-        };
-        for name in &["path_to_gecko"] {
+        }
+    }
+
+    pub fn run_pandoc(name: &str) -> io::Result<()> {
+        {
             let src_dir_path = &format!("src/tutorial/{}", name);
             let mut src_paths = Vec::new();
             for entry in try!(fs::read_dir(src_dir_path)) {
