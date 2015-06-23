@@ -76,4 +76,4 @@ let v = match number_result {
 
 [http://www.rust-lang.org/]: http://www.rust-lang.org/
 [https://doc.rust-lang.org/stable/book/]: https://doc.rust-lang.org/stable/book/
-[https://doc.rust-lang.org/stable/std/]: https://doc.rust-lang.org/stable/std/]
+[https://doc.rust-lang.org/stable/std/]: https://doc.rust-lang.org/stable/std/
