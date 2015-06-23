@@ -10,9 +10,14 @@
  */
 
 /* .sourceCode pre code { background-color: #FDF6E3; } */
-.sourceCode .compile_error code { background-color: #3F1F1F; }
-.sourceCode .bash { background-color: #0D0603; }
+/* .sourceCode pre code { background-color: #fdf6e3; } */
+.sourceCode .rust code { color: black; background-color: #f3fff3; }
+.sourceCode .compile_error code { color: black; background-color: #f7e8e8; }
+.sourceCode .compile_error code { background-color: brightwhite; }
+.sourceCode .bash { background-color: #F0F0F0; }
 .sourceCode .javascript { background-color: #1F1F0F; }
+
+ .reveal pre code { color: #000000; background-color: white; } 
 
 
 /* .sourceCode .rust { overflow: visible; } */
@@ -28,9 +33,12 @@
 /* .sourceCode .rust { background: #3F3F3F; display: block; } */
 
 /* KeyWordTok */
-.sourceCode .kw { color: #268BD2; }
+/* .sourceCode .kw { color: #268BD2; } */
+.sourceCode .kw { color: #268BA2; }
+
 /* DataTypeTok */
-.sourceCode .dt { color: #36ABE2; }
+/* .sourceCode .dt { color: #36ABE2; } */
+.sourceCode .dt { color: #361BE2; }
 
 /* CoNstructorTok */
 .sourceCode .cn { color: #D33682; }
@@ -40,9 +48,11 @@
 /* CharTok */
 .sourceCode .ch { color: #DC322F; }
 /* StringTok */
-.sourceCode .st { color: #2AA198; }
+/* .sourceCode .st { color: #2AA198; } */
+.sourceCode .st { color: #0A8108; }
+
 /* CommentTok */
-.sourceCode .co { color: #93A1A1; }
+.sourceCode .co { color: #737171; }
 /* OtherTok */
 .sourceCode .ot { color: #A57800; }
 /* AlertTok */
