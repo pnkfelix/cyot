@@ -44,7 +44,7 @@ mod pandoc {
         {
             pandoc
                 .args(&["-t", "revealjs"])
-                .args(&["-V", "theme=black"])
+                .args(&["-V", "theme=white"])
                 // .args(&["--highlight-style=espresso"])
                 // .args(&["--highlight-style=pygments"])
                 .args(&["--highlight-style=kate"])
