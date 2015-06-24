@@ -12,7 +12,7 @@
 .sourceCode .compile_error code { color: black; background-color: #f7e8e8; }
 .sourceCode .compile_error code { background-color: brightwhite; }
 .sourceCode .bash { background-color: #F0F0F0; }
-.sourceCode .javascript { background-color: #1F1F0F; }
+.sourceCode .javascript { background-color: #FFFFFF; }
 
 
 /* .sourceCode .rust { overflow: visible; } */
