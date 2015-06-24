@@ -1,28 +1,30 @@
+## A really big idea
+
 # Ownership and Move Semantics
 
 ## Creation and Consumption
 
-Create (and modify) owned:
+Once initialized, local owns its data (vector's backing store)
 ```rust
 #[test]
 pub fn create_owned() {
     let mut vec = Vec::new();         //  + (`vec` initialized)
-    vec.push(2000);                   //  |
-    vec.push( 400);                   // 'vec
-    vec.push(  60);                   //  |
+    vec.push(2000);                   //  |   ... and
+    vec.push( 400);                   //  |        also
+    vec.push(  60);                   //  |         modified ...
     println!("vec: {:?}", vec);       //  |
-    let the_sum = sum(vec);           // (moved)
+    let the_sum = sum(vec);           // (... and moved)
     println!("the_sum: {}", the_sum); 
 }
 ```
 
-Consume owned:
+At scope end, initialized variables are cleaned up
 ```rust
 fn sum(v: Vec<i32>) -> i32 {          //  +
    let mut accum = 0;                 //  |
-   for i in v { accum += i; }         //  + (`v` destroyed/freed)
-   accum // (p.s. where is `return` ?)
-}
+   for i in v.iter() { accum += *i; } //  |
+   accum // (p.s. where is `return`?) //  |
+}                                     //  + (`v` destroyed/freed)
 ```
 
 ## Move vs Copy
