@@ -24,8 +24,9 @@
   * Modules can have cyclic references, *within* a single crate
 -->
 
-## module hierarchy
+## `mod`{.rust} tree hierarchy
 
+`src/lib.rs`{.filename}
 ``` {.rust}
 mod a {
     mod b { pub type I = i32; }
@@ -35,38 +36,35 @@ mod a {
     }
 }
 ```
+ 
+. . .
 
-(whoa that's ugly)
+(whoa, all those `super::b::I`{.rust} paths are ugly)
 
-``` {.rust .fragment}
-mod a {
-    mod b { pub type I = i32; }
-    mod c {
-        use super::b;
-        pub fn add3(x: b::I) -> b::I { x + 3 }
-    }
-}
-```
 
-## can `use` any kind of item
+## can `use`{.rust} any kind of item
 
+`src/lib.rs`{.filename}
 ``` {.rust}
 mod a {
     mod b { pub type I = i32; }
     mod c {
-        use super::b;
+        use a::b;
         pub fn add3(x: b::I) -> b::I { x + 3 }
     }
 }
 ```
 
-#### or even rename {.fragment data-fragment-index="1" }
+. . .
 
-``` {.rust .fragment data-fragment-index="1" }
+#### or even rename
+
+`src/lib.rs`{.filename}
+``` {.rust}
 mod a {
     mod b { pub type I = i32; }
     mod c {
-        use super::b::I as J;
+        use a::b::I as J;
         pub fn add3(x: J) -> J { x + 3 }
     }
 }
@@ -74,19 +72,38 @@ mod a {
 
 (consult your local style guidelines)
 
-## module hierarchy and file system
+## `mod`{.rust} hierarchy and file system { data-transition="fade-out" }
 
+Everything can be inline:
+
+`src/lib.rs`{.filename}
 ``` {.rust}
 mod a {
     mod b { pub type I = i32; }
     mod c {
-        use super::b::I;
+        use a::b::I;
         pub fn add3(x: I) -> I { x + 3 }
     }
 }
 ```
 
-Or '`mod name;`{.rust}' with subfiles at proper paths
+## `mod`{.rust} hierarchy and file system  { data-transition="fade-in" }
+
+``` {.rust}
+mod a {
+    mod b { pub type I = i32; }
+    mod c {
+        use a::b::I;
+        pub fn add3(x: I) -> I { x + 3 }
+    }
+}
+```
+
+. . .
+
+Shorthand: '`mod name;`{.rust}' with subfiles at proper paths
+
+. . .
 
 `src/lib.rs`{.filename}
 ```rust
@@ -101,7 +118,7 @@ mod a {
 
 `src/a/c.rs`{.filename}
 ``` {.rust}
-        use super::b::I;
+        use a::b::I;
         pub fn add3(x: I) -> I { x + 3 }
 ```
 
@@ -121,6 +138,18 @@ mod a {
 
   * The `use`{.rust}-syntax imports bindings into namespace
 
-  * Why confusing?
+. . .
 
-    * `use foo;`{.rust} is not necessarily an error
+  * Why confusing, sometimes even to Rust experts??
+
+    ``` {.rust .fragment}
+    use foo; // (this is legal, depending on what `foo` is.)
+    ```
+
+<!--
+```rust
+mod c {
+    use demo_foo_from_lib_at_root;
+}
+```
+-->

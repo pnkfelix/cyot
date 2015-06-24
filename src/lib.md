@@ -15,6 +15,12 @@ extern crate test;
 
 This is a demonstration library.
 
+```rust
+mod demo_foo_from_lib_at_root {
+    pub type felix_keeps_himself_honest = u32;
+}
+```
+
 This is a unit-test in Rust:
 
 ```rust
