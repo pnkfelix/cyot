@@ -527,10 +527,31 @@ var ten = do_twice(add4, 2);
 
 ## Closures 2
 
+  * In (classic) Javascript, closure syntax is:
+    ```javascript
+    function (args, ...) { body; ... }
+    ```
+    where `body` can refer to things from outside.
+
+  * In Rust, the analogous closure expression syntax is:
+
+    ``` {.rust}
+    |args, ...| { body; ... }
+    ```
+    with a few extra details:
+
+. . .
+
+  * opt. `move`{.rust} (forces capture-by-move)
+
+  * opt. arg. and return types (inferred when omitted)
+ 
+## Closures 3
+
 ```rust
 #[test]
 fn demo_closure() {
-    fn add3(x: i32) -> i32 { x + 3 }
+    fn add3(x: i32) -> i32 { x + 3 } // <- fn, *not* a closure
     fn do_twice1<F:Fn(i32) -> i32>(f: F, x: i32) -> i32 { f(f(x)) }
     //             ~~~~~~~~~~~~~~ closure type
     fn do_twice2(f: &Fn(i32) -> i32, x: i32) -> i32 { f(f(x)) }
@@ -541,7 +562,6 @@ fn demo_closure() {
     }
 
     let add4 = make_adder(4);
-
     let six = do_twice1(&add3, 0); let ten = do_twice1(&*add4, 2);
     assert_eq!((six, ten), (6, 10));
     let six = do_twice2(&add3, 0); let ten = do_twice2(&*add4, 2);
