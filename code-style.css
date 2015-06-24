@@ -4,9 +4,11 @@
  *     http://benjeffrey.com/pandoc-syntax-highlighting-css
  */
 
+.sourceCode pre code { font-family: Menlo,monospace; font-size: 100%; line-height: initial; background-color: #f3fff3; }
+
 /* .sourceCode pre code { background-color: #FDF6E3; } */
 /* .sourceCode pre code { background-color: #fdf6e3; } */
-.sourceCode .rust code { color: black; background-color: #f3fff3; display: block }
+/* .sourceCode .rust code { color: black; background-color: #f3fff3; display: block } */
 .sourceCode .compile_error code { color: black; background-color: #f7e8e8; }
 .sourceCode .compile_error code { background-color: brightwhite; }
 .sourceCode .bash { background-color: #F0F0F0; }
