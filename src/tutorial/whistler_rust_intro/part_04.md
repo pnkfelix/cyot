@@ -545,7 +545,7 @@ var ten = do_twice(add4, 2);
   * opt. `move`{.rust} (forces capture-by-move)
 
   * opt. arg. and return types (inferred when omitted)
- 
+
 ## Closures 3
 
 ```rust
