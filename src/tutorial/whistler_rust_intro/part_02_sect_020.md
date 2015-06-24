@@ -36,7 +36,7 @@ mod a {
     }
 }
 ```
- 
+
 . . .
 
 (whoa, all those `super::b::I`{.rust} paths are ugly)
