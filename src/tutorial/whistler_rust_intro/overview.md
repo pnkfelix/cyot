@@ -131,17 +131,28 @@ See also [Fearless Concurrency] blog post.
 
 [Fearless Concurrency]: http://blog.rust-lang.org/2015/04/10/Fearless-Concurrency.html
 
+<!--
+```rust
+fn seq_max(partial_data: &[u8]) -> u8 {
+    *partial_data.iter().max().unwrap()
+}
+```
+-->
+
 ```rust
 use std::thread;
-fn par_merge_sort<T: Ord + Send>(x: &mut [T]) {
-    if x.len() <= 1 { return }
-    let half = x.len() / 2;
-    let (l, r) = x.split_at_mut(half);
-    let g = thread::scoped(|| { par_merge_sort(r);
-                                r });
-    par_merge_sort(l);
-    let r = g.join();
-    merge(l, r);
+fn par_max(data: &[u8]) -> u8 {
+    if data.len() <= 4 { return seq_max(data); }
+    let len_4 = data.len() / 4; // DATA = [A .., B .., C .., D..]
+    let (q1, rest) = data.split_at(len_4);    // (A.. \ B..C..D..)
+    let (q2, rest) = rest.split_at(len_4);    //  (B.. \ C..D..)
+    let (q3, q4)   = rest.split_at(len_4);    //   (C.. \ D..)
+    let t1 = thread::scoped(|| seq_max(q1));  // fork A..
+    let t2 = thread::scoped(|| seq_max(q2));  // fork B..
+    let t3 = thread::scoped(|| seq_max(q3));  // fork C..
+    let v4 = seq_max(q4);                     // compute D..
+    let (v1, v2, v3) = (t1.join(), t2.join(), t3.join()); // join!
+    return seq_max(&[v1, v2, v3, v4]);
 }
 ```
 
@@ -149,33 +160,11 @@ fn par_merge_sort<T: Ord + Send>(x: &mut [T]) {
 
 <!--
 ```rust
-// left[0] <= left[1] <= ... <= left[last] <= right[0] <= ...
-use std::mem;
-#[allow(dead_code)]
-fn merge<T: Ord>(left: &mut [T], right: &mut [T]) {
-
-    let mut i = 0;
-    loop {
-        // println!("i: {} left: {:?} right: {:?}", i, left, right);
-        if i >= left.len() || 0 >= right.len() { break; }
-        if left[i] > right[0] {
-            mem::swap(&mut left[i], &mut right[0]);
-            let mut j = 0;
-            while j+1 < right.len() && right[j] > right[j+1] {
-                let (pre, post) = right.split_at_mut(j+1);
-                mem::swap(&mut pre[j], &mut post[0]);
-                j = j+1;
-            }
-        }
-        i += 1;
-    }
-}
-
 #[test]
 fn hi() {
     let mut v = vec![2, 1, 10, 9, 8, 7, 6, 5, 4, 3];
-    par_merge_sort(&mut v);
-    assert_eq!(v, [1,2,3,4,5,6,7,8,9,10]);
+    let m = par_max(&v);
+    assert_eq!(m, 10);
 }
 ```
 -->
