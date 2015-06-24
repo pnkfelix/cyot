@@ -1,3 +1,5 @@
+## `pub`{.rust} (privacy)
+
 ## items are private by default
 
 #### (usually)
