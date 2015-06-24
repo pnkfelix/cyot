@@ -188,7 +188,7 @@ fn explicit_lifetime_binding_4() {
 
 ## Lifetime Bindings 5  { data-transition="fade-in" }
 
-Compiler catches missing neceessary constraints:
+Compiler catches missing necessary constraints:
 
 ``` {.rust .compile_error}
 #[test]
@@ -202,7 +202,8 @@ fn explicit_lifetime_binding_5() {
 ```
 
 ``` {.fragment}
-error: cannot infer an appropriate lifetime for automatic coercion due to conflicting requirements
+error: cannot infer an appropriate lifetime for automatic coercion
+       due to conflicting requirements
         ptrs.push(ptr);
                   ^~~
 help: consider using an explicit lifetime parameter as shown:
