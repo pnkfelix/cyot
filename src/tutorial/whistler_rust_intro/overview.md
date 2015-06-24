@@ -1,6 +1,6 @@
 % Rust Intro
-% Felix Klock (`pnkfelix`) and the Rust Team
-% Thursday 25 June
+% Felix and the Rust Team
+% 25 June 2015; http://bit.ly/1N93I0P
 
 # Rust: Why? (How?)
 
