@@ -21,10 +21,8 @@ Consume owned:
 fn sum(v: Vec<i32>) -> i32 {          //  +
    let mut accum = 0;                 //  |
    for i in v { accum += i; }         //  + (`v` destroyed/freed)
-   accum
-}//~~~~~
- //  |
- // (p.s. where is `return` ?)
+   accum // (p.s. where is `return` ?)
+}
 ```
 
 ## Move vs Copy
