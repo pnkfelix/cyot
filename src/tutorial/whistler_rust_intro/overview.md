@@ -96,6 +96,8 @@ fn this_wont_compile(v: &mut Vec<i32>) -> i32 {
     let mut sum = 0;
     for &i in v.iter() {
         if i > 0 { v.push(0); } sum += i;
+        //         ~~~~~~~~~ invalid! (might realloc
+        //                   the backing storage for `v`)
     }
     sum
 }
