@@ -6,51 +6,12 @@
   <meta name="generator" content="pandoc" />
   <title></title>
   <style type="text/css">code{white-space: pre;}</style>
-  <style type="text/css">
-div.sourceCode { overflow-x: auto; }
-table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
-  margin: 0; padding: 0; vertical-align: baseline; border: none; }
-table.sourceCode { width: 100%; line-height: 100%; }
-td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
-td.sourceCode { padding-left: 5px; }
-code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
-code > span.dt { color: #902000; } /* DataType */
-code > span.dv { color: #40a070; } /* DecVal */
-code > span.bn { color: #40a070; } /* BaseN */
-code > span.fl { color: #40a070; } /* Float */
-code > span.ch { color: #4070a0; } /* Char */
-code > span.st { color: #4070a0; } /* String */
-code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
-code > span.ot { color: #007020; } /* Other */
-code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
-code > span.fu { color: #06287e; } /* Function */
-code > span.er { color: #ff0000; font-weight: bold; } /* Error */
-code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
-code > span.cn { color: #880000; } /* Constant */
-code > span.sc { color: #4070a0; } /* SpecialChar */
-code > span.vs { color: #4070a0; } /* VerbatimString */
-code > span.ss { color: #bb6688; } /* SpecialString */
-code > span.im { } /* Import */
-code > span.va { color: #19177c; } /* Variable */
-code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
-code > span.op { color: #666666; } /* Operator */
-code > span.bu { } /* BuiltIn */
-code > span.ex { } /* Extension */
-code > span.pp { color: #bc7a00; } /* Preprocessor */
-code > span.at { color: #7d9029; } /* Attribute */
-code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
-code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
-code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
-code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
-  </style>
   <link rel="stylesheet" href="../../code-style.css" type="text/css" />
 </head>
 <body>
 <h1 id="rust-tutorial-exercises-part-1">Rust Tutorial Exercises, Part 1</h1>
 <ul>
 <li><a href="#section-1-move-semantics">Section 1 &quot;Move Semantics&quot;</a></li>
-<li><a href="#section-2-borrowing-immutably">Section 2 &quot;Borrowing&quot;</a></li>
-<li><a href="#section-3-mutably-borrowing">Section 3 &quot;&amp;mut Borrowing&quot;</a></li>
 </ul>
 <h2 id="section-1-move-semantics">Section 1: Move Semantics</h2>
 <p>All of the &quot;Move Semantics&quot; exercises involve manipulating the code at the following playpen link:</p>
@@ -70,81 +31,5 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>(Hint: in general, the use of <code>mut</code> is not attached to <code>let</code> -- rather, such a <code>mut</code> is attached to <em>bindings</em>)</p>
 <h4 id="exercise-1.4">Exercise 1.4</h4>
 <p>Refactor the code in the <a href="https://play.rust-lang.org/?gist=b30f72fe3eb559c83994&amp;version=stable">Move Semantics Playpen</a> so that instead of creating the vector in <code>fn main</code>, we instead create it within <code>fn fill_vec</code>, and transfer the freshly created from <code>fill_vec</code> to its caller. Note this will require revising the function signature for <code>fill_vec</code>.</p>
-<hr />
-<h2 id="section-2-borrowing-immutably">Section 2: Borrowing (Immutably)</h2>
-<p>All of the &quot;Borrowing (Immutably)&quot; exercises involve manipulating the code at the following playpen link:</p>
-<ul>
-<li><a href="https://play.rust-lang.org/?gist=193a107a5e6702d457db&amp;version=stable"><code>https://play.rust-lang.org/?gist=193a107a5e6702d457db&amp;version=stable</code></a></li>
-</ul>
-<h3 id="core-exercises-1">Core Exercises</h3>
-<h4 id="exercise-2.1">Exercise 2.1</h4>
-<p>The distinction between a statement versus a true expression is sometimes confusing, leading to bugs such as that exhibited by the code in <a href="https://play.rust-lang.org/?gist=193a107a5e6702d457db&amp;version=stable">Borrowing Playpen</a>. Identify and fix the bug.</p>
-<p>Note: You will need to complete this exercise to do the others in this section.</p>
-<p>Hint 1. If you are not sure what is &quot;wrong&quot; about the code, the fact that the lines marked with <code>(***)</code> found it necessary to use <code>{:?}</code> to format one supposed sum and <code>{}</code> to format another is a clue; look carefully at the generated output in those two places.</p>
-<p>Hint 2. It may be useful to add type annotations to isolate where &quot;the bad value&quot; is being generated.</p>
-<p>Hint 3. Ask your neighbor, or one of the helpers!</p>
-<h4 id="exercise-2.2">Exercise 2.2</h4>
-<p>Rename the <code>fn main()</code> in the <a href="https://play.rust-lang.org/?gist=193a107a5e6702d457db&amp;version=stable">Borrowing Playpen</a> to <code>fn any_name_but_main()</code>, and hit the Run button again.</p>
-<p>What changed?</p>
-<h4 id="exercise-2.3a">Exercise 2.3a</h4>
-<p>Is it perhaps silly to write <code>&amp;vec1</code> on the line marked <code>(**)</code> in <a href="https://play.rust-lang.org/?gist=193a107a5e6702d457db&amp;version=stable">Borrowing Playpen</a> ?</p>
-<p>After all, <code>let borrowed: &amp;Vec&lt;i32&gt; = &amp;vec1;</code> already binds the result of that expression, right?</p>
-<p>What will happen if you <em>just</em> replace the <code>&amp;vec1</code> below the (**) with <code>borrowed</code>, as in:</p>
-<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="kw">let</span> also_a_sum = sum(borrowed);</code></pre></div>
-<p>Try it and see. What is the problem with this change alone?</p>
-<h4 id="exercise-2.3b">Exercise 2.3b</h4>
-<p>Re-attempt to make the change to <code>(**)</code> in <a href="https://play.rust-lang.org/?gist=193a107a5e6702d457db&amp;version=stable">Borrowing Playpen</a> to read:</p>
-<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="kw">let</span> also_a_sum = sum(borrowed);</code></pre></div>
-<p>But this time, address the compiler's complaints in some manner by making further changes elsewhere.</p>
-<h3 id="review-exercise">Review Exercise</h3>
-<h4 id="exercise-2.4">Exercise 2.4</h4>
-<p>Write a function, <code>fn choose_vec</code>, that takes two input <code>Vec&lt;i32&gt;</code> parameters (as moved arguments), and returns one of them, i.e. it has signature:</p>
-<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="kw">fn</span> choose_vec(v1: <span class="dt">Vec</span>&lt;<span class="dt">i32</span>&gt;, v2: <span class="dt">Vec</span>&lt;<span class="dt">i32</span>&gt;) -&gt; <span class="dt">Vec</span>&lt;<span class="dt">i32</span>&gt; { ... }</code></pre></div>
-<p>The function should choose whichever vector that has a larger element at index 0.</p>
-<p>Include some unit tests for your <code>choose_vec</code>.</p>
-<h3 id="extra-exercises-1">Extra Exercises</h3>
-<h4 id="exercise-2.5">Exercise 2.5</h4>
-<p>Write a function, <code>fn palindrome</code>, that takes a borrowed <code>&amp;Vec&lt;i32&gt;</code> and returns a boolean. It returns true if and only if the series of values in-order is equal to the reversed series. E.g. the series <code>[2, 17, 4, 17, 2]</code> is a palindrome, while <code>[2, 17, 17]</code> is not.</p>
-<h4 id="exercise-2.6">Exercise 2.6</h4>
-<p>It is not idiomatic in Rust to define a function that takes an immutably-borrowed <code>&amp;Vec&lt;T&gt;</code> argument. Instead, one uses a borrowed slice <code>&amp;[T]</code>, which is more general.</p>
-<p>We will be seeing more with slices in the future; for now, just try changing the signature of <code>fn sum</code> so that it takes a <code>&amp;[i32]</code> instead of <code>&amp;Vec&lt;i32&gt;</code>, and see if you can modify the resulting code to compile.</p>
-<p>(Make sure you try to compile it first after making the change; the compiler often provides useful hints as to what needs changing.)</p>
-<hr />
-<h2 id="section-3-mutably-borrowing">Section 3: Mutably Borrowing</h2>
-<p>All of the &quot;Mutably Borrowing&quot; exercises involve manipulating the code at the following playpen link:</p>
-<ul>
-<li><a href="https://play.rust-lang.org/?gist=a2b72a81c8e366e117e0&amp;version=stable"><code>https://play.rust-lang.org/?gist=a2b72a81c8e366e117e0&amp;version=stable</code></a></li>
-</ul>
-<h3 id="core-exercises-2">Core Exercises</h3>
-<h4 id="exercise-3.1">Exercise 3.1</h4>
-<p>Continuing the theme from a previous section: try lifting the <code>let borrowed = &amp;vec1;</code> out of its expression block in <a href="https://play.rust-lang.org/?gist=a2b72a81c8e366e117e0&amp;version=stable">Mutably Borrowing Playpen</a>, so that the <code>let borrowed</code> binding is on the same level as the other statements in <code>fn main</code>.</p>
-<p>What goes wrong?</p>
-<h4 id="exercise-3.2">Exercise 3.2</h4>
-<p>Can we simplify the code by replacing the four lines below <code>(*)</code> in <a href="https://play.rust-lang.org/?gist=a2b72a81c8e366e117e0&amp;version=stable">Mutably Borrowing Playpen</a> with the single:</p>
-<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="kw">let</span> the_sum = sum(&amp;vec1);</code></pre></div>
-<p>Why does this work? How does this differ from exercise 1?</p>
-<h4 id="exercise-3.3">Exercise 3.3</h4>
-<p>Write a function</p>
-<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="kw">fn</span> zero_fill(v: &amp;<span class="kw">mut</span> <span class="dt">Vec</span>&lt;<span class="dt">usize</span>&gt;, count: <span class="dt">usize</span>)</code></pre></div>
-<p>that pushes <code>count</code> zeroes onto the end of <code>v</code>.</p>
-<h4 id="exercise-3.4">Exercise 3.4</h4>
-<p>Is the <code>usize</code> annotation on the line labelled <code>(***)</code> in <a href="https://play.rust-lang.org/?gist=a2b72a81c8e366e117e0&amp;version=stable">Mutably Borrowing Playpen</a> necessary? Try removing it and see; the code should still compile.</p>
-<p>So, what type is being assigned to <code>i</code> when the annotation is missing?</p>
-<p>Can you do an experiment ot prove that <code>i</code> is <em>not</em> being assigned the type <code>i32</code> when the annotation is missing?</p>
-<p>What types do you think are being assigned to <code>c</code> and <code>sum</code>?</p>
-<h3 id="extra-exercises-2">EXTRA EXERCISES</h3>
-<p>HINT: You may need to use methods we have not yet seen to do these exercises; the <code>Vec</code> API is visible at:</p>
-<p>https://doc.rust-lang.org/stable/std/vec/struct.Vec.html</p>
-<h4 id="exercise-3.5">Exercise 3.5</h4>
-<p>Write a function that takes a <code>&amp;mut Vec&lt;i32&gt;</code> and imperatively replaces its contents with its prefix-sum:</p>
-<p><code>[v1, v2, v3, ...]</code> is replaced with <code>[v1, v1+v2, v1+v2+v3, ...]</code>.</p>
-<p>Examples: <code>[1, 0, 1, 0]</code> is replaced with <code>[1, 1, 2, 2]</code> <code>[1, 2, 3, 4]</code> is replaced with <code>[1, 3, 6, 10]</code></p>
-<h4 id="exercise-3.6">Exercise 3.6</h4>
-<p>Write a function that takes a <code>&amp;mut Vec&lt;u32&gt;</code> and imperatively removes all of its zero entries, effectively filtering it so that it contains only positive values.</p>
-<p>Examples:</p>
-<ul>
-<li><p><code>[1, 0, 1, 0]</code> is replaced with <code>[1, 1]</code></p></li>
-<li><p><code>[1, 2, 3, 4]</code> is replaced with <code>[1, 2, 3, 4]</code>.</p></li>
-</ul>
 </body>
 </html>

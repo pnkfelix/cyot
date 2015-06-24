@@ -410,7 +410,10 @@ note: `moving_value` moved here because it has type
 
 -->
 </section></section>
-<section><section id="exercises" class="titleslide slide level1"><h1>Exercises</h1></section></section>
+<section><section id="exercises" class="titleslide slide level1"><h1>Exercises</h1></section><section id="exercises-1" class="slide level2">
+<h1>Exercises 1</h1>
+<p><a href="http://pnkfelix.github.io/cyot/tutorial/exercises/ex_part_1.html" class="uri">http://pnkfelix.github.io/cyot/tutorial/exercises/ex_part_1.html</a></p>
+</section></section>
 <section><section id="borrowing" class="titleslide slide level1"><h1>Borrowing</h1></section><section id="moves-insufficient-on-their-own" class="slide level2">
 <h1>Moves insufficient on their own</h1>
 <p>Imagine programming without reuse</p>
@@ -860,7 +863,6 @@ note: `b` moved here because it has type
 <pre class="fragment compile_error"><code>error: use of moved value: `v1` [E0382]
     println!(&quot;v1: {:?} v2: {:?}&quot;, v1, v2);
                                   ^~
-
 note: `v1` moved here because it has type
       `collections::vec::Vec&lt;i32&gt;`, which is non-copyable
     take_by_value(v1);
@@ -870,7 +872,10 @@ note: `v1` moved here because it has type
 <p>ownership ⇒ moves; power + responsibility for dropping</p>
 </div>
 </section></section>
-<section><section id="exercises-1" class="titleslide slide level1"><h1>Exercises</h1></section></section>
+<section><section id="exercises-2" class="titleslide slide level1"><h1>Exercises</h1></section><section id="exercises-2-1" class="slide level2">
+<h1>Exercises 2</h1>
+<p><a href="http://pnkfelix.github.io/cyot/tutorial/exercises/ex_part_2.html" class="uri">http://pnkfelix.github.io/cyot/tutorial/exercises/ex_part_2.html</a></p>
+</section></section>
 <section><section id="part-2-programming-in-the-large" class="titleslide slide level1"><h1>Part 2: Programming in the Large</h1></section><section id="everyones-installed-right" class="slide level2">
 <h1>Everyone's installed (right?)</h1>
 <p>What is local development like?</p>
@@ -1059,6 +1064,8 @@ mod c {
 ```
 -->
 </div>
+</section><section id="pub-privacy" class="slide level2">
+<h1><code class="sourceCode rust"><span class="kw">pub</span></code> (privacy)</h1>
 </section><section id="items-are-private-by-default" class="slide level2">
 <h1>items are private by default</h1>
 <h4 id="usually">(usually)</h4>
@@ -1304,7 +1311,10 @@ path = "/Users/fklock/Dev/Rust/add6/"
     let x2 = v1.iter()
         ^~</code></pre>
 </section></section>
-<section><section id="exercises-2" class="titleslide slide level1"><h1>Exercises</h1></section></section>
+<section><section id="exercises-3" class="titleslide slide level1"><h1>Exercises</h1></section><section id="exercises-3-1" class="slide level2">
+<h1>Exercises 3</h1>
+<p><a href="http://pnkfelix.github.io/cyot/tutorial/exercises/ex_part_3.html" class="uri">http://pnkfelix.github.io/cyot/tutorial/exercises/ex_part_3.html</a></p>
+</section></section>
 <section><section id="part-4-back-to-language-fundamentals" class="titleslide slide level1"><h1>Part 4: Back to Language Fundamentals</h1></section><section id="structs" class="slide level2">
 <h1>structs</h1>
 <div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="at">#[</span>derive<span class="at">(</span><span class="bu">Copy</span><span class="at">,</span> <span class="bu">Clone</span><span class="at">)]</span>
@@ -1445,7 +1455,7 @@ fn proj_x_axis_check(p: &Point) -> Point {
 }</code></pre></div>
 </section><section id="lifetime-bindings-5" class="slide level2" data-transition="fade-in">
 <h1>Lifetime Bindings 5</h1>
-<p>Compiler catches missing neceessary constraints:</p>
+<p>Compiler catches missing necessary constraints:</p>
 <div class="sourceCode"><pre class="sourceCode rust compile_error"><code class="sourceCode rust"><span class="at">#[</span>test<span class="at">]</span>
 <span class="kw">fn</span> explicit_lifetime_binding_5() {
     <span class="kw">fn</span> print&lt;<span class="ot">&#39;a</span>, <span class="ot">&#39;b</span>, <span class="ot">&#39;c</span>&gt;(ptrs: &amp;<span class="ot">&#39;a</span> <span class="kw">mut</span> <span class="dt">Vec</span>&lt;&amp;<span class="ot">&#39;b</span> <span class="dt">i32</span>&gt;, ptr: &amp;<span class="ot">&#39;c</span> <span class="dt">i32</span>) {
@@ -1454,7 +1464,8 @@ fn proj_x_axis_check(p: &Point) -> Point {
     }                                  <span class="co">// this must match that,</span>
     <span class="kw">let</span> one = <span class="dv">1</span>;                       <span class="co">// otherwise push is bogus</span>
 }</code></pre></div>
-<pre class="fragment"><code>error: cannot infer an appropriate lifetime for automatic coercion due to conflicting requirements
+<pre class="fragment"><code>error: cannot infer an appropriate lifetime for automatic coercion
+       due to conflicting requirements
         ptrs.push(ptr);
                   ^~~
 help: consider using an explicit lifetime parameter as shown:
@@ -1462,13 +1473,14 @@ help: consider using an explicit lifetime parameter as shown:
 </section><section id="borrowed-return-values-1" class="slide level2" data-transition="fade-out">
 <h1>Borrowed return values 1</h1>
 <div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="kw">fn</span> first_n_last&lt;<span class="ot">&#39;a</span>&gt;(ints: &amp;<span class="ot">&#39;a</span> <span class="dt">Vec</span>&lt;<span class="dt">i32</span>&gt;) -&gt; (&amp;<span class="ot">&#39;a</span> <span class="dt">i32</span>, &amp;<span class="ot">&#39;a</span> <span class="dt">i32</span>) {
-
+    <span class="co">//                                      ~~~~~~~  ~~~~~~~</span>
     (&amp;ints[<span class="dv">0</span>], &amp;ints[ints.len() - <span class="dv">1</span>])
 }</code></pre></div>
 <!--
 TODO: Exercise idea: Try to write `fn first_and_last_mut`. Why is it impossible
 in general?
 -->
+<div class="fragment">
 <div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="at">#[</span>test<span class="at">]</span>
 <span class="kw">fn</span> demo_borrowed_return_values() {
     <span class="kw">let</span> v = <span class="pp">vec!</span>[<span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>, <span class="dv">4</span>];
@@ -1476,7 +1488,8 @@ in general?
     <span class="pp">assert_eq!</span>(*first, <span class="dv">1</span>);
     <span class="pp">assert_eq!</span>(*fourth, <span class="dv">4</span>);
 }</code></pre></div>
-<p>(compiler ensures borrow <code>&amp;v</code> lasts long enough to satisfy reads of <code>first</code> and <code>fourth</code>)</p>
+<p>(compiler ensures borrow <code class="sourceCode rust">&amp;v</code> lasts long enough to satisfy reads of <code>first</code> and <code>fourth</code>)</p>
+</div>
 </section><section id="borrowed-return-values-2" class="slide level2" data-transition="fade-in">
 <h1>Borrowed return values 2</h1>
 <div class="sourceCode"><pre class="sourceCode rust compile_error"><code class="sourceCode rust"><span class="kw">fn</span> first_n_last&lt;<span class="ot">&#39;a</span>&gt;(ints: <span class="dt">Vec</span>&lt;<span class="dt">i32</span>&gt;) -&gt; (&amp;<span class="ot">&#39;a</span> <span class="dt">i32</span>, &amp;<span class="ot">&#39;a</span> <span class="dt">i32</span>) {
@@ -1490,7 +1503,14 @@ in general?
 note: reference must be valid for the lifetime &#39;a ...
 note: ...but borrowed value is only valid for the scope of
 note:    parameters for function</code></pre>
-<h4 id="caller-chooses-a-must-work-for-any" class="fragment" data-fragment-index="1">caller chooses <code>'a</code>; must work for any</h4>
+<div class="fragment">
+<p>caller chooses <code class="sourceCode rust"><span class="ot">&#39;a</span></code>; <code>fn</code> body must work for any such choice</p>
+<p>(Parameters dropped at scope end; won't live long enough)</p>
+</div>
+</section><section id="lifetime-elision" class="slide level2">
+<h1>Lifetime Elision</h1>
+</section><section id="all-the-a-b-...-are-ugly" class="slide level2">
+<h1>All the <code class="sourceCode rust"><span class="ot">&#39;a</span></code>, <code class="sourceCode rust"><span class="ot">&#39;b</span></code>, ... are ugly</h1>
 </section><section id="lifetime-elision-1" class="slide level2" data-transition="fade-out">
 <h1>Lifetime Elision 1</h1>
 <div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="at">#[</span>test<span class="at">]</span>
@@ -1743,7 +1763,173 @@ note:    parameters for function</code></pre>
     <span class="pp">assert_eq!</span>((six, ten), (<span class="dv">6</span>, <span class="dv">10</span>));
 }</code></pre></div>
 </section></section>
-<section><section id="part-5-systems-development" class="titleslide slide level1"><h1>Part 5: Systems Development</h1></section><section id="io-in-rust" class="slide level2">
+<section><section id="part-5-systems-development" class="titleslide slide level1"><h1>Part 5: Systems Development</h1></section><section id="concurrency" class="slide level2">
+<h1>Concurrency</h1>
+<p>Rust's killer feature:</p>
+<h3 id="data-race-freedom">Data-race freedom</h3>
+<p>built atop same foundation as memory safety</p>
+</section><section id="heres-what-one-concurrency-api-looks-like" class="slide level2">
+<h1>Here's what one concurrency API looks like</h1>
+</section><section id="threadspawn" class="slide level2">
+<h1><code>thread::spawn</code></h1>
+<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="kw">pub</span> <span class="kw">fn</span> main() {
+    <span class="kw">use</span> std::thread;
+    <span class="kw">let</span> al = <span class="st">&quot;long lost pal&quot;</span>;
+    thread::spawn(<span class="kw">move</span> || {
+
+        <span class="pp">println!</span>(<span class="st">&quot;i can be your {}&quot;</span>, al);
+    });
+
+    <span class="pp">println!</span>(<span class="st">&quot;why am i soft in the middle&quot;</span>);
+    <span class="co">// Note: might exit before spawned thread gets chance to print</span>
+}</code></pre></div>
+</section><section id="channels-for-message-passing" class="slide level2">
+<h1>channels for message passing</h1>
+<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="at">#[</span>test<span class="at">]</span> <span class="kw">fn</span> demo_channel() {
+    <span class="kw">fn</span> fib(x: <span class="dt">i64</span>) -&gt; (<span class="dt">i64</span>, <span class="dt">i64</span>) { <span class="co">// returns `(x, fib(x))`</span>
+        <span class="kw">if</span> x &lt;= <span class="dv">1</span> { (x,<span class="dv">1</span>) } <span class="kw">else</span> { (x, fib(x-<span class="dv">1</span>).<span class="dv">1</span> + fib(x-<span class="dv">2</span>).<span class="dv">1</span>) }
+    }
+    <span class="kw">use</span> std::thread;
+    <span class="kw">use</span> std::sync::mpsc::channel;
+    <span class="kw">let</span> (tx, rx) = channel(); <span class="co">// tx: &quot;transmit&quot;, rx: &quot;receive&quot;</span>
+    <span class="kw">let</span> al = <span class="st">&quot;al&quot;</span>;
+    thread::spawn(<span class="kw">move</span> || {
+        tx.send(fib(<span class="dv">10</span>));
+        <span class="pp">println!</span>(<span class="st">&quot;you can call me {}&quot;</span>, al);
+    });
+    <span class="kw">let</span> f_15 = fib(<span class="dv">15</span>).<span class="dv">1</span>;
+    <span class="pp">println!</span>(<span class="st">&quot;why am i short of attention&quot;</span>);
+    <span class="kw">let</span> f_10 = rx.recv().unwrap().<span class="dv">1</span>; <span class="co">// (this blocks to await data)</span>
+    <span class="pp">assert_eq!</span>((f_10, f_15), (<span class="dv">89</span>, <span class="dv">987</span>));
+}</code></pre></div>
+<h4 id="channels-are-abstraction-data-race-free" class="fragment">channels are abstraction, data-race free</h4>
+</section><section id="no-data-races-what-about-our-precious-mutation" class="slide level2">
+<h1>No data races: What about our precious mutation?</h1>
+</section><section id="no-data-races-1-direct-assign" class="slide level2" data-transition="fade-out">
+<h1>No data races 1: &quot;direct&quot; assign</h1>
+<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="at">#[</span>test<span class="at">]</span> <span class="kw">fn</span> demo_catch_direct() {
+    <span class="kw">fn</span> fib(x: <span class="dt">i64</span>) -&gt; (<span class="dt">i64</span>, <span class="dt">i64</span>) { <span class="co">// returns `(x, fib(x))`</span>
+        <span class="kw">if</span> x &lt;= <span class="dv">1</span> { (x,<span class="dv">1</span>) } <span class="kw">else</span> { (x, fib(x-<span class="dv">1</span>).<span class="dv">1</span> + fib(x-<span class="dv">2</span>).<span class="dv">1</span>) }
+    }
+    <span class="kw">use</span> std::thread;
+    <span class="kw">let</span> al = <span class="st">&quot;al&quot;</span>;
+    <span class="kw">let</span> <span class="kw">mut</span> f_10_recv = (<span class="dv">0</span>, <span class="dv">0</span>);
+
+    thread::spawn(<span class="kw">move</span> || {
+        f_10_recv = fib(<span class="dv">10</span>);
+        <span class="pp">println!</span>(<span class="st">&quot;you can call me {}&quot;</span>, al);
+    });
+    <span class="kw">let</span> f_15 = fib(<span class="dv">15</span>).<span class="dv">1</span>;
+    <span class="kw">while</span> f_10_recv.<span class="dv">0</span> == <span class="dv">0</span> { }  <span class="co">// &lt;-- many alarm bells</span>
+    <span class="kw">let</span> f_10 = f_10_recv.<span class="dv">1</span>;
+    <span class="pp">println!</span>(<span class="st">&quot;why am i short of attention&quot;</span>);
+    <span class="pp">assert_eq!</span>((f_10, f_15), (<span class="dv">89</span>, <span class="dv">987</span>));
+}</code></pre></div>
+<h4 id="compiles-does-not-work-no-actual-communication-implicit-copying" class="fragment">compiles; does not work (no actual communication; implicit copying)</h4>
+</section><section id="no-data-races-2-mut-ref" class="slide level2" data-transition="fade-in">
+<h1>No data races 2: mut-ref</h1>
+<div class="sourceCode"><pre class="sourceCode rust compile_error"><code class="sourceCode rust"><span class="at">#[</span>test<span class="at">]</span> <span class="kw">fn</span> demo_catch_mutref() {
+    <span class="kw">fn</span> fib(x: <span class="dt">i64</span>) -&gt; (<span class="dt">i64</span>, <span class="dt">i64</span>) { <span class="co">// returns `(x, fib(x))`</span>
+        <span class="kw">if</span> x &lt;= <span class="dv">1</span> { (x,<span class="dv">1</span>) } <span class="kw">else</span> { (x, fib(x-<span class="dv">1</span>).<span class="dv">1</span> + fib(x-<span class="dv">2</span>).<span class="dv">1</span>) }
+    }
+    <span class="kw">use</span> std::thread;
+    <span class="kw">let</span> al = <span class="st">&quot;al&quot;</span>;
+    <span class="kw">let</span> <span class="kw">mut</span> f_10_recv = (<span class="dv">0</span>, <span class="dv">0</span>);
+    <span class="kw">let</span> ptr_recv = &amp;<span class="kw">mut</span> f_10_recv; <span class="co">// &lt;-- Okay, say what we meant</span>
+    thread::spawn(<span class="kw">move</span> || {
+        *ptr_recv = fib(<span class="dv">10</span>);
+        <span class="pp">println!</span>(<span class="st">&quot;you can call me {}&quot;</span>, al);
+    });
+    <span class="kw">let</span> f_15 = fib(<span class="dv">15</span>).<span class="dv">1</span>;
+    <span class="kw">while</span> f_10_recv.<span class="dv">0</span> == <span class="dv">0</span> { }  <span class="co">// &lt;-- many alarm bells</span>
+    <span class="kw">let</span> f_10 = f_10_recv.<span class="dv">1</span>;
+    <span class="pp">println!</span>(<span class="st">&quot;why am i short of attention&quot;</span>);
+    <span class="pp">assert_eq!</span>((f_10, f_15), (<span class="dv">89</span>, <span class="dv">987</span>));
+}</code></pre></div>
+<h4 id="does-not-compile-spawn-cant-share-ref-to-stack-local" class="fragment">does not compile: <code>spawn</code> can't share ref to stack-local</h4>
+</section><section id="heres-a-totally-different-concurrency-api" class="slide level2">
+<h1>Here's a totally different concurrency API</h1>
+</section><section id="threadscoped" class="slide level2">
+<h1><code>thread::scoped</code></h1>
+<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="kw">fn</span> seq_max(partial_data: &amp;[<span class="dt">u8</span>]) -&gt; <span class="dt">u8</span> {
+    *partial_data.iter().max().unwrap()
+}
+
+<span class="kw">fn</span> par_max(data: &amp;[<span class="dt">u8</span>]) -&gt; <span class="dt">u8</span> {
+    <span class="kw">if</span> data.len() &lt;= <span class="dv">4</span> { <span class="kw">return</span> seq_max(data); }
+    <span class="kw">let</span> len_4 = data.len() / <span class="dv">4</span>; <span class="co">// DATA = [A..B..C..D..]</span>
+    <span class="kw">let</span> (q1, rest) = data.split_at(len_4); <span class="co">// (A.. \ B..C..D..)</span>
+    <span class="kw">let</span> (q2, rest) = rest.split_at(len_4); <span class="co">//  (B.. \ C..D..)</span>
+    <span class="kw">let</span> (q3, q4)   = rest.split_at(len_4); <span class="co">//   (C.. \ D..)</span>
+    <span class="kw">let</span> t1 = ::std::thread::scoped(|| seq_max(q1)); <span class="co">// fork A..</span>
+    <span class="kw">let</span> t2 = ::std::thread::scoped(|| seq_max(q2)); <span class="co">// fork B..</span>
+    <span class="kw">let</span> t3 = ::std::thread::scoped(|| seq_max(q3)); <span class="co">// fork C..</span>
+    <span class="kw">let</span> v4 = seq_max(q4); <span class="co">//                        compute D..</span>
+    <span class="kw">let</span> (v1, v2, v3) = (t1.join(), t2.join(), t3.join()); <span class="co">// join!</span>
+    <span class="kw">return</span> seq_max(&amp;[v1, v2, v3, v4]);
+}</code></pre></div>
+</section><section id="threadscoped-shows-a-new-trick" class="slide level2">
+<h1><code>thread::scoped</code> shows a new trick</h1>
+<ul>
+<li><p><code>thread::spawn</code> disallowed passing refs to stack-local data</p></li>
+<li><p>Allowing that is the whole point of <code>thread::scoped</code></p>
+<ul>
+<li>(caveat: <code>thread::scoped</code> API is unstable, and undergoing revision due to subtle soundness issue)</li>
+</ul></li>
+</ul>
+</section><section id="benchmarking-par_max-1" class="slide level2">
+<h1>Benchmarking <code>par_max</code> 1</h1>
+<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="kw">extern</span> <span class="kw">crate</span> test; <span class="kw">use</span> std::iter;
+<span class="kw">const</span> LIL: <span class="dt">usize</span> = <span class="dv">20</span> * <span class="dv">1024</span>;
+<span class="kw">const</span> BIG: <span class="dt">usize</span> = LIL * <span class="dv">1024</span>;
+
+<span class="kw">fn</span> make_data(count: <span class="dt">usize</span>) -&gt; <span class="dt">Vec</span>&lt;<span class="dt">u8</span>&gt; {
+    <span class="kw">let</span> <span class="kw">mut</span> data: <span class="dt">Vec</span>&lt;<span class="dt">u8</span>&gt; = iter::repeat(<span class="dv">10</span>).take(count).collect();
+    data.push(<span class="dv">200</span>); data.push(<span class="dv">3</span>); <span class="kw">return</span> data;
+}
+
+<span class="at">#[</span>bench<span class="at">]</span> <span class="kw">fn</span> bench_big_seq(b: &amp;<span class="kw">mut</span> test::Bencher) {
+    <span class="kw">let</span> data = make_data(BIG);
+    b.iter(|| <span class="pp">assert_eq!</span>(seq_max(&amp;data), <span class="dv">200</span>));
+}
+<span class="at">#[</span>bench<span class="at">]</span> <span class="kw">fn</span> bench_big_par(b: &amp;<span class="kw">mut</span> test::Bencher) {
+    <span class="kw">let</span> data = make_data(BIG);
+    b.iter(|| <span class="pp">assert_eq!</span>(par_max(&amp;data), <span class="dv">200</span>));
+}</code></pre></div>
+<pre><code>bench_big_par ... bench:   3,763,711 ns/iter (+/- 1,140,321)
+bench_big_seq ... bench:  21,633,799 ns/iter (+/- 2,522,262)</code></pre>
+</section><section id="benchmarking-par_max-2" class="slide level2">
+<h1>Benchmarking <code>par_max</code> 2</h1>
+<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="kw">const</span> LIL: <span class="dt">usize</span> = <span class="dv">20</span> * <span class="dv">1024</span>;
+<span class="kw">const</span> BIG: <span class="dt">usize</span> = LIL * <span class="dv">1024</span>;</code></pre></div>
+<pre><code>bench_big_par ... bench:   3,763,711 ns/iter (+/- 1,140,321)
+bench_big_seq ... bench:  21,633,799 ns/iter (+/- 2,522,262)</code></pre>
+<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="at">#[</span>bench<span class="at">]</span> <span class="kw">fn</span> bench_lil_seq(b: &amp;<span class="kw">mut</span> test::Bencher) {
+    <span class="kw">let</span> data = make_data(LIL);
+    b.iter(|| <span class="pp">assert_eq!</span>(seq_max(&amp;data), <span class="dv">200</span>));
+}
+<span class="at">#[</span>bench<span class="at">]</span> <span class="kw">fn</span> bench_lil_par(b: &amp;<span class="kw">mut</span> test::Bencher) {
+    <span class="kw">let</span> data = make_data(LIL);
+    b.iter(|| <span class="pp">assert_eq!</span>(par_max(&amp;data), <span class="dv">200</span>));
+}</code></pre></div>
+<pre><code>bench_lil_par ... bench:      59,274 ns/iter (+/- 7,756)
+bench_lil_seq ... bench:      15,432 ns/iter (+/- 1,961)</code></pre>
+<p>(<code>fn par_max</code> could tune threshold for seq. path)</p>
+</section><section id="what-was-that-about-preventing-data-races" class="slide level2">
+<h1>What was that about preventing data races?</h1>
+</section><section id="send-sync" class="slide level2">
+<h1><code>Send</code>, <code>Sync</code></h1>
+<ul>
+<li><p>If <code>T: Send</code>, then passing (e.g. moving) a <code>T</code> to another thread is safe.</p></li>
+<li><p>If <code>T: Sync</code>, then copying a <code>&amp;T</code> to another thread is safe.</p></li>
+<li><p>(For Rust, &quot;safe&quot; includes &quot;no data races exposed.&quot;)</p></li>
+</ul>
+<!-- FIXME: elaborate, add e.g. counter-examples
+Or maybe just drop this slide entirely.
+-->
+</section><section id="last-few-things" class="slide level2">
+<h1>Last few things</h1>
+</section><section id="io-in-rust" class="slide level2">
 <h1>IO in Rust</h1>
 <p>Many input/output (IO) routines can encounter errors</p>
 <!--  (`panic!` from std lib not suitable for external errors) -->
@@ -1792,198 +1978,27 @@ it just needs to precede discussion of thread APIs.)
 -->
 <!--
 
-Anyway, the reason this slide was over here was that it needs to
+Anyway, the reason this slide was in here was that it "needs" to
 precede our discussion of channels since those follow the I/O api
-patterns of using `Result` and `try!`.
+patterns of using `Result` and `try!`. Except I stopped using `try!`.
+So I moved it, and maybe could drop it.
 
 Pretty soon I'll draw up that dependency graph, using these slides as
 a starting point.  :)
 
 -->
-</section><section id="concurrency" class="slide level2">
-<h1>Concurrency</h1>
-<p>Rust's killer feature:</p>
-<h3 id="data-race-freedom">Data-race freedom</h3>
-<p>built atop same foundation as memory safety</p>
-</section><section id="heres-what-one-concurrency-api-looks-like" class="slide level2">
-<h1>Here's what one concurrency API looks like</h1>
-</section><section id="threadspawn" class="slide level2">
-<h1><code>thread::spawn</code></h1>
-<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="kw">pub</span> <span class="kw">fn</span> main() {
-    <span class="kw">use</span> std::thread;
-    <span class="kw">let</span> al = <span class="st">&quot;long lost pal&quot;</span>;
-    thread::spawn(<span class="kw">move</span> || {
-
-        <span class="pp">println!</span>(<span class="st">&quot;i can be your {}&quot;</span>, al);
-    });
-
-    <span class="pp">println!</span>(<span class="st">&quot;why am i soft in the middle&quot;</span>);
-    <span class="co">// Note: might exit before spawned thread gets chance to print</span>
-}</code></pre></div>
-</section><section id="no-data-races-what-about-our-precious-mutation" class="slide level2">
-<h1>No data races: What about our precious mutation?</h1>
-</section><section id="no-data-races-1-direct-assign" class="slide level2" data-transition="fade-out">
-<h1>No data races 1: &quot;direct&quot; assign</h1>
-<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="at">#[</span>test<span class="at">]</span>
-<span class="kw">fn</span> demo_catch_direct() {
-    <span class="kw">fn</span> fib(x: <span class="dt">i64</span>) -&gt; (<span class="dt">i64</span>, <span class="dt">i64</span>) {
-        <span class="kw">if</span> x &lt;= <span class="dv">1</span> { (x,<span class="dv">1</span>) } <span class="kw">else</span> { (x, fib(x-<span class="dv">1</span>).<span class="dv">1</span> + fib(x-<span class="dv">2</span>).<span class="dv">1</span>) }
-    }
-    <span class="kw">use</span> std::thread;
-    <span class="kw">let</span> al = <span class="st">&quot;al&quot;</span>;
-    <span class="kw">let</span> <span class="kw">mut</span> f_10_recv = (<span class="dv">0</span>, <span class="dv">0</span>);
-
-    thread::spawn(<span class="kw">move</span> || {
-        f_10_recv = fib(<span class="dv">10</span>);
-        <span class="pp">println!</span>(<span class="st">&quot;you can call me {}&quot;</span>, al);
-    });
-    <span class="kw">let</span> f_15 = fib(<span class="dv">15</span>).<span class="dv">1</span>;
-    <span class="kw">while</span> f_10_recv.<span class="dv">0</span> == <span class="dv">0</span> { }  <span class="co">// &lt;-- many alarm bells</span>
-    <span class="kw">let</span> f_10 = f_10_recv.<span class="dv">1</span>;
-    <span class="pp">println!</span>(<span class="st">&quot;why am i short of attention&quot;</span>);
-    <span class="pp">assert_eq!</span>((f_10, f_15), (<span class="dv">89</span>, <span class="dv">987</span>));
-}</code></pre></div>
-<h4 id="compiles-but-doesnt-work-no-communication-happens-implicit-copying" class="fragment">compiles, but doesn't work (no communication happens; implicit copying)</h4>
-</section><section id="no-data-races-2-mut-ref" class="slide level2" data-transition="fade-in">
-<h1>No data races 2: mut-ref</h1>
-<div class="sourceCode"><pre class="sourceCode rust compile_error"><code class="sourceCode rust"><span class="at">#[</span>test<span class="at">]</span>
-<span class="kw">fn</span> demo_catch_mutref() {
-    <span class="kw">fn</span> fib(x: <span class="dt">i64</span>) -&gt; (<span class="dt">i64</span>, <span class="dt">i64</span>) {
-        <span class="kw">if</span> x &lt;= <span class="dv">1</span> { (x,<span class="dv">1</span>) } <span class="kw">else</span> { (x, fib(x-<span class="dv">1</span>).<span class="dv">1</span> + fib(x-<span class="dv">2</span>).<span class="dv">1</span>) }
-    }
-    <span class="kw">use</span> std::thread;
-    <span class="kw">let</span> al = <span class="st">&quot;al&quot;</span>;
-    <span class="kw">let</span> <span class="kw">mut</span> f_10_recv = (<span class="dv">0</span>, <span class="dv">0</span>);
-    <span class="kw">let</span> ptr_recv = &amp;<span class="kw">mut</span> f_10_recv; <span class="co">// &lt;-- Okay, say what we meant</span>
-    thread::spawn(<span class="kw">move</span> || {
-        *ptr_recv = fib(<span class="dv">10</span>);
-        <span class="pp">println!</span>(<span class="st">&quot;you can call me {}&quot;</span>, al);
-    });
-    <span class="kw">let</span> f_15 = fib(<span class="dv">15</span>).<span class="dv">1</span>;
-    <span class="kw">while</span> f_10_recv.<span class="dv">0</span> == <span class="dv">0</span> { }  <span class="co">// &lt;-- many alarm bells</span>
-    <span class="kw">let</span> f_10 = f_10_recv.<span class="dv">1</span>;
-    <span class="pp">println!</span>(<span class="st">&quot;why am i short of attention&quot;</span>);
-    <span class="pp">assert_eq!</span>((f_10, f_15), (<span class="dv">89</span>, <span class="dv">987</span>));
-}</code></pre></div>
-<h4 id="does-not-compile-spawn-cant-share-ref-to-stack-local" class="fragment">does not compile: <code>spawn</code> can't share ref to stack-local</h4>
-</section><section id="channels-for-message-passing" class="slide level2">
-<h1>channels for message passing</h1>
-<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="at">#[</span>test<span class="at">]</span>
-<span class="kw">fn</span> demo_channel() {
-    <span class="kw">fn</span> fib(x: <span class="dt">i64</span>) -&gt; (<span class="dt">i64</span>, <span class="dt">i64</span>) {
-        <span class="kw">if</span> x &lt;= <span class="dv">1</span> { (x,<span class="dv">1</span>) } <span class="kw">else</span> { (x, fib(x-<span class="dv">1</span>).<span class="dv">1</span> + fib(x-<span class="dv">2</span>).<span class="dv">1</span>) }
-    }
-    <span class="kw">use</span> std::thread;
-    <span class="kw">use</span> std::sync::mpsc::channel;
-    <span class="kw">let</span> (tx, rx) = channel();
-    <span class="kw">let</span> al = <span class="st">&quot;al&quot;</span>;
-    thread::spawn(<span class="kw">move</span> || {
-        tx.send(fib(<span class="dv">10</span>));
-        <span class="pp">println!</span>(<span class="st">&quot;you can call me {}&quot;</span>, al);
-    });
-    <span class="kw">let</span> f_15 = fib(<span class="dv">15</span>).<span class="dv">1</span>;
-    <span class="pp">println!</span>(<span class="st">&quot;why am i short of attention&quot;</span>);
-    <span class="kw">let</span> f_10 = rx.recv().unwrap().<span class="dv">1</span>;
-    <span class="pp">assert_eq!</span>((f_10, f_15), (<span class="dv">89</span>, <span class="dv">987</span>));
-}</code></pre></div>
-<h4 id="channels-are-abstraction-data-race-free" class="fragment">channels are abstraction, data-race free</h4>
-</section><section id="heres-a-totally-different-concurrency-api" class="slide level2">
-<h1>Here's a totally different concurrency API</h1>
-</section><section id="threadscoped" class="slide level2">
-<h1><code>thread::scoped</code></h1>
-<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="kw">fn</span> seq_max(partial_data: &amp;[<span class="dt">u8</span>]) -&gt; <span class="dt">u8</span> {
-    *partial_data.iter().max().unwrap()
-}
-
-<span class="kw">fn</span> par_max(data: &amp;[<span class="dt">u8</span>]) -&gt; <span class="dt">u8</span> {
-    <span class="kw">if</span> data.len() &lt;= <span class="dv">4</span> { <span class="kw">return</span> seq_max(data); }
-    <span class="kw">let</span> len_4 = data.len() / <span class="dv">4</span>; <span class="co">// DATA = [A..B..C..D..]</span>
-    <span class="kw">let</span> (q1, rest) = data.split_at(len_4); <span class="co">// (A.. \ B..C..D..)</span>
-    <span class="kw">let</span> (q2, rest) = rest.split_at(len_4); <span class="co">//  (B.. \ C..D..)</span>
-    <span class="kw">let</span> (q3, q4)   = rest.split_at(len_4); <span class="co">//   (C.. \ D..)</span>
-    <span class="kw">let</span> t1 = ::std::thread::scoped(|| seq_max(q1)); <span class="co">// fork A..</span>
-    <span class="kw">let</span> t2 = ::std::thread::scoped(|| seq_max(q2)); <span class="co">// fork B..</span>
-    <span class="kw">let</span> t3 = ::std::thread::scoped(|| seq_max(q3)); <span class="co">// fork C..</span>
-    <span class="kw">let</span> v4 = seq_max(q4); <span class="co">//                                D..</span>
-    <span class="kw">let</span> (v1, v2, v3) = (t1.join(), t2.join(), t3.join());
-    <span class="kw">return</span> seq_max(&amp;[v1, v2, v3, v4]);
-}</code></pre></div>
-</section><section id="threadscoped-shows-a-new-trick" class="slide level2">
-<h1><code>thread::scoped</code> shows a new trick</h1>
-<ul>
-<li><p><code>thread::spawn</code> disallowed passing refs to stack-local data</p></li>
-<li><p>Allowing that is the whole point of <code>thread::scoped</code></p>
-<ul>
-<li>(caveat: <code>thread::scoped</code> API is unstable, and undergoing revision due to subtle soundness issue)</li>
-</ul></li>
-</ul>
-</section><section id="benchmarking-par_max-1" class="slide level2">
-<h1>Benchmarking <code>par_max</code> 1</h1>
-<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="kw">extern</span> <span class="kw">crate</span> test; <span class="kw">use</span> std::iter;
-<span class="kw">const</span> LIL: <span class="dt">usize</span> = <span class="dv">20</span> * <span class="dv">1024</span>;
-<span class="kw">const</span> BIG: <span class="dt">usize</span> = LIL * <span class="dv">1024</span>;
-
-<span class="kw">fn</span> make_data(count: <span class="dt">usize</span>) -&gt; <span class="dt">Vec</span>&lt;<span class="dt">u8</span>&gt; {
-    <span class="kw">let</span> <span class="kw">mut</span> data: <span class="dt">Vec</span>&lt;<span class="dt">u8</span>&gt; = iter::repeat(<span class="dv">10</span>).take(count).collect();
-    data.push(<span class="dv">200</span>); data.push(<span class="dv">3</span>); <span class="kw">return</span> data;
-}
-
-<span class="at">#[</span>bench<span class="at">]</span>
-<span class="kw">fn</span> bench_big_seq(b: &amp;<span class="kw">mut</span> test::Bencher) {
-    <span class="kw">let</span> data = make_data(BIG);
-    b.iter(|| <span class="pp">assert_eq!</span>(seq_max(&amp;data), <span class="dv">200</span>));
-}
-<span class="at">#[</span>bench<span class="at">]</span>
-<span class="kw">fn</span> bench_big_par(b: &amp;<span class="kw">mut</span> test::Bencher) {
-    <span class="kw">let</span> data = make_data(BIG);
-    b.iter(|| <span class="pp">assert_eq!</span>(par_max(&amp;data), <span class="dv">200</span>));
-}</code></pre></div>
-<pre><code>bench_big_par ... bench:   3,763,711 ns/iter (+/- 1,140,321)
-bench_big_seq ... bench:  21,633,799 ns/iter (+/- 2,522,262)</code></pre>
-</section><section id="benchmarking-par_max-2" class="slide level2">
-<h1>Benchmarking <code>par_max</code> 2</h1>
-<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="kw">const</span> LIL: <span class="dt">usize</span> = <span class="dv">20</span> * <span class="dv">1024</span>;
-<span class="kw">const</span> BIG: <span class="dt">usize</span> = LIL * <span class="dv">1024</span>;</code></pre></div>
-<pre><code>bench_big_par ... bench:   3,763,711 ns/iter (+/- 1,140,321)
-bench_big_seq ... bench:  21,633,799 ns/iter (+/- 2,522,262)</code></pre>
-<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="at">#[</span>bench<span class="at">]</span>
-<span class="kw">fn</span> bench_lil_seq(b: &amp;<span class="kw">mut</span> test::Bencher) {
-    <span class="kw">let</span> data = make_data(LIL);
-    b.iter(|| <span class="pp">assert_eq!</span>(seq_max(&amp;data), <span class="dv">200</span>));
-}
-<span class="at">#[</span>bench<span class="at">]</span>
-<span class="kw">fn</span> bench_lil_par(b: &amp;<span class="kw">mut</span> test::Bencher) {
-    <span class="kw">let</span> data = make_data(LIL);
-    b.iter(|| <span class="pp">assert_eq!</span>(par_max(&amp;data), <span class="dv">200</span>));
-}</code></pre></div>
-<pre><code>bench_lil_par ... bench:      59,274 ns/iter (+/- 7,756)
-bench_lil_seq ... bench:      15,432 ns/iter (+/- 1,961)</code></pre>
-<p>(<code>fn par_max</code> could tune threshold for seq. path)</p>
-</section><section id="what-was-that-about-preventing-data-races" class="slide level2">
-<h1>What was that about preventing data races?</h1>
-</section><section id="send-sync" class="slide level2">
-<h1><code>Send</code>, <code>Sync</code></h1>
-<ul>
-<li><p>If <code>T: Send</code>, then passing (e.g. moving) a <code>T</code> to another thread is safe.</p></li>
-<li><p>If <code>T: Sync</code>, then copying a <code>&amp;T</code> to another thread is safe.</p></li>
-<li><p>(For Rust, &quot;safe&quot; includes &quot;no data races exposed.&quot;)</p></li>
-</ul>
-<!-- FIXME: elaborate, add e.g. counter-examples
-Or maybe just drop this slide entirely.
--->
 </section><section id="unsafe-code" class="slide level2">
-<h1>unsafe code</h1>
-<p>Rust's safety checking is incomplete</p>
-<p>Bypass it (and take responsibility for safety) via <code class="sourceCode rust"><span class="kw">unsafe</span></code></p>
+<h1><code class="sourceCode rust"><span class="kw">unsafe</span></code> code</h1>
+<p>Bypass Rust's safety checking via <code class="sourceCode rust"><span class="kw">unsafe</span></code> (and take responsibility for safety)</p>
 <div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="at">#[</span>should_panic<span class="at">]</span>
 <span class="at">#[</span>test<span class="at">]</span>
 <span class="kw">fn</span> demo_out_of_bounds_access() {
     <span class="kw">let</span> cap = {
         <span class="kw">let</span> v0 = <span class="dt">Vec</span>::from(<span class="st">&quot;Goodbye World!&quot;</span>);
         v0.capacity()
-    }; <span class="co">// &lt;--- `v0` is freed here</span>
-    <span class="kw">let</span> <span class="kw">mut</span> new_v: <span class="dt">Vec</span>&lt;<span class="dt">u8</span>&gt; = <span class="dt">Vec</span>::with_capacity(cap);
-    <span class="kw">unsafe</span> { new_v.set_len(cap); }
+    }; <span class="co">// &lt;--- `v0` backing store is free&#39;d here</span>
+    <span class="kw">let</span> <span class="kw">mut</span> new_v: <span class="dt">Vec</span>&lt;<span class="dt">u8</span>&gt; = <span class="dt">Vec</span>::with_capacity(cap); <span class="co">// &quot;uninitialized&quot;</span>
+    <span class="kw">unsafe</span> { new_v.set_len(cap); }                    <span class="co">// UH OH</span>
     <span class="pp">println!</span>(<span class="st">&quot;v[0..4]: {:?} b&#39;Good&#39;: {:?}&quot;</span>, &amp;new_v[<span class="dv">0.</span>.<span class="dv">4</span>], b<span class="st">&quot;Good&quot;</span>);
     <span class="pp">panic!</span>(<span class="st">&quot;unsafe demo&quot;</span>);
 }</code></pre></div>
@@ -2041,6 +2056,26 @@ up with a simpler expression that still compiles and works.
 <!--
 ## Rust in Gecko (demonstration)
 -->
+</section></section>
+<section><section id="conclusion" class="titleslide slide level1"><h1>Conclusion</h1></section><section id="rust" class="slide level2 left_align">
+<h1>Rust</h1>
+<div class="fragment">
+<ul>
+<li><p>Access to (many!) safe concurrency primitives</p></li>
+<li><p>Access arbitrary native services</p></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li><p>Ownership and Borrowing are deep parts of language</p></li>
+<li><p><code>rustc</code> catches bugs!</p></li>
+</ul>
+</div>
+<div class="fragment">
+<ul>
+<li>HACK WITHOUT FEAR!</li>
+</ul>
+</div>
 </section></section>
 <section><section id="thanks-everyone-for-attending" class="titleslide slide level1"><h1>Thanks everyone for attending</h1></section><section id="lets-thank-the-helpers-from-the-research-team-as-well" class="slide level2">
 <h1>Lets thank the helpers from the Research team as well</h1>
