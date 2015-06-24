@@ -73,3 +73,9 @@ note: `moving_value` moved here because it has type
 -->
 
 # Exercises
+
+## Exercises 1
+
+[http://pnkfelix.github.io/cyot/tutorial/exercises/ex_part_1.html][ex_part_1]
+
+[ex_part_1]: http://pnkfelix.github.io/cyot/tutorial/exercises/ex_part_1.html

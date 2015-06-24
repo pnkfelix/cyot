@@ -1,5 +1,11 @@
 # Exercises
 
+## Exercises 3
+
+[http://pnkfelix.github.io/cyot/tutorial/exercises/ex_part_3.html][ex_part_3]
+
+[ex_part_3]: http://pnkfelix.github.io/cyot/tutorial/exercises/ex_part_3.html
+
 # Part 4: Back to Language Fundamentals
 
 ## structs
