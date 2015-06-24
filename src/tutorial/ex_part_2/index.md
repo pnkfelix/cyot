@@ -11,7 +11,7 @@ machine; ask a helper for assistance if necessary!
 
 ### Core Exercises
 
-#### Exercise 1: Hello World, locally
+#### Exercise 4.1: Hello World, locally
 
 Compile and run Hello World locally via `rustc`
 
@@ -20,7 +20,7 @@ Compile and run Hello World locally via `rustc`
 pub fn main() { println!("Hello World"); }
 ```
 
-#### Exercise 2: Timing a Rust program
+#### Exercise 4.2: Timing a Rust program
 
 Put the following code into a file named `count.rs`.
 
@@ -71,7 +71,7 @@ than something that just counts to `max`. Feel free to try replacing the
 `i & mask != 0` condition with `true` and seeing how the results change.)
 
 
-#### Exercise 3: Hello Cargo
+#### Exercise 4.3: Hello Cargo
 
 Make a new cargo library and run its unit tests:
 
@@ -84,7 +84,7 @@ $ cargo test
 ...
 ```
 
-#### Exercise 4: crates.io
+#### Exercise 4.4: crates.io
 
 Revise your new cargo library to print out a randomly generated number.
 
@@ -117,7 +117,7 @@ To write and test your code, you can either:
 
 ### Core Exercises
 
-#### Exercise 1
+#### Exercise 5.1
 
 Write a function:
 
@@ -127,7 +127,7 @@ fn zeroes(count: usize) -> Vec<usize>
 
 that creates a vector of length `count` that is filled with 0.
 
-#### Exercise 2
+#### Exercise 5.2
 
 Write a function:
 
@@ -148,7 +148,7 @@ assert_eq!(histogram(&[4, 0, 4, 4, 5, 0, 9, 9, 9, 9, 9]),
             1, 0, 0, 0, 5]);
 ```
 
-#### Exercise 3
+#### Exercise 5.3
 
 You may have seen an earlier note that it is not idiomatic in Rust to
 take an immutably-borrowed `&Vec<T>` argument; idiomatic Rust instead
@@ -291,20 +291,20 @@ fn funny_string(s: &mut String) {
 
 ### Core Exercises
 
-#### Exercise 1
+#### Exercise 6.1
 
 What is being printed out at the end of `fn no_longer_main`?
 
 Hint: Running the program is a reasonable way to resolve this question!
 
-#### Exercise 2
+#### Exercise 6.2
 
 Uncomment the lines beneath the one labelled "(*)" above, starting
 with `let borrowed = ...;`
 
 Re-run the test suite. Can you explain what you see?
  
-#### Exercise 3
+#### Exercise 6.3
 
 Write a function
 
@@ -315,5 +315,7 @@ fn listing(input: &[&str]) -> String
 that makes a comma-delimited list of all the input strings.
 
 Examples:
-["apple", "pear", "banana"] goes to "apple, pear, banana"
-An emply slice goes to "".
+
+  * ["apple", "pear", "banana"] goes to "apple, pear, banana"
+
+  * An emply slice goes to "".

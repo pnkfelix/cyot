@@ -9,7 +9,7 @@ the following playpen link:
 
 ### Core Exercises
 
-#### Exercise 1
+#### Exercise 1.1
 
 Remove the `mut` from the binding of `vec1` on the line marked `(*)` in
 the [Move Semantics Playpen]. Why does the code stop compiling?
@@ -17,7 +17,7 @@ the [Move Semantics Playpen]. Why does the code stop compiling?
 (Put the `mut` back afterward.)
 
 
-#### Exercise 2
+#### Exercise 1.2
 
 Try to change the first `println!` call in the
 [Move Semantics Playpen] so that it reports the length of `vec0` after
@@ -28,7 +28,7 @@ Try to change the first `println!` call in the
 (You can skip these exercises and come back to them after you have done
 the other core exercises, if you like.)
 
-#### Exercise 3
+#### Exercise 1.3
 
 On the line marked `(**)` in the [Move Semantics Playpen], the whole
 line (that is, the rebinding of `vec` to `mut vec`) can be removed if
@@ -38,7 +38,7 @@ out how to remove the line marked `(**)`.
 (Hint: in general, the use of `mut` is not attached to `let` --
 rather, such a `mut` is attached to *bindings*)
 
-#### Exercise 4
+#### Exercise 1.4
 
 Refactor the code in the [Move Semantics Playpen] so that instead of
 creating the vector in `fn main`, we instead create it within `fn

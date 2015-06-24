@@ -11,7 +11,7 @@ the following playpen link:
 
 ### Core Exercises
 
-#### Exercise 1
+#### Exercise 3.1
 
 Continuing the theme from a previous section: try
 lifting the `let borrowed = &vec1;` out of its expression block
@@ -21,7 +21,7 @@ statements in `fn main`.
 
 What goes wrong?
 
-#### Exercise 2
+#### Exercise 3.2
 
 Can we simplify the code by replacing the four lines
 below `(*)` in [Mutably Borrowing Playpen] with the single:
@@ -33,7 +33,7 @@ let the_sum = sum(&vec1);
 Why does this work? How does this differ from exercise 1?
 
 
-#### Exercise 3
+#### Exercise 3.3
 
 Write a function
 
@@ -43,7 +43,7 @@ fn zero_fill(v: &mut Vec<usize>, count: usize)
 
 that pushes `count` zeroes onto the end of `v`.
 
-#### Exercise 4
+#### Exercise 3.4
 
 Is the `usize` annotation on the line labelled `(***)` in
 [Mutably Borrowing Playpen] necessary? Try removing it and see;
@@ -64,7 +64,7 @@ these exercises; the `Vec` API is visible at:
 
   https://doc.rust-lang.org/stable/std/vec/struct.Vec.html
 
-#### Exercise 5
+#### Exercise 3.5
 
 Write a function that takes a `&mut Vec<i32>` and
 imperatively replaces its contents with its prefix-sum:
@@ -76,12 +76,14 @@ Examples:
 `[1, 2, 3, 4]` is replaced with `[1, 3, 6, 10]`
 
 
-#### Exercise 6
+#### Exercise 3.6
 
 Write a function that takes a `&mut Vec<u32>` and
 imperatively removes all of its zero entries, effectively
 filtering it so that it contains only positive values.
 
 Examples:
-`[1, 0, 1, 0]` is replaced with `[1, 1]`
-`[1, 2, 3, 4]` is replaced with `[1, 2, 3, 4]`.
+
+  * `[1, 0, 1, 0]` is replaced with `[1, 1]`
+
+  * `[1, 2, 3, 4]` is replaced with `[1, 2, 3, 4]`.

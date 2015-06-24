@@ -11,7 +11,7 @@ the following playpen link:
 
 ### Core Exercises
 
-#### Exercise 1
+#### Exercise 2.1
 
 The distinction between a statement versus a true
 expression is sometimes confusing, leading to bugs such as that
@@ -31,14 +31,14 @@ Hint 2. It may be useful to add type annotations to isolate where
 
 Hint 3. Ask your neighbor, or one of the helpers!
 
-#### Exercise 2
+#### Exercise 2.2
 
 Rename the `fn main()` in the [Borrowing Playpen] to
 `fn any_name_but_main()`, and hit the Run button again.
 
 What changed?
 
-#### Exercise 3a
+#### Exercise 2.3a
 
 Is it perhaps silly to write `&vec1` on the line marked `(**)`
 in [Borrowing Playpen] ?
@@ -56,7 +56,7 @@ let also_a_sum = sum(borrowed);
 Try it and see. What is the problem with this change alone?
 
 
-#### Exercise 3b
+#### Exercise 2.3b
 
 Re-attempt to make the change to `(**)` in [Borrowing Playpen] to read:
 
@@ -69,7 +69,7 @@ making further changes elsewhere.
 
 ### Review Exercise
 
-#### Exercise 4
+#### Exercise 2.4
 
 Write a function, `fn choose_vec`, that takes two input
 `Vec<i32>` parameters (as moved arguments), and returns one of
@@ -86,7 +86,7 @@ Include some unit tests for your `choose_vec`.
 
 ### Extra Exercises
 
-#### Exercise 5
+#### Exercise 2.5
 
 Write a function, `fn palindrome`, that takes a
 borrowed `&Vec<i32>` and returns a boolean. It returns true if and
@@ -94,7 +94,7 @@ only if the series of values in-order is equal to the reversed
 series. E.g. the series `[2, 17, 4, 17, 2]` is a palindrome, while
 `[2, 17, 17]` is not.
 
-#### Exercise 6
+#### Exercise 2.6
 
 It is not idiomatic in Rust to define a function that
 takes an immutably-borrowed `&Vec<T>` argument. Instead, one uses a
