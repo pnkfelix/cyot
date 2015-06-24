@@ -69,3 +69,5 @@ note: `moving_value` moved here because it has type
     * one can freely keep using the original
 
 -->
+
+# Exercises
