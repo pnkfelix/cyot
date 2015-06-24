@@ -96,13 +96,37 @@ pub fn main() {
 }
 ```
 
+## channels for message passing
+
+```rust
+#[test] fn demo_channel() {
+    fn fib(x: i64) -> (i64, i64) { // returns `(x, fib(x))`
+        if x <= 1 { (x,1) } else { (x, fib(x-1).1 + fib(x-2).1) }
+    }
+    use std::thread;
+    use std::sync::mpsc::channel;
+    let (tx, rx) = channel(); // tx: "transmit", rx: "receive"
+    let al = "al";
+    thread::spawn(move || {
+        tx.send(fib(10));
+        println!("you can call me {}", al);
+    });
+    let f_15 = fib(15).1;
+    println!("why am i short of attention");
+    let f_10 = rx.recv().unwrap().1; // (this blocks to await data)
+    assert_eq!((f_10, f_15), (89, 987));
+}
+```
+
+#### channels are abstraction, data-race free {.fragment}
+
 ## No data races: What about our precious mutation?
 
 ## No data races 1: "direct" assign { data-transition="fade-out" }
 
 ``` {.rust}
 #[test] fn demo_catch_direct() {
-    fn fib(x: i64) -> (i64, i64) {
+    fn fib(x: i64) -> (i64, i64) { // returns `(x, fib(x))`
         if x <= 1 { (x,1) } else { (x, fib(x-1).1 + fib(x-2).1) }
     }
     use std::thread;
@@ -127,7 +151,7 @@ pub fn main() {
 
 ``` {.rust .compile_error}
 #[test] fn demo_catch_mutref() {
-    fn fib(x: i64) -> (i64, i64) {
+    fn fib(x: i64) -> (i64, i64) { // returns `(x, fib(x))`
         if x <= 1 { (x,1) } else { (x, fib(x-1).1 + fib(x-2).1) }
     }
     use std::thread;
@@ -148,30 +172,6 @@ pub fn main() {
 
 #### does not compile: `spawn` can't share ref to stack-local {.fragment}
 
-## channels for message passing
-
-```rust
-#[test] fn demo_channel() {
-    fn fib(x: i64) -> (i64, i64) {
-        if x <= 1 { (x,1) } else { (x, fib(x-1).1 + fib(x-2).1) }
-    }
-    use std::thread;
-    use std::sync::mpsc::channel;
-    let (tx, rx) = channel();
-    let al = "al";
-    thread::spawn(move || {
-        tx.send(fib(10));
-        println!("you can call me {}", al);
-    });
-    let f_15 = fib(15).1;
-    println!("why am i short of attention");
-    let f_10 = rx.recv().unwrap().1;
-    assert_eq!((f_10, f_15), (89, 987));
-}
-```
-
-#### channels are abstraction, data-race free {.fragment}
-
 ## Here's a totally different concurrency API
 
 ## `thread::scoped`
@@ -190,8 +190,8 @@ fn par_max(data: &[u8]) -> u8 {
     let t1 = ::std::thread::scoped(|| seq_max(q1)); // fork A..
     let t2 = ::std::thread::scoped(|| seq_max(q2)); // fork B..
     let t3 = ::std::thread::scoped(|| seq_max(q3)); // fork C..
-    let v4 = seq_max(q4); //                                D..
-    let (v1, v2, v3) = (t1.join(), t2.join(), t3.join());
+    let v4 = seq_max(q4); //                        compute D..
+    let (v1, v2, v3) = (t1.join(), t2.join(), t3.join()); // join!
     return seq_max(&[v1, v2, v3, v4]);
 }
 ```
@@ -217,13 +217,11 @@ fn make_data(count: usize) -> Vec<u8> {
     data.push(200); data.push(3); return data;
 }
 
-#[bench]
-fn bench_big_seq(b: &mut test::Bencher) {
+#[bench] fn bench_big_seq(b: &mut test::Bencher) {
     let data = make_data(BIG);
     b.iter(|| assert_eq!(seq_max(&data), 200));
 }
-#[bench]
-fn bench_big_par(b: &mut test::Bencher) {
+#[bench] fn bench_big_par(b: &mut test::Bencher) {
     let data = make_data(BIG);
     b.iter(|| assert_eq!(par_max(&data), 200));
 }
@@ -247,13 +245,11 @@ bench_big_seq ... bench:  21,633,799 ns/iter (+/- 2,522,262)
 ```
 
 ```rust
-#[bench]
-fn bench_lil_seq(b: &mut test::Bencher) {
+#[bench] fn bench_lil_seq(b: &mut test::Bencher) {
     let data = make_data(LIL);
     b.iter(|| assert_eq!(seq_max(&data), 200));
 }
-#[bench]
-fn bench_lil_par(b: &mut test::Bencher) {
+#[bench] fn bench_lil_par(b: &mut test::Bencher) {
     let data = make_data(LIL);
     b.iter(|| assert_eq!(par_max(&data), 200));
 }
@@ -280,12 +276,11 @@ bench_lil_seq ... bench:      15,432 ns/iter (+/- 1,961)
 Or maybe just drop this slide entirely.
 -->
 
-## unsafe code
+## `unsafe`{.rust} code
 
-Rust's safety checking is incomplete
-
-Bypass it (and take responsibility for safety)
+Bypass Rust's safety checking
 via `unsafe`{.rust}
+(and take responsibility for safety)
 
 ```rust
 #[should_panic]
@@ -294,9 +289,9 @@ fn demo_out_of_bounds_access() {
     let cap = {
         let v0 = Vec::from("Goodbye World!");
         v0.capacity()
-    }; // <--- `v0` is freed here
-    let mut new_v: Vec<u8> = Vec::with_capacity(cap);
-    unsafe { new_v.set_len(cap); }
+    }; // <--- `v0` backing store is free'd here
+    let mut new_v: Vec<u8> = Vec::with_capacity(cap); // "uninitialized"
+    unsafe { new_v.set_len(cap); }                    // UH OH
     println!("v[0..4]: {:?} b'Good': {:?}", &new_v[0..4], b"Good");
     panic!("unsafe demo");
 }
