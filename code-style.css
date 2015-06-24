@@ -36,7 +36,7 @@
 .sourceCode .st { color: #0A8108; }
 
 /* CommentTok */
-.sourceCode .co { color: #737171; }
+.sourceCode .co { color: #737171; font-style: normal; }
 /* OtherTok */
 .sourceCode .ot { color: #A57800; }
 /* AlertTok */
