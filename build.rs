@@ -48,13 +48,15 @@ mod pandoc {
                 // .args(&["--highlight-style=espresso"])
                 // .args(&["--highlight-style=pygments"])
                 .args(&["--highlight-style=kate"])
-                .args(&["--css", "../../slide-style.css"]);
+                .args(&["--css", "../../slide-style.css"])
+                .args(&["--css", "../../code-style.css"]);
         }
     }
 
     fn add_exercise_args(pandoc: &mut Command) {
         {
-            pandoc;
+            pandoc
+                .args(&["--css", "../../code-style.css"]);
         }
     }
 
