@@ -378,4 +378,6 @@ code above and see (1.) what errors it yields, and (2.) whether you can come
 up with a simpler expression that still compiles and works.
 -->
 
+<!--
 ## Rust in Gecko (demonstration)
+-->
