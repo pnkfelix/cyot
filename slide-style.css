@@ -14,6 +14,6 @@
 /* .sourceCode .rust { font-size: smaller; line-height: initial; } */
 /* .sourceCode .rust { font-size: 100%; line-height: initial; } */
 /* .sourceCode .rust { line-height: initial; } */
-.sourceCode .rust { font-size: 75%; line-height: initial; }
+.reveal code { font-family: Menlo,monospace; font-size: 100%; line-height: initial; }
 /* .sourceCode .rust { background: #3F3F3F; display: block; } */
 
