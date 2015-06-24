@@ -214,7 +214,7 @@ help: consider using an explicit lifetime parameter as shown:
 
 ```rust
 fn first_n_last<'a>(ints: &'a Vec<i32>) -> (&'a i32, &'a i32) {
-
+    //                                      ~~~~~~~  ~~~~~~~
     (&ints[0], &ints[ints.len() - 1])
 }
 ```
@@ -223,6 +223,8 @@ fn first_n_last<'a>(ints: &'a Vec<i32>) -> (&'a i32, &'a i32) {
 TODO: Exercise idea: Try to write `fn first_and_last_mut`. Why is it impossible
 in general?
 -->
+
+. . .
 
 ```rust
 #[test]
@@ -234,7 +236,7 @@ fn demo_borrowed_return_values() {
 }
 ```
 
-(compiler ensures borrow `&v` lasts long enough to satisfy
+(compiler ensures borrow `&v`{.rust} lasts long enough to satisfy
  reads of `first` and `fourth`)
 
 ## Borrowed return values 2  { data-transition="fade-in" }
@@ -257,7 +259,15 @@ note: ...but borrowed value is only valid for the scope of
 note:    parameters for function
 ```
 
-#### caller chooses `'a`; must work for any { .fragment data-fragment-index="1" }
+. . .
+
+caller chooses `'a`{.rust}; `fn` body must work for any such choice
+
+(Parameters dropped at scope end; won't live long enough)
+
+## Lifetime Elision
+
+## All the `'a`{.rust}, `'b`{.rust}, ... are ugly
 
 ## Lifetime Elision 1 { data-transition="fade-out" }
 
