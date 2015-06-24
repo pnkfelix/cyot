@@ -2,7 +2,7 @@
 % Felix and the Rust Team
 % 25 June 2015; [http://bit.ly/1N93I0P]
 
-# Rust: Why? (How?)
+# Rust: What? Why? (How?)
 
 ## Goals for today
 
@@ -34,11 +34,9 @@
 
 ## A taste
 
-  * These are *"amuse bouches"*
+  * Three fast *"amuse bouches"*
     * not the main course
     * (not even an appetizer)
-
-  * We'll pop through three, then dive into the main
 
 ## Abstraction without overhead { data-transition="fade-out" }
 
@@ -127,7 +125,7 @@ note: previous borrow of `*v` occurs here; the immutable borrow
               ^
 ```
 
-## Concurrency
+## Slick, Fearless Concurrency
 
 See also [Fearless Concurrency] blog post.
 
