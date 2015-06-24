@@ -25,7 +25,7 @@ Hello world
   * Rust in Gecko (demonstration)
 
 ```rust
-pub mod path_to_gecko;
+pub mod whistler_rust_intro;
 pub mod ex_part_1;
 pub mod ex_part_2;
 ```

@@ -71,7 +71,7 @@ mod pandoc {
         mk_exercise_dir.status().ok()
             .expect("we should be able to ensure `target/exercises/` exists");
 
-        let slide_sources = ["path_to_gecko"];
+        let slide_sources = ["whistler_rust_intro"];
 
         for name in &slide_sources {
             try!(run_pandoc(PandocTarget::Slides, name));
