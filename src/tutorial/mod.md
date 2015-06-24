@@ -26,7 +26,7 @@ Hello world
 
 ```rust
 pub mod whistler_rust_intro;
-pub mod ex_part_1;
+pub mod ex_part_2;
 pub mod ex_part_3;
 ```
 
