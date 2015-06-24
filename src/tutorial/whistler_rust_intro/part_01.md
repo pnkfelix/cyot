@@ -1,4 +1,16 @@
-# Part 1: Playpen
+# Part 1: Play
+
+## Language and API docs
+
+  * All linked from top of [http://www.rust-lang.org/]
+
+  * Starting points
+    * The Book: [https://doc.rust-lang.org/stable/book/]
+    * Standard API: [https://doc.rust-lang.org/stable/std/]
+
+[http://www.rust-lang.org/]: http://www.rust-lang.org/
+[https://doc.rust-lang.org/stable/book/]: https://doc.rust-lang.org/stable/book/
+[https://doc.rust-lang.org/stable/std/]: https://doc.rust-lang.org/stable/std/
 
 ## Playpen
 
@@ -7,6 +19,16 @@
 [`http://play.rust-lang.org/`]: http://play.rust-lang.org/
 
 * For later: Install Rust from the USB stick when it comes to you
+
+## Outline for Tutorial
+
+* Goals
+* Ownership and Borrowing; Arrays and Strings
+* Local Development: Cargo; Crates and Modules
+* More Fundamentals: Data; More on Borrowing; Traits
+* Systems Development: Concurrency and I/O; FFI
+
+## Lets dive in
 
 <!--
 ## Test slide

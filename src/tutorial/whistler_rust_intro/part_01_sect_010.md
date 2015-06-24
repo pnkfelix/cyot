@@ -1,8 +1,8 @@
-## Rust Basics
+## Hello World
 
 ```rust
 pub fn main() {
-    println!("Hello World!"); // (`!` means macro)
+    println!("Hello World!"); // (`foo!` means macro)
     print_ten();                                               
 }
 
@@ -14,6 +14,7 @@ fn print_ten() {
 }
 ```
 
+<!--
 ## Usual stuff
 
   * Local variables: `let x = 3;`{.rust}
@@ -66,14 +67,4 @@ let v = match number_result {
   We start with *Ownership and Borrowing*;
   a critical concept for understanding Rust.
 
-## Language and API docs
-
-  * All linked from top of [http://www.rust-lang.org/]
-
-  * Starting points
-    * The Book: [https://doc.rust-lang.org/stable/book/]
-    * Standard API: [https://doc.rust-lang.org/stable/std/]
-
-[http://www.rust-lang.org/]: http://www.rust-lang.org/
-[https://doc.rust-lang.org/stable/book/]: https://doc.rust-lang.org/stable/book/
-[https://doc.rust-lang.org/stable/std/]: https://doc.rust-lang.org/stable/std/
+-->

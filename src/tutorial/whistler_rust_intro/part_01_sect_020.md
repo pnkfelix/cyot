@@ -16,7 +16,7 @@ fn moves_insufficient() {
 }
 ```
 
-## Wanted: ability for subroutines to access owned data without consuming it
+## Want: access to owned data *without* consuming it
 
 ## Thus, "borrowing"
 
@@ -48,13 +48,13 @@ Rust uses analogous model for borrows during compilation
 
   * Base types `T`
 
-  * Immutable borrows `&T`
+  * Immutable borrows: `&T`{.rust}
 
     * <section class="fragment">
       "Read-only." Freely aliasable; copyable
       </section>
 
-  * Mutable borrows `&mut T`{.rust}
+  * Mutable borrows: `&mut T`{.rust}
 
     * <section class="fragment">
       Read/Write. Exclusive access; non-copy
@@ -71,10 +71,10 @@ fn show_some_borrows() {
     let v1 = vec![1, 2, 3];
     let v2 = vec![4, 5, 6];
 
-    let b1 = &v1;
-    let b2 = &v2;
-    foo(b1);
-    foo(b2);
+    let r1 = &v1;
+    let r2 = &v2;
+    foo(r1);
+    foo(r2);
 
 }
 ```
@@ -94,10 +94,10 @@ fn show_some_lifetimes() {
     let v1 = vec![1, 2, 3]; //                 +
     let v2 = vec![4, 5, 6]; //            +    |
                             //            |    |
-    let b1 = &v1;           //       +    |    |
-    let b2 = &v2;           //  +    |    |    |
-    foo(b1);                //  |    |    |    |  
-    foo(b2);                // 'b2  'b1  'v2  'v1
+    let r1 = &v1;           //       +    |    |
+    let r2 = &v2;           //  +    |    |    |
+    foo(r1);                //  |    |    |    |  
+    foo(r2);                // 'r2  'r1  'v2  'v1
                             //  |    |    |    | 
 }                           //  +    +    +    +
 ```
@@ -108,17 +108,17 @@ fn foo<'a>(v: &'a Vec<i32>) { println!("v[1]: {}", v[1]); }
 
 Each borrow selects "appropriate" lifetime `'a`.
 
-## Borrow Checking Prevents Errors { data-transition="slide-in fade-out" }
+## Borrow Checking Prevents Errors { data-transition="fade-out" }
 
 ``` {.rust .compile_error}
 fn borrow_checking_prevents_errors() {
 
     let v1 = vec![1, 2, 3];      //        +
                                  //        |
-    let b1 = &v1;                //  +    'v1
+    let r1 = &v1;                //  +    'v1
                                  //  |     |
-    consume(v1);                 // 'b1   (moved)
-    foo(b1);                     //  |
+    consume(v1);                 // 'r1   (moved)
+    foo(r1);                     //  |
 }                                //  +
 ```
 
@@ -127,16 +127,16 @@ fn borrow_checking_prevents_errors() {
     fn consume(v: Vec<i32>) { }
 ```
 
+`foo(r1)` attempts an indirect read of `v1`
+
 ``` {.fragment}
 error: cannot move out of `v1` because it is borrowed
     consume(v1);
             ^~
 note: borrow of `v1` occurs here
-    let b1 = &v1;
+    let r1 = &v1;
               ^~
 ```
-
-`foo(b1)` attempts an indirect read of `v1`
 
 ## Lifetimes and Lexical Scope { data-transition="fade-in" }
 
@@ -145,9 +145,9 @@ fn borrow_checking_may_seem_simple_minded() {
 
     let v1 = vec![1, 2, 3];      //        +
                                  //        |
-    let b1 = &v1;                //  +    'v1
+    let r1 = &v1;                //  +    'v1
                                  //  |     |
-    consume(v1);                 // 'b1   (moved)
+    consume(v1);                 // 'r1   (moved)
     // (no call to read)         //  |
 }                                //  +
 ```
@@ -162,7 +162,7 @@ error: cannot move out of `v1` because it is borrowed
     consume(v1);
             ^~
 note: borrow of `v1` occurs here
-    let b1 = &v1;
+    let r1 = &v1;
               ^~
 ```
 
@@ -174,17 +174,17 @@ note: borrow of `v1` occurs here
 #[test]
 fn lifetime_nesting() {
     let v1 = vec![1, 2, 3];         //                      +
-    let b1;                         //                      |
+    let r1;                         //                      |
     {                               //                      |
         let v2 = vec![4, 5, 6];     //                 +    |
         {                           //                 |    |
-            let b2 = &v2;           //  +              |    |
+            let r2 = &v2;           //  +              |    |
             let v3 = vec![7,8,9];   //  |         +   'v2  'v1
-            b1 = &v1;               // 'b2   +   'v3   |    |
-            foo(b2);                //  |    |    |    |    |
-        }                           //  +   'b1   +    |    |
+            r1 = &v1;               // 'r2   +   'v3   |    |
+            foo(r2);                //  |    |    |    |    |
+        }                           //  +   'r1   +    |    |
     }                               //       |         +    |
-    foo(b1);                        //       |              |
+    foo(r1);                        //       |              |
 }                                   //       +              +
 ```
 
@@ -192,7 +192,7 @@ fn lifetime_nesting() {
 fn foo<'a>(v: &'a Vec<i32>) { println!("v[1]: {}", v[1]); }
 ```
 
-borrow `&v2` is for at least `'b2`, but at most `'v2`
+borrow `&v2` is for at least `'r2`, but at most `'v2`
 
 ## Lexical scopes, but Nontrivial { data-transition="slide-in fade-out" }
 
@@ -203,14 +203,14 @@ fn copying_can_extend_a_borrows_lifetime() {
         println!("v[1]: {}", v[1]);
     }
     let v1 = vec![1, 2, 3]; //         +
-    let b2 = {              //         |
-        let b1 = &v1;       //  +      |
+    let r2 = {              //         |
+        let r1 = &v1;       //  +      |
         //       ^~~        //  |      |
-        foo(b1);            // 'b1     |
-        b1                  //  |     'v1
+        foo(r1);            // 'r1     |
+        r1                  //  |     'v1
     };                      //  +  +   |
                             //     |   |
-    foo(b2);                //    'b2  |
+    foo(r2);                //    'r2  |
                             //     |   |
 }                           //     +   +
 ```
@@ -219,7 +219,7 @@ fn copying_can_extend_a_borrows_lifetime() {
 fn foo<'a>(v: &'a Vec<i32>) { println!("v[1]: {}", v[1]); }
 ```
 
-(How long does the borrow `&v1` last? Does `'b1` suffice?)
+(How long does the borrow `&v1` last? Does `'r1` suffice?)
 
 ## Lexical Scopes, but Nontrivial { data-transition="fade-in" }
 
@@ -230,14 +230,14 @@ fn copying_can_extend_a_borrows_lifetime() {
         println!("v[1]: {}", v[1]);
     }
     let v1 = vec![1, 2, 3]; //         +
-    let b2: &'y Vec<i32> = {//         |         'y >= 'b2
-        let b1 = &'z v1;    //  +      |  'v1 >= 'z >= 'b1
+    let r2: &'y Vec<i32> = {//         |         'y >= 'r2
+        let r1 = &'z v1;    //  +      |  'v1 >= 'z >= 'r1
         //       ^~~~~~     //  |      |
-        foo(b1);//  |       // 'b1     |
-        b1      // (caveat) //  |     'v1
+        foo(r1);//  |       // 'r1     |
+        r1      // (caveat) //  |     'v1
     };                      //  +  +   |         'z == 'y
                             //     |   |
-    foo(b2);                //    'b2  |
+    foo(r2);                //    'r2  |
                             //     |   |
 }                           //     +   +
 ```
@@ -246,4 +246,4 @@ fn copying_can_extend_a_borrows_lifetime() {
 fn foo<'a>(v: &'a Vec<i32>) { println!("v[1]: {}", v[1]); }
 ```
 
-`'b1` too short! (caveat: above is not legal Rust)
+`'r1` too short! (caveat: above is not legal Rust)

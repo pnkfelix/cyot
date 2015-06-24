@@ -70,7 +70,7 @@ fn sum_pos(v: &Vec<i32>) -> i32 {
 
 [loop demo]: https://play.rust-lang.org/?gist=23a69161dd4421e2925f
 
-----
+## Abstraction without overhead { data-transition="fade-in" }
 
 Generated x86_64 machine code for `fn sum_pos`{.rust}:
 
@@ -177,13 +177,3 @@ fn hi() {
 }
 ```
 -->
-
-# Lets dive in
-
-## Outline for Tutorial
-
-* Goals
-* Ownership and Borrowing; Arrays and Strings
-* Local Development: Cargo; Crates and Modules
-* More Fundamentals: Data; More on Borrowing; Traits
-* Systems Development: Concurrency and I/O; FFI
