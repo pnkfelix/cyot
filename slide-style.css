@@ -1,27 +1,12 @@
-.reveal h1 { font-family: sans-serif; }
-.reveal .level2 h1 { font-size: 1.2em; }
-
 .reveal .filename { font-size: 50%; line-height: 0; float: right }
+
+.reveal h1 { font-family: sans-serif; }
+.reveal .level2 h1 { font-size: 1.5em; }
 
 .reveal .heads_up { position: absolute; right: 0; top: 20ex; z-index: 10; }
 
-/* Below is based off of: 
- *     http://benjeffrey.com/pandoc-syntax-highlighting-css
- */
 
-/* .sourceCode pre code { background-color: #FDF6E3; } */
-/* .sourceCode pre code { background-color: #fdf6e3; } */
-.sourceCode .rust code { color: black; background-color: #f3fff3; }
-.sourceCode .compile_error code { color: black; background-color: #f7e8e8; }
-.sourceCode .compile_error code { background-color: brightwhite; }
-.sourceCode .bash { background-color: #F0F0F0; }
-.sourceCode .javascript { background-color: #1F1F0F; }
-
- .reveal pre code { color: #000000; background-color: white; } 
-
-
-/* .sourceCode .rust { overflow: visible; } */
-.sourceCode { overflow: visible; }
+.reveal pre code { color: #000000; background-color: white; } 
 
 /* .sourceCode .rust { font-size: 0.90em; } */
 /* .sourceCode .rust { font-size: 90%; } */
@@ -29,42 +14,6 @@
 /* .sourceCode .rust { font-size: smaller; line-height: initial; } */
 /* .sourceCode .rust { font-size: 100%; line-height: initial; } */
 /* .sourceCode .rust { line-height: initial; } */
-.sourceCode .rust { font-size: 75%; line-height: initial; }
+.reveal code { font-family: Menlo,monospace; font-size: 100%; line-height: initial; }
 /* .sourceCode .rust { background: #3F3F3F; display: block; } */
 
-/* KeyWordTok */
-/* .sourceCode .kw { color: #268BD2; } */
-.sourceCode .kw { color: #268BA2; }
-
-/* DataTypeTok */
-/* .sourceCode .dt { color: #36ABE2; } */
-.sourceCode .dt { color: #361BE2; }
-
-/* CoNstructorTok */
-.sourceCode .cn { color: #D33682; }
-
-/* DecValTok (decimal value), BaseNTok, FloatTok */
-.sourceCode .dv, .sourceCode .bn, .sourceCode .fl { color: #D33682; }
-/* CharTok */
-.sourceCode .ch { color: #DC322F; }
-/* StringTok */
-/* .sourceCode .st { color: #2AA198; } */
-.sourceCode .st { color: #0A8108; }
-
-/* CommentTok */
-.sourceCode .co { color: #737171; }
-/* OtherTok */
-.sourceCode .ot { color: #A57800; }
-/* AlertTok */
-.sourceCode .al { color: #CB4B16; font-weight: bold; }
-/* FunctionTok */
-.sourceCode .fu { color: #268BD2; }
-/* RegionMarkerTok */
-.sourceCode .re { }
-/* ErrorTok */
-.sourceCode .er { color: #D30102; font-weight: bold; }
-
-/* PreProcessor (i.e. Macro) */
-.sourceCode .pp { color: #DC322F; font-weight: bold; }
-/* ATtribute */
-.sourceCode .at { color: #DC322F; font-weight: bold; }

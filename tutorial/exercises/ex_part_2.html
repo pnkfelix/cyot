@@ -6,12 +6,259 @@
   <meta name="generator" content="pandoc" />
   <title></title>
   <style type="text/css">code{white-space: pre;}</style>
+  <style type="text/css">
+div.sourceCode { overflow-x: auto; }
+table.sourceCode, tr.sourceCode, td.lineNumbers, td.sourceCode {
+  margin: 0; padding: 0; vertical-align: baseline; border: none; }
+table.sourceCode { width: 100%; line-height: 100%; }
+td.lineNumbers { text-align: right; padding-right: 4px; padding-left: 4px; color: #aaaaaa; border-right: 1px solid #aaaaaa; }
+td.sourceCode { padding-left: 5px; }
+code > span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code > span.dt { color: #902000; } /* DataType */
+code > span.dv { color: #40a070; } /* DecVal */
+code > span.bn { color: #40a070; } /* BaseN */
+code > span.fl { color: #40a070; } /* Float */
+code > span.ch { color: #4070a0; } /* Char */
+code > span.st { color: #4070a0; } /* String */
+code > span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code > span.ot { color: #007020; } /* Other */
+code > span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code > span.fu { color: #06287e; } /* Function */
+code > span.er { color: #ff0000; font-weight: bold; } /* Error */
+code > span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+code > span.cn { color: #880000; } /* Constant */
+code > span.sc { color: #4070a0; } /* SpecialChar */
+code > span.vs { color: #4070a0; } /* VerbatimString */
+code > span.ss { color: #bb6688; } /* SpecialString */
+code > span.im { } /* Import */
+code > span.va { color: #19177c; } /* Variable */
+code > span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code > span.op { color: #666666; } /* Operator */
+code > span.bu { } /* BuiltIn */
+code > span.ex { } /* Extension */
+code > span.pp { color: #bc7a00; } /* Preprocessor */
+code > span.at { color: #7d9029; } /* Attribute */
+code > span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code > span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code > span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+  </style>
+  <link rel="stylesheet" href="../../code-style.css" type="text/css" />
 </head>
 <body>
 <ul>
-<li>Section Cargo: tools + modules TODO</li>
-<li>Section 4 &quot;Vectors/Slices&quot; <a href="https://play.rust-lang.org/?gist=aca0d887a7e877b7aff4">playpen</a>, <a href="https://gist.github.com/pnkfelix/aca0d887a7e877b7aff4">gist</a>, <a href="https://github.com/pnkfelix/tango-demo/blob/tutorial/src/tutorial/section040.rs">github</a></li>
-<li>Section 5 &quot;for iter; strings&quot; <a href="https://play.rust-lang.org/?gist=e0916c0a8abda3331293">playpen</a>, <a href="https://gist.github.com/pnkfelix/e0916c0a8abda3331293">gist</a>, <a href="https://github.com/pnkfelix/tango-demo/blob/tutorial/src/tutorial/section050.rs">github</a></li>
+<li><a href="#section-4-rust-tooling">Section 4: Rust tooling</a> <!-- TODO: add exercises testing understanding of Rust mod system. --></li>
+<li><a href="#section-5-vectors-and-slices">Section 5 Vectors and slices</a></li>
+<li><a href="#section-6-for-loops-strings">Section 6 for loops; strings</a></li>
+</ul>
+<h2 id="section-4-rust-tooling">Section 4: Rust tooling</h2>
+<p>This section's exercises are meant to be run on your local machine. Make sure you have successfully installed Rust and Cargo on your local machine; ask a helper for assistance if necessary!</p>
+<h3 id="core-exercises">Core Exercises</h3>
+<h4 id="exercise-4.1-hello-world-locally">Exercise 4.1: Hello World, locally</h4>
+<p>Compile and run Hello World locally via <code>rustc</code></p>
+<p><code class="filename">hello.rs</code></p>
+<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="kw">pub</span> <span class="kw">fn</span> main() { <span class="pp">println!</span>(<span class="st">&quot;Hello World&quot;</span>); }</code></pre></div>
+<h4 id="exercise-4.2-timing-a-rust-program">Exercise 4.2: Timing a Rust program</h4>
+<p>Put the following code into a file named <code>count.rs</code>.</p>
+<p><code class="filename">count.rs</code></p>
+<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="kw">fn</span> count_to(p: &amp;<span class="kw">mut</span> <span class="dt">u64</span>, mask: <span class="dt">u64</span>, max: <span class="dt">u64</span>) {
+    <span class="kw">let</span> <span class="kw">mut</span> i = *p;
+    <span class="kw">while</span> i &lt; max {
+        <span class="kw">if</span> i &amp; mask != <span class="dv">0</span> {
+            *p += <span class="dv">1</span>;
+        }
+        i += <span class="dv">1</span>;
+    }
+}
+
+<span class="kw">fn</span> main() {
+    <span class="kw">let</span> <span class="kw">mut</span> x = <span class="dv">0</span>;
+    count_to(&amp;<span class="kw">mut</span> x, !<span class="dv">0</span>, <span class="dv">1</span> &lt;&lt; <span class="dv">25</span>);
+    <span class="pp">println!</span>(<span class="st">&quot;x: {}&quot;</span>, x);
+}</code></pre></div>
+<p>Compile the program with <code>rustc</code> with no other flags, and then time how long it takes to run. For example, on Unix systems:</p>
+<pre><code>$ rustc count.rs
+$ time ./count</code></pre>
+<p>Now compile the program with optimizations turned on (the <code>-O</code> flag), and compare how the timing results turn out:</p>
+<pre><code>$ rustc -O count.rs
+$ time ./count</code></pre>
+<p>How much of difference does this make on your platform?</p>
+<p>You can investigate differences in the generated code via command-line options:</p>
+<ul>
+<li><code>rustc --emit=asm</code> will produce assembly for your target platform</li>
+<li><code>rustc --emit=llvm-ir</code> will produce LLVM intermediate representation</li>
+</ul>
+<p>(Also, you may have noticed that the program is quite a bit more complicated than something that just counts to <code>max</code>. Feel free to try replacing the <code>i &amp; mask != 0</code> condition with <code>true</code> and seeing how the results change.)</p>
+<h4 id="exercise-4.3-hello-cargo">Exercise 4.3: Hello Cargo</h4>
+<p>Make a new cargo library and run its unit tests:</p>
+<pre><code>$ cargo new my_new_library
+$ cd my_new_library
+$ cargo build
+...
+$ cargo test
+...</code></pre>
+<h4 id="exercise-4.4-crates.io">Exercise 4.4: crates.io</h4>
+<p>Revise your new cargo library to print out a randomly generated number.</p>
+<p>To do this, you should not write your own random number generator; instead, you should grab one off <a href="https://crates.io/">crates.io</a>.</p>
+<p>Do a search there for one, and then add the appropriate line to a <code>[dependencies]</code> section in <code>my_new_library/Cargo.toml</code>.</p>
+<hr />
+<h2 id="section-5-vectors-and-slices">Section 5: Vectors and Slices</h2>
+<p>This section asks you to write various functions.</p>
+<p>To write and test your code, you can either:</p>
+<ul>
+<li><p>Put the code into a cargo library and run <code>cargo test</code>,</p></li>
+<li><p>Put the code into a <code>.rs</code> file, compile it with <code>rustc --test</code>, and run the resulting binary, or,</p></li>
+<li><p>Put the code into a <code>.rs</code> file with a <code>fn main</code> function and compile + run it the same way you did the earlier &quot;Hello World&quot;-type examples.</p></li>
+</ul>
+<p>(We recommend <code>cargo</code>.)</p>
+<h3 id="core-exercises-1">Core Exercises</h3>
+<h4 id="exercise-5.1">Exercise 5.1</h4>
+<p>Write a function:</p>
+<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="kw">fn</span> zeroes(count: <span class="dt">usize</span>) -&gt; <span class="dt">Vec</span>&lt;<span class="dt">usize</span>&gt;</code></pre></div>
+<p>that creates a vector of length <code>count</code> that is filled with 0.</p>
+<h4 id="exercise-5.2">Exercise 5.2</h4>
+<p>Write a function:</p>
+<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="kw">fn</span> histogram(input_data: &amp;[<span class="dt">usize</span>]) -&gt; <span class="dt">Vec</span>&lt;<span class="dt">usize</span>&gt;</code></pre></div>
+<p>that reports, at each index <code>i</code> of its result vector, the number of times that <code>i</code> occurs in <code>input_data</code>.</p>
+<p>So for example, these assertions should hold:</p>
+<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="pp">assert_eq!</span>(histogram(&amp;[<span class="dv">4</span>, <span class="dv">0</span>, <span class="dv">4</span>, <span class="dv">4</span>]),
+           [<span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">3</span>]);
+<span class="pp">assert_eq!</span>(histogram(&amp;[<span class="dv">4</span>, <span class="dv">0</span>, <span class="dv">4</span>, <span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">0</span>, <span class="dv">9</span>, <span class="dv">9</span>, <span class="dv">9</span>, <span class="dv">9</span>, <span class="dv">9</span>]),
+           [<span class="dv">2</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">3</span>,
+            <span class="dv">1</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">5</span>]);</code></pre></div>
+<h4 id="exercise-5.3">Exercise 5.3</h4>
+<p>You may have seen an earlier note that it is not idiomatic in Rust to take an immutably-borrowed <code>&amp;Vec&lt;T&gt;</code> argument; idiomatic Rust instead uses borrowed slices <code>&amp;[T]</code>.</p>
+<p>Do you think this reasoning applies also to <code>&amp;mut Vec&lt;T&gt;</code>? That is, for any function that takes <code>&amp;mut Vec&lt;T&gt;</code>, could we make a replacement function that instead takes <code>&amp;mut [T]</code> and everything still works out?</p>
+<p>If you are not sure of the answer: Go back over the previous section with exercises writing functions that took <code>&amp;mut Vec&lt;i32&gt;</code>, and write those same functions but now taking <code>&amp;mut [i32]</code> instead.</p>
+<hr />
+<h2 id="section-6-for-loops-strings">Section 6: for loops; strings</h2>
+<p>To run them, you can either:</p>
+<ul>
+<li><p>Put the code into a cargo library and run <code>cargo test</code>,</p></li>
+<li><p>Put the code into a <code>.rs</code> file, compile it with <code>rustc --test</code>, and run the resulting binary, or,</p></li>
+<li><p>Put the code into a <code>.rs</code> file, replace <code>fn no_longer_main</code> with <code>fn main</code> and compile it the same way you did the earlier &quot;Hello World&quot;-type examples.</p></li>
+</ul>
+<p>The exercises in this section concern the following code, and uses unit tests alone for its illustrations.</p>
+<p><code class="filename">section_6.rs</code></p>
+<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="at">#[</span>test<span class="at">]</span>
+<span class="kw">pub</span> <span class="kw">fn</span> demo_iterators() {
+    <span class="co">// We already saw iterating over numeric ranges:</span>
+    <span class="kw">let</span> <span class="kw">mut</span> v = <span class="dt">Vec</span>::new();
+    <span class="kw">let</span> <span class="kw">mut</span> zeroes: <span class="dt">Vec</span>&lt;<span class="dt">i32</span>&gt; = <span class="dt">Vec</span>::new();
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="dv">0.</span>.<span class="dv">10</span> {
+        v.push(<span class="dv">1000</span> + i);
+        zeroes.push(<span class="dv">0</span>);
+    }
+    <span class="pp">println!</span>(<span class="st">&quot;v: {:?}&quot;</span>, v);
+
+    <span class="co">// But for-loops in Rust are much more general.</span>
+
+    <span class="co">// Here is a for-loop that *consumes* its input: the vector here</span>
+    <span class="co">// is constructed once and then broken down to feed the iteration.</span>
+    <span class="co">// Each `i` is a `usize` value extracted from the vector.</span>
+    <span class="kw">for</span> i <span class="kw">in</span> <span class="pp">vec!</span>[<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>] {
+        <span class="pp">assert_eq!</span>(v[i], <span class="dv">1000</span> + i);
+    }
+
+    <span class="co">// Here is a for-loop that *borrows* its input: the vector here</span>
+    <span class="co">// is traversed but not consumed. Each `elem` is a borrowed-value</span>
+    <span class="co">// from within the vector itself; so for our `zeroes: Vec&lt;i32&gt;`,</span>
+    <span class="co">// each elem is a `&amp;i32`, *not* an `i32`.</span>
+    <span class="kw">for</span> elem <span class="kw">in</span> &amp;zeroes {
+        <span class="co">// assert_eq(elem, 0);</span>
+        <span class="co">//           ~~~~~~~</span>
+        <span class="co">//              |</span>
+        <span class="co">//    This does not work; you cannot compare a `&amp;i32` with an `i32` via</span>
+        <span class="co">//    the standard `==` operator.</span>
+
+        <span class="pp">assert_eq!</span>(elem, &amp;<span class="dv">0</span>);
+        <span class="co">//         ~~~~~~~~</span>
+        <span class="co">//            |</span>
+        <span class="co">//    Here is one work-around for the problem above:</span>
+        <span class="co">//    you *can* compare two `&amp;i32` values via `==`.</span>
+
+        <span class="pp">assert_eq!</span>(*elem, <span class="dv">0</span>);
+        <span class="co">//         ~~~~~</span>
+        <span class="co">//           |</span>
+        <span class="co">//    Another fix. (Our *first* time using &quot;deref&quot; operator</span>
+        <span class="co">//    explicitly; earlier sections have been dereferencing all</span>
+        <span class="co">//    over the place, but it has been under the hood.)</span>
+    }
+}
+
+<span class="at">#[</span>test<span class="at">]</span>
+<span class="kw">pub</span> <span class="kw">fn</span> no_longer_main() {
+
+    <span class="co">// Analogous to the `Vec&lt;i32&gt;` and `&amp;[i32]` for integer array</span>
+    <span class="co">// manipulation, Rust has two datatypes used in its standard</span>
+    <span class="co">// library for Unicode string manipulation.</span>
+    <span class="co">//</span>
+    <span class="co">// - `String` is a mutable string buffer; it can grow and shrink,</span>
+    <span class="co">//   much like `Vec&lt;i32&gt;`</span>
+    <span class="co">//</span>
+    <span class="co">// - `&amp;str` is a borrowed string slice. It is immutable and fixed in its length,</span>
+    <span class="co">//   much like `&amp;[i32]`.</span>
+    <span class="co">//</span>
+    <span class="co">// Relevant API docs:</span>
+    <span class="co">// - https://doc.rust-lang.org/stable/std/string/struct.String.html</span>
+    <span class="co">// - https://doc.rust-lang.org/stable/std/str/index.html</span>
+
+    <span class="kw">let</span> <span class="kw">mut</span> s = <span class="dt">String</span>::new();
+    s.push_str(<span class="st">&quot;Hello&quot;</span>);
+    s.push_str(<span class="st">&quot; &quot;</span>);
+    s.push_str(<span class="st">&quot;World!&quot;</span>);
+    <span class="pp">println!</span>(<span class="st">&quot;{}&quot;</span>, s);
+    <span class="pp">assert_eq!</span>(s.len(), <span class="dv">12</span>); <span class="co">// (length in bytes)</span>
+    <span class="pp">assert_eq!</span>(s, <span class="st">&quot;Hello World!&quot;</span>);
+
+    <span class="kw">let</span> <span class="kw">mut</span> the_bytes = <span class="dt">Vec</span>::new();
+    <span class="kw">let</span> <span class="kw">mut</span> the_chars = <span class="dt">Vec</span>::new();
+
+    <span class="co">// We can also do for-loops over strings, ...</span>
+    <span class="co">//</span>
+    <span class="co">// ... but since one can view them as sequences of bytes, or</span>
+    <span class="co">// as sequences of characters (Unicode codepoints) ...</span>
+    <span class="co">//</span>
+    <span class="co">// ... we need to say what we are iterating over</span>
+    <span class="kw">for</span> b <span class="kw">in</span> s.bytes() {
+        the_bytes.push(b);
+    }
+    <span class="kw">for</span> c <span class="kw">in</span> s.chars() {
+        the_chars.push(c);
+    }
+
+    s.clear();
+    <span class="pp">assert_eq!</span>(s, <span class="st">&quot;&quot;</span>);
+    funny_string(&amp;<span class="kw">mut</span> s);
+    <span class="pp">println!</span>(<span class="st">&quot;</span><span class="sc">\&quot;</span><span class="st">{}</span><span class="sc">\&quot;</span><span class="st">, {:?}, {}&quot;</span>, s, s, s.len());
+}
+
+<span class="kw">fn</span> funny_string(s: &amp;<span class="kw">mut</span> <span class="dt">String</span>) {
+    <span class="kw">let</span> hw = <span class="st">&quot;Hello World!&quot;</span>;
+    s.push_str(&amp;hw[<span class="dv">0.</span>.<span class="dv">9</span>]); <span class="co">// `string[range]` &quot;works&quot; just like vectors and slices.</span>
+
+    <span class="kw">let</span> funny_char: <span class="dt">char</span> = <span class="ch">&#39;</span><span class="sc">\u{1F525}</span><span class="ch">&#39;</span>;
+    s.push(funny_char);
+
+    <span class="co">// (*) (see exercises below)</span>
+    <span class="co">// let borrowed = &amp;s[0..10];</span>
+    <span class="co">// println!(&quot;borrowed: {}&quot;, borrowed);</span>
+}</code></pre></div>
+<h3 id="core-exercises-2">Core Exercises</h3>
+<h4 id="exercise-6.1">Exercise 6.1</h4>
+<p>What is being printed out at the end of <code>fn no_longer_main</code>?</p>
+<p>Hint: Running the program is a reasonable way to resolve this question!</p>
+<h4 id="exercise-6.2">Exercise 6.2</h4>
+<p>Uncomment the lines beneath the one labelled &quot;(*)&quot; above, starting with <code>let borrowed = ...;</code></p>
+<p>Re-run the test suite. Can you explain what you see?</p>
+<h4 id="exercise-6.3">Exercise 6.3</h4>
+<p>Write a function</p>
+<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="kw">fn</span> listing(input: &amp;[&amp;<span class="dt">str</span>]) -&gt; <span class="dt">String</span></code></pre></div>
+<p>that makes a comma-delimited list of all the input strings.</p>
+<p>Examples:</p>
+<ul>
+<li><p>[&quot;apple&quot;, &quot;pear&quot;, &quot;banana&quot;] goes to &quot;apple, pear, banana&quot;</p></li>
+<li><p>An emply slice goes to &quot;&quot;.</p></li>
 </ul>
 </body>
 </html>
