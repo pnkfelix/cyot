@@ -17,3 +17,4 @@
 .reveal code { font-family: Menlo,monospace; font-size: 100%; line-height: initial; }
 /* .sourceCode .rust { background: #3F3F3F; display: block; } */
 
+.left_align > div { text-align: left; }
