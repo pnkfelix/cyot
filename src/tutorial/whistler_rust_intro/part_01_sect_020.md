@@ -50,15 +50,11 @@ Rust uses analogous model for borrows during compilation
 
   * Immutable borrows: `&T`{.rust}
 
-    * <section class="fragment">
-      "Read-only." Freely aliasable; copyable
-      </section>
+    * "Read-only." Freely aliasable; copyable
 
   * Mutable borrows: `&mut T`{.rust}
 
-    * <section class="fragment">
-      Read/Write. Exclusive access; non-copy
-      </section>
+    * Read/Write. Exclusive access; non-copy
 
 ## Immutable borrows
 
