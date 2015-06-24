@@ -10,26 +10,34 @@
   * Provide seeds of knowledge
     * One can only cultivate so much during a three hour window
 
+## These slides
+
+http://bit.ly/1N93I0P
+
+~
+
+http://pnkfelix.github.io/cyot/tutorial/slides/whistler_rust_intro.html
+
 ## Goals for Rust
 
   * Safe. Concurrent. Fast.
 
   * Specifics
+    * Abstraction without overhead
     * Memory safety without garbage collection
     * Concurrency without data races
-    * Abstraction without overhead
 
   * Generalization: HACK WITHOUT FEAR!
 
-## Let us see some code
+## A taste
 
   * These are *"amuse bouches"*
     * not the main course
     * (not even an appetizer)
 
-  * Do not worry if it goes too fast
+  * We'll pop through three, then dive into the main
 
-## High-level, but fast
+## Abstraction without overhead { data-transition="fade-out" }
 
 The below [loop demo] compiles down to tight code:
 
