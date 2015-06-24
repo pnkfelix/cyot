@@ -77,7 +77,7 @@ mod pandoc {
             try!(run_pandoc(PandocTarget::Slides, name));
         }
 
-        let exercises_sources = ["ex_part_2", "ex_part_3"];
+        let exercises_sources = ["ex_part_1", "ex_part_2", "ex_part_3"];
         for name in &exercises_sources {
             try!(run_pandoc(PandocTarget::Exercises, name));
         }
