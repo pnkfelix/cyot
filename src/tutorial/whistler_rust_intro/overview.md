@@ -1,6 +1,6 @@
 % Rust Intro
 % Felix and the Rust Team
-% 25 June 2015; http://bit.ly/1N93I0P
+% 25 June 2015; [http://bit.ly/1N93I0P]
 
 # Rust: Why? (How?)
 
@@ -12,11 +12,14 @@
 
 ## These slides
 
-http://bit.ly/1N93I0P
+[http://bit.ly/1N93I0P]
 
 ~
 
-http://pnkfelix.github.io/cyot/tutorial/slides/whistler_rust_intro.html
+[http://pnkfelix.github.io/cyot/tutorial/slides/whistler_rust_intro.html]
+
+[http://bit.ly/1N93I0P]: http://bit.ly/1N93I0P
+[http://pnkfelix.github.io/cyot/tutorial/slides/whistler_rust_intro.html]: http://pnkfelix.github.io/cyot/tutorial/slides/whistler_rust_intro.html
 
 ## Goals for Rust
 
@@ -103,7 +106,8 @@ Example: catches iterator invalidation bugs
 fn this_wont_compile(v: &mut Vec<i32>) -> i32 {
     let mut sum = 0;
     for &i in v.iter() {
-        if i > 0 { v.push(0); } sum += i;
+        sum += i;
+        if i > 0 { v.push(0); }
         //         ~~~~~~~~~ invalid! (might realloc
         //                   the backing storage for `v`)
     }
@@ -114,7 +118,7 @@ fn this_wont_compile(v: &mut Vec<i32>) -> i32 {
 ``` {.fragment}
 error: cannot borrow `*v` as mutable because it is also borrowed
        as immutable
-        if i > 0 { v.push(0); } sum += i;
+        if i > 0 { v.push(0); }
                    ^
 note: previous borrow of `*v` occurs here; the immutable borrow
       prevents subsequent moves or mutable borrows of `*v` until
