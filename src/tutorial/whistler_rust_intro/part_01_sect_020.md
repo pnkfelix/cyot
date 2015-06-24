@@ -1,3 +1,67 @@
+# Borrowing
+
+## Moves insufficient on their own
+
+``` { .rust .compile_error }
+#[test]
+fn moves_insufficient() {
+    let vec = expensive_vector_computation();
+
+    let result1 = some_vec_calculation(vec); // <-- `vec` moved here
+
+    let result2 = other_calculation(vec); // oops
+
+    combine(result1, result2);
+
+}
+```
+
+## Wanted: ability for subroutines to access owned data without consuming it
+
+## Thus, "borrowing"
+
+``` { .rust }
+#[test]
+fn moves_insufficient() {
+    let vec = expensive_vector_computation();
+
+    let result1 = some_vec_calculation(&vec); // <-- lend out `vec`
+
+    let result2 = other_calculation(&vec); // <-- lend again, no prob
+
+    combine(result1, result2);
+
+} // (`vec` is destroyed/freed here)
+```
+
+## How to enforce safety in presence of aliasing?
+
+## Simple metaphor: RW lock
+
+  * Read-only operations do not require exclusive access
+
+  * Exclusive access requires there are no other readers
+
+Rust uses analogous model for borrows during compilation
+
+## Borrowing: Basic Mental Model
+
+  * Base types `T`
+
+  * Immutable borrows `&T`
+
+    * <section class="fragment">
+      "Read-only." Freely aliasable; copyable
+      </section>
+
+  * Mutable borrows `&mut T`{.rust}
+
+    * <section class="fragment">
+      Read/Write. Exclusive access; non-copy
+      </section>
+
+## Immutable borrows
+
 ## Borrowing (immutably) { data-transition="fade-out" }
 
 ```rust
