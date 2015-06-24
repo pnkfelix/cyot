@@ -1,74 +1,5 @@
 # Part 5: Systems Development
 
-## IO in Rust
-
-Many input/output (IO) routines can encounter errors
-
-<!--  (`panic!` from std lib not suitable for external errors) -->
-
-1.0 philosophy: `Result<T, Error>`; callers handle
-
-```
-impl File { fn open<P:AsRef<Path>>(path: P) -> io::Result<File> }
-impl<B: BufRead> Iterator for Lines<B> {       ~~~~~~~~~~
-    type Item = io::Result<String>
-}               ~~~~~~~~~~
-```
-
-```rust
-#[test]
-fn demo_io() {
-    use std::fs::File;
-    use std::io::{self, BufReader, BufRead};
-    fn do_io() -> Result<(), io::Error> {
-        let f = try!(File::open("/etc/ssh_config"));
-        let buffered = BufReader::new(f);
-        for l in buffered.lines().take(10) {
-            println!("line: {}", try!(l));
-        }
-        Ok(()) // (need to remember the result!)
-    }
-    do_io().unwrap()
-}
-```
-
-<!--
-``` {.rust .heads_up .fragment }
-try!(EXPR) rewrites to:
-(match EXPR { Result::Ok(val) => val,
-    Result::Err(err) => { return Result::Err(From::from(err)) } })
-```
--->
-
-<!--
-``` {.rust .fragment}
-macro_rules! try {
-    ($expr:expr) => (match $expr {
-        $crate::result::Result::Ok(val) => val,
-        $crate::result::Result::Err(err) => {
-            return $crate::result::Result::Err($crate::convert::From::from(err))
-        }
-    })
-}
-```
--->
-
-<!--
-FIXME: This slide could perhaps be at end of part 3.
-(and presumably we could then move the Closures material here;
-it just needs to precede discussion of thread APIs.)
--->
-
-<!--
-
-Anyway, the reason this slide was over here was that it needs to
-precede our discussion of channels since those follow the I/O api
-patterns of using `Result` and `try!`.
-
-Pretty soon I'll draw up that dependency graph, using these slides as
-a starting point.  :)
-
--->
 
 ## Concurrency
 
@@ -275,6 +206,80 @@ bench_lil_seq ... bench:      15,432 ns/iter (+/- 1,961)
 <!-- FIXME: elaborate, add e.g. counter-examples
 Or maybe just drop this slide entirely.
 -->
+
+## Last few things
+
+## IO in Rust
+
+Many input/output (IO) routines can encounter errors
+
+<!--  (`panic!` from std lib not suitable for external errors) -->
+
+1.0 philosophy: `Result<T, Error>`; callers handle
+
+```
+impl File { fn open<P:AsRef<Path>>(path: P) -> io::Result<File> }
+impl<B: BufRead> Iterator for Lines<B> {       ~~~~~~~~~~
+    type Item = io::Result<String>
+}               ~~~~~~~~~~
+```
+
+```rust
+#[test]
+fn demo_io() {
+    use std::fs::File;
+    use std::io::{self, BufReader, BufRead};
+    fn do_io() -> Result<(), io::Error> {
+        let f = try!(File::open("/etc/ssh_config"));
+        let buffered = BufReader::new(f);
+        for l in buffered.lines().take(10) {
+            println!("line: {}", try!(l));
+        }
+        Ok(()) // (need to remember the result!)
+    }
+    do_io().unwrap()
+}
+```
+
+<!--
+``` {.rust .heads_up .fragment }
+try!(EXPR) rewrites to:
+(match EXPR { Result::Ok(val) => val,
+    Result::Err(err) => { return Result::Err(From::from(err)) } })
+```
+-->
+
+<!--
+``` {.rust .fragment}
+macro_rules! try {
+    ($expr:expr) => (match $expr {
+        $crate::result::Result::Ok(val) => val,
+        $crate::result::Result::Err(err) => {
+            return $crate::result::Result::Err($crate::convert::From::from(err))
+        }
+    })
+}
+```
+-->
+
+<!--
+FIXME: This slide could perhaps be at end of part 3.
+(and presumably we could then move the Closures material here;
+it just needs to precede discussion of thread APIs.)
+-->
+
+<!--
+
+Anyway, the reason this slide was in here was that it "needs" to
+precede our discussion of channels since those follow the I/O api
+patterns of using `Result` and `try!`. Except I stopped using `try!`.
+So I moved it, and maybe could drop it.
+
+Pretty soon I'll draw up that dependency graph, using these slides as
+a starting point.  :)
+
+-->
+
 
 ## `unsafe`{.rust} code
 
