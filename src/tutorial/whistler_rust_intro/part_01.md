@@ -28,8 +28,6 @@
 * More Fundamentals: Data; More on Borrowing; Traits
 * Systems Development: Concurrency and I/O; FFI
 
-## Lets dive in
-
 <!--
 ## Test slide
 

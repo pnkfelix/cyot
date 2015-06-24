@@ -1,4 +1,4 @@
-## Hello World
+## Lets dive in
 
 ```rust
 pub fn main() {
