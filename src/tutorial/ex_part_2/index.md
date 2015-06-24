@@ -1,11 +1,319 @@
-  * Section Cargo: tools + modules TODO
-  * Section 4 "Vectors/Slices"    [playpen][section040_playpen], [gist][section040_gist], [github][section040_github]
-  * Section 5 "for iter; strings" [playpen][section050_playpen], [gist][section050_gist], [github][section050_github]
+  * [Section 4: Rust tooling](#section-4-rust-tooling)
+    <!-- TODO: add exercises testing understanding of Rust mod system. -->
+  * [Section 5 Vectors and slices](#section-5-vectors-and-slices)
+  * [Section 6 for loops; strings](#section-6-for-loops-strings)
 
-[section040_playpen]: https://play.rust-lang.org/?gist=aca0d887a7e877b7aff4
-[section040_gist]:    https://gist.github.com/pnkfelix/aca0d887a7e877b7aff4
-[section050_playpen]: https://play.rust-lang.org/?gist=e0916c0a8abda3331293
-[section050_gist]:    https://gist.github.com/pnkfelix/e0916c0a8abda3331293
+## Section 4: Rust tooling
 
-[section040_github]:  https://github.com/pnkfelix/tango-demo/blob/tutorial/src/tutorial/section040.rs
-[section050_github]:  https://github.com/pnkfelix/tango-demo/blob/tutorial/src/tutorial/section050.rs
+This section's exercises are meant to be run on your local machine.
+Make sure you have successfully installed Rust and Cargo on your local
+machine; ask a helper for assistance if necessary!
+
+### Core Exercises
+
+#### Exercise 1: Hello World, locally
+
+Compile and run Hello World locally via `rustc`
+
+`hello.rs`{ .filename }
+``` {.rust}
+pub fn main() { println!("Hello World"); }
+```
+
+#### Exercise 2: Timing a Rust program
+
+Put the following code into a file named `count.rs`.
+
+`count.rs`{ .filename }
+```rust
+fn count_to(p: &mut u64, mask: u64, max: u64) {
+    let mut i = *p;
+    while i < max {
+        if i & mask != 0 {
+            *p += 1;
+        }
+        i += 1;
+    }
+}
+
+fn main() {
+    let mut x = 0;
+    count_to(&mut x, !0, 1 << 25);
+    println!("x: {}", x);
+}
+```
+
+Compile the program with `rustc` with no other flags, and then time how long it
+takes to run. For example, on Unix systems:
+
+```
+$ rustc count.rs
+$ time ./count
+```
+
+Now compile the program with optimizations turned on (the `-O` flag), and compare how the timing
+results turn out:
+
+```
+$ rustc -O count.rs
+$ time ./count
+```
+
+How much of difference does this make on your platform?
+
+You can investigate differences in the generated code via command-line options:
+
+  * `rustc --emit=asm` will produce assembly for your target platform
+  * `rustc --emit=llvm-ir` will produce LLVM intermediate representation 
+
+(Also, you may have noticed that the program is quite a bit more complicated
+than something that just counts to `max`. Feel free to try replacing the
+`i & mask != 0` condition with `true` and seeing how the results change.)
+
+
+#### Exercise 3: Hello Cargo
+
+Make a new cargo library and run its unit tests:
+
+```
+$ cargo new my_new_library
+$ cd my_new_library
+$ cargo build
+...
+$ cargo test
+...
+```
+
+#### Exercise 4: crates.io
+
+Revise your new cargo library to print out a randomly generated number.
+
+To do this, you should not write your own random number generator;
+instead, you should grab one off [crates.io].
+
+Do a search there for one, and then add the appropriate line to a
+`[dependencies]` section in `my_new_library/Cargo.toml`.
+
+[crates.io]: https://crates.io/
+
+----
+
+## Section 5: Vectors and Slices
+
+This section asks you to write various functions.
+
+To write and test your code, you can either:
+
+  * Put the code into a cargo library and run `cargo test`,
+
+  * Put the code into a `.rs` file, compile it with `rustc --test`,
+    and run the resulting binary, or,
+
+  * Put the code into a `.rs` file with a `fn main` function and
+    compile + run it the same way you did the earlier "Hello
+    World"-type examples.
+
+(We recommend `cargo`.)
+
+### Core Exercises
+
+#### Exercise 1
+
+Write a function:
+
+``` {.rust}
+fn zeroes(count: usize) -> Vec<usize>
+```
+
+that creates a vector of length `count` that is filled with 0.
+
+#### Exercise 2
+
+Write a function:
+
+``` {.rust}
+fn histogram(input_data: &[usize]) -> Vec<usize>
+```
+
+that reports, at each index `i` of its result vector, the number of
+times that `i` occurs in `input_data`.
+
+So for example, these assertions should hold:
+
+``` {.rust}
+assert_eq!(histogram(&[4, 0, 4, 4]),
+           [1, 0, 0, 0, 3]);
+assert_eq!(histogram(&[4, 0, 4, 4, 5, 0, 9, 9, 9, 9, 9]),
+           [2, 0, 0, 0, 3,
+            1, 0, 0, 0, 5]);
+```
+
+#### Exercise 3
+
+You may have seen an earlier note that it is not idiomatic in Rust to
+take an immutably-borrowed `&Vec<T>` argument; idiomatic Rust instead
+uses borrowed slices `&[T]`.
+
+Do you think this reasoning applies also to `&mut Vec<T>`?  That
+is, for any function that takes `&mut Vec<T>`, could we make a
+replacement function that instead takes `&mut [T]` and everything
+still works out?
+
+If you are not sure of the answer: Go back over the previous
+section with exercises writing functions that took `&mut Vec<i32>`,
+and write those same functions but now taking `&mut [i32]` instead.
+
+----
+
+## Section 6: for loops; strings
+
+To run them, you can either:
+
+  * Put the code into a cargo library and run `cargo test`,
+
+  * Put the code into a `.rs` file, compile it with `rustc --test`,
+    and run the resulting binary, or,
+
+  * Put the code into a `.rs` file, replace `fn no_longer_main` with
+    `fn main` and compile it the same way you did the earlier "Hello
+    World"-type examples.
+
+The exercises in this section concern the following code,
+and uses unit tests alone for its illustrations.
+
+`section_6.rs`{ .filename }
+```rust
+#[test]
+pub fn demo_iterators() {
+    // We already saw iterating over numeric ranges:
+    let mut v = Vec::new();
+    let mut zeroes: Vec<i32> = Vec::new();
+    for i in 0..10 {
+        v.push(1000 + i);
+        zeroes.push(0);
+    }
+    println!("v: {:?}", v);
+ 
+    // But for-loops in Rust are much more general.
+ 
+    // Here is a for-loop that *consumes* its input: the vector here
+    // is constructed once and then broken down to feed the iteration.
+    // Each `i` is a `usize` value extracted from the vector.
+    for i in vec![0, 1, 2, 3] {
+        assert_eq!(v[i], 1000 + i);
+    }
+ 
+    // Here is a for-loop that *borrows* its input: the vector here
+    // is traversed but not consumed. Each `elem` is a borrowed-value
+    // from within the vector itself; so for our `zeroes: Vec<i32>`,
+    // each elem is a `&i32`, *not* an `i32`.
+    for elem in &zeroes {
+        // assert_eq(elem, 0);
+        //           ~~~~~~~
+        //              |
+        //    This does not work; you cannot compare a `&i32` with an `i32` via
+        //    the standard `==` operator.
+ 
+        assert_eq!(elem, &0);
+        //         ~~~~~~~~
+        //            |
+        //    Here is one work-around for the problem above:
+        //    you *can* compare two `&i32` values via `==`.
+ 
+        assert_eq!(*elem, 0);
+        //         ~~~~~
+        //           |
+        //    Another fix. (Our *first* time using "deref" operator
+        //    explicitly; earlier sections have been dereferencing all
+        //    over the place, but it has been under the hood.)
+    }
+}
+ 
+#[test]
+pub fn no_longer_main() {
+ 
+    // Analogous to the `Vec<i32>` and `&[i32]` for integer array
+    // manipulation, Rust has two datatypes used in its standard
+    // library for Unicode string manipulation.
+    //
+    // - `String` is a mutable string buffer; it can grow and shrink,
+    //   much like `Vec<i32>`
+    //
+    // - `&str` is a borrowed string slice. It is immutable and fixed in its length,
+    //   much like `&[i32]`.
+    //
+    // Relevant API docs:
+    // - https://doc.rust-lang.org/stable/std/string/struct.String.html
+    // - https://doc.rust-lang.org/stable/std/str/index.html
+ 
+    let mut s = String::new();
+    s.push_str("Hello");
+    s.push_str(" ");
+    s.push_str("World!");
+    println!("{}", s);
+    assert_eq!(s.len(), 12); // (length in bytes)
+    assert_eq!(s, "Hello World!");
+ 
+    let mut the_bytes = Vec::new();
+    let mut the_chars = Vec::new();
+ 
+    // We can also do for-loops over strings, ...
+    //
+    // ... but since one can view them as sequences of bytes, or
+    // as sequences of characters (Unicode codepoints) ...
+    //
+    // ... we need to say what we are iterating over
+    for b in s.bytes() {
+        the_bytes.push(b);
+    }
+    for c in s.chars() {
+        the_chars.push(c);
+    }
+ 
+    s.clear();
+    assert_eq!(s, "");
+    funny_string(&mut s);
+    println!("\"{}\", {:?}, {}", s, s, s.len());
+}
+ 
+fn funny_string(s: &mut String) {
+    let hw = "Hello World!";
+    s.push_str(&hw[0..9]); // `string[range]` "works" just like vectors and slices.
+ 
+    let funny_char: char = '\u{1F525}';
+    s.push(funny_char);
+ 
+    // (*) (see exercises below)
+    // let borrowed = &s[0..10];
+    // println!("borrowed: {}", borrowed);
+}
+```
+
+### Core Exercises
+
+#### Exercise 1
+
+What is being printed out at the end of `fn no_longer_main`?
+
+Hint: Running the program is a reasonable way to resolve this question!
+
+#### Exercise 2
+
+Uncomment the lines beneath the one labelled "(*)" above, starting
+with `let borrowed = ...;`
+
+Re-run the test suite. Can you explain what you see?
+ 
+#### Exercise 3
+
+Write a function
+
+``` {.rust}
+fn listing(input: &[&str]) -> String
+```
+
+that makes a comma-delimited list of all the input strings.
+
+Examples:
+["apple", "pear", "banana"] goes to "apple, pear, banana"
+An emply slice goes to "".
