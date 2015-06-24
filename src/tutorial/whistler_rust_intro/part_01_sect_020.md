@@ -85,18 +85,26 @@ fn moves_insufficient() {
 
 Rust uses analogous model (at compile-time) for borrows
 
-## Borrowing: Basic Mental Model
+## Borrowing: Basic Mental Model { .left_align }
 
->  * Base types `T`{.rust}
->     * e.g. `char`{.rust}, `Vec<i32>`{.rust}
->     * If type copyable, then you can always copy it
->     * You can *move* it only if no borrow active
->  * Immutable borrows: `&T`{.rust}
->     * "Read-only." Freely aliasable; copyable
->     * (i.e. "many readers")
->  * Mutable borrows: `&mut T`{.rust}
->     * Read/Write. Exclusive access; non-copy
->     * (i.e. "at most one writer")
+. . .
+
+   * Base types `T`{.rust}
+      * e.g. `char`{.rust}, `Vec<i32>`{.rust}
+      * If type copyable, then you can always copy it
+      * You can *move* it only if no borrow active
+
+. . .
+
+   * Immutable borrows: `&T`{.rust}
+      * "Read-only." Freely aliasable; copyable
+      * (i.e. "many readers")
+
+. . .
+
+   * Mutable borrows: `&mut T`{.rust}
+      * Read/Write. Exclusive access; non-copy
+      * (i.e. "at most one writer")
 
 <!--
   * (Why the quotes? "[interior mutability]")
