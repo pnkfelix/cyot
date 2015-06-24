@@ -101,8 +101,7 @@ pub fn main() {
 ## No data races 1: "direct" assign { data-transition="fade-out" }
 
 ``` {.rust}
-#[test]
-fn demo_catch_direct() {
+#[test] fn demo_catch_direct() {
     fn fib(x: i64) -> (i64, i64) {
         if x <= 1 { (x,1) } else { (x, fib(x-1).1 + fib(x-2).1) }
     }
@@ -122,13 +121,12 @@ fn demo_catch_direct() {
 }
 ```
 
-#### compiles, but doesn't work (no communication happens; implicit copying) {.fragment }
+#### compiles; does not work (no actual communication; implicit copying) {.fragment }
 
 ## No data races 2: mut-ref  { data-transition="fade-in" }
 
 ``` {.rust .compile_error}
-#[test]
-fn demo_catch_mutref() {
+#[test] fn demo_catch_mutref() {
     fn fib(x: i64) -> (i64, i64) {
         if x <= 1 { (x,1) } else { (x, fib(x-1).1 + fib(x-2).1) }
     }
@@ -153,8 +151,7 @@ fn demo_catch_mutref() {
 ## channels for message passing
 
 ```rust
-#[test]
-fn demo_channel() {
+#[test] fn demo_channel() {
     fn fib(x: i64) -> (i64, i64) {
         if x <= 1 { (x,1) } else { (x, fib(x-1).1 + fib(x-2).1) }
     }
