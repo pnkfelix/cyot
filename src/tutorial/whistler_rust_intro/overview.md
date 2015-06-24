@@ -1,4 +1,4 @@
-% A Rusty Path to Gecko
+% Rust Intro
 % Felix Klock (`pnkfelix`) and the Rust Team
 % Thursday 25 June
 
