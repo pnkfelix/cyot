@@ -179,47 +179,35 @@ note: previous borrow of `*v` occurs here; the immutable borrow
 </section><section id="slick-fearless-concurrency" class="slide level2">
 <h1>Slick, Fearless Concurrency</h1>
 <p>See also <a href="http://blog.rust-lang.org/2015/04/10/Fearless-Concurrency.html">Fearless Concurrency</a> blog post.</p>
+<!--
+```rust
+fn seq_max(partial_data: &[u8]) -> u8 {
+    *partial_data.iter().max().unwrap()
+}
+```
+-->
 <div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="kw">use</span> std::thread;
-<span class="kw">fn</span> par_merge_sort&lt;T: <span class="bu">Ord</span> + <span class="bu">Send</span>&gt;(x: &amp;<span class="kw">mut</span> [T]) {
-    <span class="kw">if</span> x.len() &lt;= <span class="dv">1</span> { <span class="kw">return</span> }
-    <span class="kw">let</span> half = x.len() / <span class="dv">2</span>;
-    <span class="kw">let</span> (l, r) = x.split_at_mut(half);
-    <span class="kw">let</span> g = thread::scoped(|| { par_merge_sort(r);
-                                r });
-    par_merge_sort(l);
-    <span class="kw">let</span> r = g.join();
-    merge(l, r);
+<span class="kw">fn</span> par_max(data: &amp;[<span class="dt">u8</span>]) -&gt; <span class="dt">u8</span> {
+    <span class="kw">if</span> data.len() &lt;= <span class="dv">4</span> { <span class="kw">return</span> seq_max(data); }
+    <span class="kw">let</span> len_4 = data.len() / <span class="dv">4</span>; <span class="co">// DATA = [A .., B .., C .., D..]</span>
+    <span class="kw">let</span> (q1, rest) = data.split_at(len_4);    <span class="co">// (A.. \ B..C..D..)</span>
+    <span class="kw">let</span> (q2, rest) = rest.split_at(len_4);    <span class="co">//  (B.. \ C..D..)</span>
+    <span class="kw">let</span> (q3, q4)   = rest.split_at(len_4);    <span class="co">//   (C.. \ D..)</span>
+    <span class="kw">let</span> t1 = thread::scoped(|| seq_max(q1));  <span class="co">// fork A..</span>
+    <span class="kw">let</span> t2 = thread::scoped(|| seq_max(q2));  <span class="co">// fork B..</span>
+    <span class="kw">let</span> t3 = thread::scoped(|| seq_max(q3));  <span class="co">// fork C..</span>
+    <span class="kw">let</span> v4 = seq_max(q4);                     <span class="co">// compute D..</span>
+    <span class="kw">let</span> (v1, v2, v3) = (t1.join(), t2.join(), t3.join()); <span class="co">// join!</span>
+    <span class="kw">return</span> seq_max(&amp;[v1, v2, v3, v4]);
 }</code></pre></div>
 <p>(caveat: above is using unstable <code>thread::scoped</code> API)</p>
 <!--
 ```rust
-// left[0] <= left[1] <= ... <= left[last] <= right[0] <= ...
-use std::mem;
-#[allow(dead_code)]
-fn merge<T: Ord>(left: &mut [T], right: &mut [T]) {
-
-    let mut i = 0;
-    loop {
-        // println!("i: {} left: {:?} right: {:?}", i, left, right);
-        if i >= left.len() || 0 >= right.len() { break; }
-        if left[i] > right[0] {
-            mem::swap(&mut left[i], &mut right[0]);
-            let mut j = 0;
-            while j+1 < right.len() && right[j] > right[j+1] {
-                let (pre, post) = right.split_at_mut(j+1);
-                mem::swap(&mut pre[j], &mut post[0]);
-                j = j+1;
-            }
-        }
-        i += 1;
-    }
-}
-
 #[test]
 fn hi() {
     let mut v = vec![2, 1, 10, 9, 8, 7, 6, 5, 4, 3];
-    par_merge_sort(&mut v);
-    assert_eq!(v, [1,2,3,4,5,6,7,8,9,10]);
+    let m = par_max(&v);
+    assert_eq!(m, 10);
 }
 ```
 -->
@@ -483,29 +471,39 @@ note: `vec` moved here because it has type
 <li><p>Exclusive access requires there are no other readers</p></li>
 </ul>
 <p>Rust uses analogous model (at compile-time) for borrows</p>
-</section><section id="borrowing-basic-mental-model" class="slide level2">
+</section><section id="borrowing-basic-mental-model" class="slide level2 left_align">
 <h1>Borrowing: Basic Mental Model</h1>
+<div class="fragment">
 <ul>
-<li class="fragment">Base types <code class="sourceCode rust">T</code>
+<li>Base types <code class="sourceCode rust">T</code>
 <ul>
-<li class="fragment">e.g. <code class="sourceCode rust"><span class="dt">char</span></code>, <code class="sourceCode rust"><span class="dt">Vec</span>&lt;<span class="dt">i32</span>&gt;</code></li>
-<li class="fragment">If type copyable, then you can always copy it</li>
-<li class="fragment">You can <em>move</em> it only if no borrow active</li>
+<li>e.g. <code class="sourceCode rust"><span class="dt">char</span></code>, <code class="sourceCode rust"><span class="dt">Vec</span>&lt;<span class="dt">i32</span>&gt;</code></li>
+<li>If type copyable, then you can always copy it</li>
+<li>You can <em>move</em> it only if no borrow active</li>
 </ul></li>
-<li class="fragment">Immutable borrows: <code class="sourceCode rust">&amp;T</code>
+</ul>
+</div>
+<div class="fragment">
 <ul>
-<li class="fragment">&quot;Read-only.&quot; Freely aliasable; copyable</li>
-<li class="fragment">(i.e. &quot;many readers&quot;)</li>
+<li>Immutable borrows: <code class="sourceCode rust">&amp;T</code>
+<ul>
+<li>&quot;Read-only.&quot; Freely aliasable; copyable</li>
+<li>(i.e. &quot;many readers&quot;)</li>
 </ul></li>
-<li class="fragment">Mutable borrows: <code class="sourceCode rust">&amp;<span class="kw">mut</span> T</code>
+</ul>
+</div>
+<div class="fragment">
 <ul>
-<li class="fragment">Read/Write. Exclusive access; non-copy</li>
-<li class="fragment">(i.e. &quot;at most one writer&quot;)</li>
+<li>Mutable borrows: <code class="sourceCode rust">&amp;<span class="kw">mut</span> T</code>
+<ul>
+<li>Read/Write. Exclusive access; non-copy</li>
+<li>(i.e. &quot;at most one writer&quot;)</li>
 </ul></li>
 </ul>
 <!--
   * (Why the quotes? "[interior mutability]")
 -->
+</div>
 </section><section id="immutable-borrows" class="slide level2">
 <h1>Immutable borrows</h1>
 </section><section id="borrowing-immutably" class="slide level2" data-transition="fade-out">
