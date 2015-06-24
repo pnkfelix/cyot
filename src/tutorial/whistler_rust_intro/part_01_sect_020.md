@@ -15,6 +15,22 @@ fn moves_insufficient() {
 
 }
 ```
+<!--
+fn expensive_vector_computation() -> Vec<i32> { vec![] }
+fn some_vec_calculation<T>(t: T) { }
+fn other_calculation<T>(t: T) { }
+fn combine(x: (), y: ()) { }
+-->
+
+``` {.fragment}
+error: use of moved value: `vec` [E0382]
+    let result2 = other_calculation(vec); // oops
+                                    ^~~
+note: `vec` moved here because it has type
+      `collections::vec::Vec<i32>`, which is non-copyable
+    let result1 = some_vec_calculation(vec); // <-- `vec` moved here
+                                       ^~~
+```
 
 ## Want: access to owned data *without* consuming it
 
@@ -34,7 +50,22 @@ fn moves_insufficient() {
 } // (`vec` is destroyed/freed here)
 ```
 
-## How to enforce safety in presence of aliasing?
+``` {.fragment}
+                                    &vec
+                                    ~~~~
+                                      |
+                              a borrow expression
+```
+
+## Big Question
+
+* Bugs are hard to detect, due to *aliasing*
+
+* Borrows *reintroduce* aliasing
+
+### Q: How to ensure safety in presence of aliasing? { .fragment }
+
+### A: Restrict the aliasing { .fragment }
 
 ## Simple metaphor: RW lock
 
@@ -42,7 +73,7 @@ fn moves_insufficient() {
 
   * Exclusive access requires there are no other readers
 
-Rust uses analogous model for borrows during compilation
+Rust uses analogous model (at compile-time) for borrows
 
 ## Borrowing: Basic Mental Model
 
