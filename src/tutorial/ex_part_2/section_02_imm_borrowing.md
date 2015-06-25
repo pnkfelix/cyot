@@ -14,9 +14,18 @@ the following playpen link:
 #### Exercise 2.1
 
 The distinction between a statement versus a true
-expression is sometimes confusing, leading to bugs such as that
-exhibited by the code in [Borrowing Playpen]. Identify and fix the
-bug.
+expression is sometimes confusing.
+In the code in [Borrowing Playpen],
+such confusion leads to the output:
+```
+    sum: got () expect 2450
+```
+rather than the correct:
+```
+    sum: got 2450 expect 2450
+```
+
+Identify and fix the bug.
 
 Note: You will need to complete this exercise to do the others
 in this section.
