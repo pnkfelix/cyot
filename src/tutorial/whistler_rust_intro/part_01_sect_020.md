@@ -230,7 +230,7 @@ fn copying_can_extend_a_borrows_lifetime_1() {
     let v2 = vec![4, 5, 6]; //         |    +
     let r2 = {              //         |    |
         let r1 = &v1;       //  +      |    |
-        //       ~~~        //  |      |    |
+        //       ~~~ <--- A //  |      |    |
         foo(r1);            // 'r1     |    |
         &v2                 //  |     'v1  'v2
     };                      //  +  +   |    |
@@ -243,6 +243,12 @@ fn copying_can_extend_a_borrows_lifetime_1() {
 
 How long should the borrow `&v1` last?
 
+<div class="notes">
+In this case, the borrow marked "A" only needs to last
+long enough for the call to `foo(r1)`; after that point,
+the borrow is never needed.
+</div>
+
 ## Built on lexical scopes, but non-trivial { data-transition="fade-in slide-out" }
 
 ```rust
@@ -253,9 +259,9 @@ fn copying_can_extend_a_borrows_lifetime_2() {
     let v2 = vec![4, 5, 6]; //         |    +
     let r2 = {              //         |    |
         let r1 = &v1;       //  +      |    |
-        //       ~~~        //  |      |    |
+        //       ~~~ <--- A //  |      |    |
         foo(r1);            // 'r1     |    |
-        r1                  //  |     'v1  'v2
+        r1  // <--------- B //  |     'v1  'v2
     };                      //  +  +   |    |
     // (maybe mutate `v1`   //     |   |    |
     // here someday?)       //     |   |    |
@@ -265,6 +271,13 @@ fn copying_can_extend_a_borrows_lifetime_2() {
 ```
 
 How long should the borrow `&v1` last now?
+
+<div class="notes">
+In this case, the borrow marked "A" needs to last longer!
+The value of `r1` is being copied into `r2` on the
+line marked "B", so the borrow marked "A" needs to
+include the scope of both `'r1` and `'r2`.
+</div>
 
 <!--
 
@@ -410,7 +423,7 @@ WHAT
          BUMMER!!!
 ```
 
-## "... i want my imperative algorthms! ..."
+## "... I want my imperative algorthms! ..."
 
 ## `&mut`{.rust} borrows
 
