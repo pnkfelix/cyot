@@ -53,13 +53,14 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 </ul>
 <hr />
 <h2 id="section-2-borrowing-immutably">Section 2: Borrowing (Immutably)</h2>
-<p>All of the &quot;Borrowing (Immutably)&quot; exercises involve manipulating the code at the following playpen link:</p>
+<p>All of the &quot;Borrowing (Immutably)&quot; exercises involve manipulating the code at the following gist. (You may need to cut-and-paste from the gist link into the playpen, due to infrastructural and rate-limit issues.)</p>
 <ul>
-<li><a href="https://play.rust-lang.org/?gist=193a107a5e6702d457db&amp;version=stable"><code>https://play.rust-lang.org/?gist=193a107a5e6702d457db&amp;version=stable</code></a></li>
+<li><p>[<code>https://play.rust-lang.org/?gist=193a107a5e6702d457db&amp;version=stable</code>][Borrowing Playpen]</p></li>
+<li><p>gist source: [https://gist.github.com/pnkfelix/193a107a5e6702d457db][Borrowing Playpen]: https://play.rust-lang.org/?gist=193a107a5e6702d457db&amp;version=stable</p></li>
 </ul>
 <h3 id="core-exercises">Core Exercises</h3>
 <h4 id="exercise-2.1">Exercise 2.1</h4>
-<p>The distinction between a statement versus a true expression is sometimes confusing. In the code in <a href="https://play.rust-lang.org/?gist=193a107a5e6702d457db&amp;version=stable">Borrowing Playpen</a>, such confusion leads to the output:</p>
+<p>The distinction between a statement versus a true expression is sometimes confusing. In the code in [Borrowing Playpen], such confusion leads to the output:</p>
 <pre><code>    sum: got () expect 2450</code></pre>
 <p>rather than the correct:</p>
 <pre><code>    sum: got 2450 expect 2450</code></pre>
@@ -69,16 +70,16 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <p>Hint 2. It may be useful to add type annotations to isolate where &quot;the bad value&quot; is being generated.</p>
 <p>Hint 3. Ask your neighbor, or one of the helpers!</p>
 <h4 id="exercise-2.2">Exercise 2.2</h4>
-<p>Rename the <code>fn main()</code> in the <a href="https://play.rust-lang.org/?gist=193a107a5e6702d457db&amp;version=stable">Borrowing Playpen</a> to <code>fn any_name_but_main()</code>, and hit the Run button again.</p>
+<p>Rename the <code>fn main()</code> in the [Borrowing Playpen] to <code>fn any_name_but_main()</code>, and hit the Run button again.</p>
 <p>What changed?</p>
 <h4 id="exercise-2.3a">Exercise 2.3a</h4>
-<p>Is it perhaps silly to write <code>&amp;vec1</code> on the line marked <code>(**)</code> in <a href="https://play.rust-lang.org/?gist=193a107a5e6702d457db&amp;version=stable">Borrowing Playpen</a> ?</p>
+<p>Is it perhaps silly to write <code>&amp;vec1</code> on the line marked <code>(**)</code> in [Borrowing Playpen] ?</p>
 <p>After all, <code>let borrowed: &amp;Vec&lt;i32&gt; = &amp;vec1;</code> already binds the result of that expression, right?</p>
 <p>What will happen if you <em>just</em> replace the <code>&amp;vec1</code> below the (**) with <code>borrowed</code>, as in:</p>
 <div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="kw">let</span> also_a_sum = sum(borrowed);</code></pre></div>
 <p>Try it and see. What is the problem with this change alone?</p>
 <h4 id="exercise-2.3b">Exercise 2.3b</h4>
-<p>Re-attempt to make the change to <code>(**)</code> in <a href="https://play.rust-lang.org/?gist=193a107a5e6702d457db&amp;version=stable">Borrowing Playpen</a> to read:</p>
+<p>Re-attempt to make the change to <code>(**)</code> in [Borrowing Playpen] to read:</p>
 <div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="kw">let</span> also_a_sum = sum(borrowed);</code></pre></div>
 <p>But this time, address the compiler's complaints in some manner by making further changes elsewhere.</p>
 <h3 id="review-exercise">Review Exercise</h3>
@@ -98,14 +99,15 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <h2 id="section-3-mutably-borrowing">Section 3: Mutably Borrowing</h2>
 <p>All of the &quot;Mutably Borrowing&quot; exercises involve manipulating the code at the following playpen link:</p>
 <ul>
-<li><a href="https://play.rust-lang.org/?gist=a2b72a81c8e366e117e0&amp;version=stable"><code>https://play.rust-lang.org/?gist=a2b72a81c8e366e117e0&amp;version=stable</code></a></li>
+<li><p><a href="http://is.gd/lVzEUs"><code>http://is.gd/lVzEUs</code></a></p></li>
+<li><p>gist source: <a href="https://gist.github.com/pnkfelix/a2b72a81c8e366e117e0" class="uri">https://gist.github.com/pnkfelix/a2b72a81c8e366e117e0</a></p></li>
 </ul>
 <h3 id="core-exercises-1">Core Exercises</h3>
 <h4 id="exercise-3.1">Exercise 3.1</h4>
-<p>Continuing the theme from a previous section: try lifting the <code>let borrowed = &amp;vec1;</code> out of its expression block in <a href="https://play.rust-lang.org/?gist=a2b72a81c8e366e117e0&amp;version=stable">Mutably Borrowing Playpen</a>, so that the <code>let borrowed</code> binding is on the same level as the other statements in <code>fn main</code>.</p>
+<p>Continuing the theme from a previous section: try lifting the <code>let borrowed = &amp;vec1;</code> out of its expression block in <a href="http://is.gd/lVzEUs">Mutably Borrowing Playpen</a>, so that the <code>let borrowed</code> binding is on the same level as the other statements in <code>fn main</code>.</p>
 <p>What goes wrong?</p>
 <h4 id="exercise-3.2">Exercise 3.2</h4>
-<p>Can we simplify the code by replacing the four lines below <code>(*)</code> in <a href="https://play.rust-lang.org/?gist=a2b72a81c8e366e117e0&amp;version=stable">Mutably Borrowing Playpen</a> with the single:</p>
+<p>Can we simplify the code by replacing the four lines below <code>(*)</code> in <a href="http://is.gd/lVzEUs">Mutably Borrowing Playpen</a> with the single:</p>
 <div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="kw">let</span> the_sum = sum(&amp;vec1);</code></pre></div>
 <p>Why does this work? How does this differ from exercise 1?</p>
 <h4 id="exercise-3.3">Exercise 3.3</h4>
@@ -113,7 +115,7 @@ code > span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Inf
 <div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="kw">fn</span> zero_fill(v: &amp;<span class="kw">mut</span> <span class="dt">Vec</span>&lt;<span class="dt">usize</span>&gt;, count: <span class="dt">usize</span>)</code></pre></div>
 <p>that pushes <code>count</code> zeroes onto the end of <code>v</code>.</p>
 <h4 id="exercise-3.4">Exercise 3.4</h4>
-<p>Is the <code>usize</code> annotation on the line labelled <code>(***)</code> in <a href="https://play.rust-lang.org/?gist=a2b72a81c8e366e117e0&amp;version=stable">Mutably Borrowing Playpen</a> necessary? Try removing it and see; the code should still compile.</p>
+<p>Is the <code>usize</code> annotation on the line labelled <code>(***)</code> in <a href="http://is.gd/lVzEUs">Mutably Borrowing Playpen</a> necessary? Try removing it and see; the code should still compile.</p>
 <p>So, what type is being assigned to <code>i</code> when the annotation is missing?</p>
 <p>Can you do an experiment ot prove that <code>i</code> is <em>not</em> being assigned the type <code>i32</code> when the annotation is missing?</p>
 <p>What types do you think are being assigned to <code>c</code> and <code>sum</code>?</p>
