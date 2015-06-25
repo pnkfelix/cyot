@@ -249,6 +249,12 @@ with `let borrowed = ...;`
 
 Re-run the test suite. Can you explain what you see?
 
+Hint: setting the environment variable `RUST_BACKTRACE` to 1
+will make Rust programs print out a stack trace when they panic.
+
+So for example, `RUST_BACKTRACE=1 cargo test` may provide
+further information about what is happening.
+
 #### Exercise 6.3
 
 Write a function
