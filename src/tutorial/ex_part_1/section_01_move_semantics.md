@@ -19,8 +19,8 @@ the [Move Semantics Playpen]. Why does the code stop compiling?
 
 #### Exercise 1.2
 
-Try to change the first `println!` call in the
-[Move Semantics Playpen] so that it reports the length of `vec0` after
+Try to change the first `println!` call, on the line marked `(**)` in the
+[Move Semantics Playpen], so that it reports the length of `vec0` after
 `fill_vec` returns.
 
 (One quick way to do this is to just replace
@@ -35,7 +35,7 @@ the other core exercises, if you like.)
 
 #### Exercise 1.3
 
-On the line marked `(**)` in the [Move Semantics Playpen], the whole
+On the line marked `(***)` in the [Move Semantics Playpen], the whole
 line (that is, the rebinding of `vec` to `mut vec`) can be removed if
 we just add the keyword `mut` to another spot in `fn fill_vec`. Figure
 out how to remove the line marked `(**)`.
