@@ -588,8 +588,7 @@ fn demo_exclusive_access_versus_ownership() {
 error: use of moved value: `v1` [E0382]
     println!("v1: {:?} v2: {:?}", v1, v2);
                                   ^~
-note: `v1` moved here because it has type
-      `collections::vec::Vec<i32>`, which is non-copyable
+note: `v1` moved here
     take_by_value(v1);
                   ^~
 ```
