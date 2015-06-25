@@ -1,0 +1,20 @@
+.reveal .filename { font-size: 50%; line-height: 0; float: right }
+
+.reveal h1 { font-family: sans-serif; }
+.reveal .level2 h1 { font-size: 1.5em; }
+
+.reveal .heads_up { position: absolute; right: 0; top: 20ex; z-index: 10; }
+
+
+.reveal pre code { color: #000000; background-color: white; } 
+
+/* .sourceCode .rust { font-size: 0.90em; } */
+/* .sourceCode .rust { font-size: 90%; } */
+/* .sourceCode .rust { font-size: 0.90em; } */
+/* .sourceCode .rust { font-size: smaller; line-height: initial; } */
+/* .sourceCode .rust { font-size: 100%; line-height: initial; } */
+/* .sourceCode .rust { line-height: initial; } */
+.reveal code { font-family: Menlo,monospace; font-size: 100%; line-height: initial; }
+/* .sourceCode .rust { background: #3F3F3F; display: block; } */
+
+.left_align > div { text-align: left; }

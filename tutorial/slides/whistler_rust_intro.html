@@ -588,7 +588,7 @@ note: borrow of `v1` occurs here
     <span class="kw">let</span> v2 = <span class="pp">vec!</span>[<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>]; <span class="co">//         |    +</span>
     <span class="kw">let</span> r2 = {              <span class="co">//         |    |</span>
         <span class="kw">let</span> r1 = &amp;v1;       <span class="co">//  +      |    |</span>
-        <span class="co">//       ~~~        //  |      |    |</span>
+        <span class="co">//       ~~~ &lt;--- A //  |      |    |</span>
         foo(r1);            <span class="co">// &#39;r1     |    |</span>
         &amp;v2                 <span class="co">//  |     &#39;v1  &#39;v2</span>
     };                      <span class="co">//  +  +   |    |</span>
@@ -598,6 +598,9 @@ note: borrow of `v1` occurs here
     foo(r2);                <span class="co">//     |   |    |</span>
 }                           <span class="co">//     +   +    +</span></code></pre></div>
 <p>How long should the borrow <code>&amp;v1</code> last?</p>
+<aside class="notes">
+<p>In this case, the borrow marked &quot;A&quot; only needs to last long enough for the call to <code>foo(r1)</code>; after that point, the borrow is never needed.</p>
+</aside>
 </section><section id="built-on-lexical-scopes-but-non-trivial-1" class="slide level2" data-transition="fade-in slide-out">
 <h1>Built on lexical scopes, but non-trivial</h1>
 <div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="at">#[</span>test<span class="at">]</span>
@@ -607,9 +610,9 @@ note: borrow of `v1` occurs here
     <span class="kw">let</span> v2 = <span class="pp">vec!</span>[<span class="dv">4</span>, <span class="dv">5</span>, <span class="dv">6</span>]; <span class="co">//         |    +</span>
     <span class="kw">let</span> r2 = {              <span class="co">//         |    |</span>
         <span class="kw">let</span> r1 = &amp;v1;       <span class="co">//  +      |    |</span>
-        <span class="co">//       ~~~        //  |      |    |</span>
+        <span class="co">//       ~~~ &lt;--- A //  |      |    |</span>
         foo(r1);            <span class="co">// &#39;r1     |    |</span>
-        r1                  <span class="co">//  |     &#39;v1  &#39;v2</span>
+        r1  <span class="co">// &lt;--------- B //  |     &#39;v1  &#39;v2</span>
     };                      <span class="co">//  +  +   |    |</span>
     <span class="co">// (maybe mutate `v1`   //     |   |    |</span>
     <span class="co">// here someday?)       //     |   |    |</span>
@@ -617,6 +620,9 @@ note: borrow of `v1` occurs here
     foo(r2);                <span class="co">//     |   |    |</span>
 }                           <span class="co">//     +   +    +</span></code></pre></div>
 <p>How long should the borrow <code>&amp;v1</code> last now?</p>
+<aside class="notes">
+<p>In this case, the borrow marked &quot;A&quot; needs to last longer! The value of <code>r1</code> is being copied into <code>r2</code> on the line marked &quot;B&quot;, so the borrow marked &quot;A&quot; needs to include the scope of both <code>'r1</code> and <code>'r2</code>.</p>
+</aside>
 <!--
 
 ## Lifetime Nesting  { data-transition="slide" }
@@ -748,7 +754,7 @@ fn foo<'a>(v: &'a Vec<i32>) { println!("v[1]: {}", v[1]); }
       A
          BUMMER!!!</code></pre>
 </section><section id="i-want-my-imperative-algorthms-..." class="slide level2">
-<h1>&quot;... i want my imperative algorthms! ...&quot;</h1>
+<h1>&quot;... I want my imperative algorthms! ...&quot;</h1>
 </section><section id="mut-borrows" class="slide level2">
 <h1><code class="sourceCode rust">&amp;<span class="kw">mut</span></code> borrows</h1>
 <div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="at">#[</span>test<span class="at">]</span>
@@ -861,8 +867,7 @@ note: `b` moved here because it has type
 <pre class="fragment compile_error"><code>error: use of moved value: `v1` [E0382]
     println!(&quot;v1: {:?} v2: {:?}&quot;, v1, v2);
                                   ^~
-note: `v1` moved here because it has type
-      `collections::vec::Vec&lt;i32&gt;`, which is non-copyable
+note: `v1` moved here
     take_by_value(v1);
                   ^~</code></pre>
 </div>
@@ -1051,9 +1056,15 @@ Hello, world!
 </ul>
 <div class="fragment">
 <ul>
-<li><p>Why confusing, sometimes even to Rust experts??</p>
-<div class="sourceCode"><pre class="sourceCode rust fragment"><code class="sourceCode rust"><span class="kw">use</span> foo; <span class="co">// (this is legal, depending on what `foo` is.)</span></code></pre></div></li>
+<li>Beginners often erroneosuly write <code>mod foo;</code> when they meant <code>use foo;</code></li>
 </ul>
+<!--
+  * Why confusing, sometimes even to Rust experts??
+
+    ``` {.rust .fragment}
+    use foo; // (this is legal, depending on what `foo` is.)
+    ```
+-->
 <!--
 ```rust
 mod c {
@@ -1094,8 +1105,9 @@ mod c {
 <pre class="shell-session"><code>error: function `add3priv` is private
     use super::d::add3priv;
         ^~~~~~~~~~~~~~~~~~</code></pre>
-</section><section id="crates.io" class="slide level2">
+</section><section id="crates.io" class="slide level2 left_align">
 <h1>crates.io</h1>
+<div class="fragment">
 <ul>
 <li><p>Cargo's main feature: dependency management</p></li>
 <li><p>Before hacking something up, check <a href="http://crates.io/">crates.io</a> first</p></li>
@@ -1104,11 +1116,12 @@ mod c {
 <p><code class="filename">Cargo.toml</code></p>
 <div class="sourceCode"><pre class="sourceCode ini"><code class="sourceCode ini"><span class="kw">[dependencies]</span>
 <span class="dt">quickcheck </span><span class="ot">=</span><span class="st"> &quot;</span><span class="fl">0.2.20</span><span class="st">&quot;</span></code></pre></div>
-<p>And that's it!</p>
-<blockquote>
-<p><code class="sourceCode rust"><span class="kw">extern</span> <span class="kw">crate</span> quickcheck;</code></p>
-</blockquote>
-<p>now works</p>
+</div>
+<div class="fragment">
+<p>Then add this:</p>
+<p><code class="filename">lib.rs</code></p>
+<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="kw">extern</span> <span class="kw">crate</span> quickcheck;</code></pre></div>
+<p>to your <code>lib.rs</code>, and you have access to quickcheck!</p>
 <!--
 ## Diamonds
 
@@ -1143,6 +1156,7 @@ path = "/Users/fklock/Dev/Rust/add6_64/"
 path = "/Users/fklock/Dev/Rust/add6/"
 ```
 -->
+</div>
 </section></section>
 <section><section id="part-3-sequence-types-and-iteration" class="titleslide slide level1"><h1>Part 3: Sequence Types and Iteration</h1></section><section id="vectors-and-arrays" class="slide level2" data-transition="fade-out">
 <h1>Vectors and Arrays</h1>
@@ -1319,7 +1333,8 @@ path = "/Users/fklock/Dev/Rust/add6/"
 <span class="kw">struct</span> Point { <span class="kw">pub</span> x: <span class="dt">i32</span>, <span class="kw">pub</span> y: <span class="dt">i32</span> }
 
 <span class="kw">fn</span> proj_x_axis(p: &amp;Point) -&gt; Point {
-    Point { x: p.x, y: <span class="dv">0</span> } }
+    Point { x: p.x, y: <span class="dv">0</span> }
+}
 
 <span class="kw">fn</span> nudge_left(p: &amp;<span class="kw">mut</span> Point) { p.x -= <span class="dv">10</span>; }</code></pre></div>
 <p>Or add a method:</p>
@@ -1328,7 +1343,8 @@ path = "/Users/fklock/Dev/Rust/add6/"
         Point { x: <span class="kw">self</span>.x, y: <span class="dv">0</span> }
     }
 }</code></pre></div>
-<p>Tuple-structs, Generics:</p>
+</section><section id="tuple-structs-generics" class="slide level2">
+<h1>tuple-structs, generics</h1>
 <div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="at">#[</span>derive<span class="at">(</span><span class="bu">Copy</span><span class="at">,</span> <span class="bu">Clone</span><span class="at">)]</span>
 <span class="kw">struct</span> Angle(<span class="kw">pub</span> <span class="dt">f64</span>);   <span class="co">// construct with e.g. `Angle(90.0)`</span>
 
@@ -1361,6 +1377,14 @@ fn proj_x_axis_check(p: &Point) -> Point {
     Vector(Point, Angle),
 }</code></pre></div>
 <p>Pattern-matching:</p>
+<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="kw">fn</span> start(l: &amp;Line) -&gt; Point {
+    <span class="kw">match</span> *l {
+        Line::Vector(s, _) =&gt; s,
+        Line::Segment { start: s, .. } =&gt; s,
+    }
+}</code></pre></div>
+</section><section id="pattern-matching" class="slide level2">
+<h1>Pattern-matching</h1>
 <div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="kw">fn</span> start(l: &amp;Line) -&gt; Point {
     <span class="kw">match</span> *l {
         Line::Vector(s, _) =&gt; s,
@@ -1656,8 +1680,8 @@ note:    parameters for function</code></pre>
     found `Circle`
     let shapes = [Rect::square(1), Circle::with_radius(2)];
                                    ^~~~~~~~~~~~~~~~~~~~~~</code></pre>
-</section><section id="monomorphization-is-why" class="slide level2">
-<h1>Monomorphization is why</h1>
+</section><section id="uniformity-of-t-in-vect-is-why" class="slide level2">
+<h1>Uniformity of <code>T</code> in <code>Vec&lt;T&gt;</code> is why</h1>
 <div class="sourceCode"><pre class="sourceCode rust compile_error"><code class="sourceCode rust"><span class="kw">struct</span> Rect { w: <span class="dt">u32</span>, h: <span class="dt">u32</span> }
 <span class="kw">struct</span> Circle { r: <span class="dt">u32</span> }
 
