@@ -1,4 +1,6 @@
-## crates.io
+## crates.io { .left_align }
+
+. . .
 
 * Cargo's main feature: dependency management
 
@@ -13,11 +15,16 @@
 quickcheck = "0.2.20"
 ```
 
-And that's it!
+. . .
 
-> `extern crate quickcheck;`{.rust}
+Then add this:
 
-now works
+`lib.rs`{.filename}
+``` {.rust}
+extern crate quickcheck;
+```
+
+to your `lib.rs`, and you have access to quickcheck!
 
 [crates.io]: http://crates.io/
 
