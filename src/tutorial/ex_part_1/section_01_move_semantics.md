@@ -3,9 +3,13 @@
 All of the "Move Semantics" exercises involve manipulating the code at
 the following playpen link:
 
-  * [`https://play.rust-lang.org/?gist=b30f72fe3eb559c83994&version=stable`][Move Semantics Playpen]
+  * [http://is.gd/c6w4pT][Move Semantics Playpen]
 
-[Move Semantics Playpen]: https://play.rust-lang.org/?gist=b30f72fe3eb559c83994&version=stable
+  * gist source: [https://gist.github.com/pnkfelix/b30f72fe3eb559c83994]
+
+[https://gist.github.com/pnkfelix/b30f72fe3eb559c83994]: https://gist.github.com/pnkfelix/b30f72fe3eb559c83994
+
+[Move Semantics Playpen]: http://is.gd/c6w4pT
 
 ### Core Exercises
 

@@ -3,11 +3,15 @@
 ## Section 2: Borrowing (Immutably)
 
 All of the "Borrowing (Immutably)" exercises involve manipulating the code at
-the following playpen link:
+the following gist. (You may need to cut-and-paste from the gist link into
+the playpen, due to infrastructural and rate-limit issues.)
 
   * [`https://play.rust-lang.org/?gist=193a107a5e6702d457db&version=stable`][Borrowing Playpen]
 
+  * gist source: [https://gist.github.com/pnkfelix/193a107a5e6702d457db]
 [Borrowing Playpen]: https://play.rust-lang.org/?gist=193a107a5e6702d457db&version=stable
+
+[https://gist.github.com/pnkfelix/193a107a5e6702d457db]: https://gist.github.com/pnkfelix/193a107a5e6702d457db
 
 ### Core Exercises
 

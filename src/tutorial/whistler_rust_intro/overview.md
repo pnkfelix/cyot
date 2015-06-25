@@ -69,7 +69,8 @@ fn sum_pos(v: &Vec<i32>) -> i32 {
 }
 ```
 
-[loop demo]: https://play.rust-lang.org/?gist=23a69161dd4421e2925f
+[loop demo]: http://is.gd/weGnJ0
+<!-- https://play.rust-lang.org/?gist=23a69161dd4421e2925f -->
 
 ## Abstraction without overhead { data-transition="fade-in" }
 

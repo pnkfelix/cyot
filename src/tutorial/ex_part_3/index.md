@@ -227,6 +227,9 @@ which uses unit tests alone for its illustrations:
   * gist:    [https://gist.github.com/pnkfelix/e0916c0a8abda3331293]
   * playpen: [https://play.rust-lang.org/?gist=e0916c0a8abda3331293]
 
+(You may need to cut-and-paste from the gist link if you choose to use
+the playpen, due to infrastructural and rate-limit issues.)
+
 You may prefer to put the code on your local machine (either in its
 own `.rs` file, or in a cargo project).
 

@@ -5,9 +5,13 @@
 All of the "Mutably Borrowing" exercises involve manipulating the code at
 the following playpen link:
 
-  * [`https://play.rust-lang.org/?gist=a2b72a81c8e366e117e0&version=stable`][Mutably Borrowing Playpen]
+  * [`http://is.gd/lVzEUs`][Mutably Borrowing Playpen]
 
-[Mutably Borrowing Playpen]: https://play.rust-lang.org/?gist=a2b72a81c8e366e117e0&version=stable
+  * gist source: [https://gist.github.com/pnkfelix/a2b72a81c8e366e117e0]
+
+[Mutably Borrowing Playpen]: http://is.gd/lVzEUs
+
+[https://gist.github.com/pnkfelix/a2b72a81c8e366e117e0]: https://gist.github.com/pnkfelix/a2b72a81c8e366e117e0
 
 ### Core Exercises
 
