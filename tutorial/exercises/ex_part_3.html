@@ -152,112 +152,12 @@ $ cargo test
 <li><p>The <code>String</code> API is visble at:</p>
 <p><a href="https://doc.rust-lang.org/stable/std/string/struct.String.html" class="uri">https://doc.rust-lang.org/stable/std/string/struct.String.html</a></p></li>
 </ul>
-<p>The exercises in this section concern the following code, and uses unit tests alone for its illustrations.</p>
-<p><code class="filename">section_6.rs</code></p>
-<div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="at">#[</span>test<span class="at">]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> demo_iterators() {
-    <span class="co">// We already saw iterating over numeric ranges:</span>
-    <span class="kw">let</span> <span class="kw">mut</span> v = <span class="dt">Vec</span>::new();
-    <span class="kw">let</span> <span class="kw">mut</span> zeroes: <span class="dt">Vec</span>&lt;<span class="dt">i32</span>&gt; = <span class="dt">Vec</span>::new();
-    <span class="kw">for</span> i <span class="kw">in</span> <span class="dv">0.</span>.<span class="dv">10</span> {
-        v.push(<span class="dv">1000</span> + i);
-        zeroes.push(<span class="dv">0</span>);
-    }
-    <span class="pp">println!</span>(<span class="st">&quot;v: {:?}&quot;</span>, v);
-
-    <span class="co">// But for-loops in Rust are much more general.</span>
-
-    <span class="co">// Here is a for-loop that *consumes* its input: the vector here</span>
-    <span class="co">// is constructed once and then broken down to feed the iteration.</span>
-    <span class="co">// Each `i` is a `usize` value extracted from the vector.</span>
-    <span class="kw">for</span> i <span class="kw">in</span> <span class="pp">vec!</span>[<span class="dv">0</span>, <span class="dv">1</span>, <span class="dv">2</span>, <span class="dv">3</span>] {
-        <span class="pp">assert_eq!</span>(v[i], <span class="dv">1000</span> + i);
-    }
-
-    <span class="co">// Here is a for-loop that *borrows* its input: the vector here</span>
-    <span class="co">// is traversed but not consumed. Each `elem` is a borrowed-value</span>
-    <span class="co">// from within the vector itself; so for our `zeroes: Vec&lt;i32&gt;`,</span>
-    <span class="co">// each elem is a `&amp;i32`, *not* an `i32`.</span>
-    <span class="kw">for</span> elem <span class="kw">in</span> &amp;zeroes {
-        <span class="co">// assert_eq(elem, 0);</span>
-        <span class="co">//           ~~~~~~~</span>
-        <span class="co">//              |</span>
-        <span class="co">//    This does not work; you cannot compare a `&amp;i32` with an `i32` via</span>
-        <span class="co">//    the standard `==` operator.</span>
-
-        <span class="pp">assert_eq!</span>(elem, &amp;<span class="dv">0</span>);
-        <span class="co">//         ~~~~~~~~</span>
-        <span class="co">//            |</span>
-        <span class="co">//    Here is one work-around for the problem above:</span>
-        <span class="co">//    you *can* compare two `&amp;i32` values via `==`.</span>
-
-        <span class="pp">assert_eq!</span>(*elem, <span class="dv">0</span>);
-        <span class="co">//         ~~~~~</span>
-        <span class="co">//           |</span>
-        <span class="co">//    Another fix. (Our *first* time using &quot;deref&quot; operator</span>
-        <span class="co">//    explicitly; earlier sections have been dereferencing all</span>
-        <span class="co">//    over the place, but it has been under the hood.)</span>
-    }
-}
-
-<span class="at">#[</span>test<span class="at">]</span>
-<span class="kw">pub</span> <span class="kw">fn</span> no_longer_main() {
-
-    <span class="co">// Analogous to the `Vec&lt;i32&gt;` and `&amp;[i32]` for integer array</span>
-    <span class="co">// manipulation, Rust has two datatypes used in its standard</span>
-    <span class="co">// library for Unicode string manipulation.</span>
-    <span class="co">//</span>
-    <span class="co">// - `String` is a mutable string buffer; it can grow and shrink,</span>
-    <span class="co">//   much like `Vec&lt;i32&gt;`</span>
-    <span class="co">//</span>
-    <span class="co">// - `&amp;str` is a borrowed string slice. It is immutable and fixed in its length,</span>
-    <span class="co">//   much like `&amp;[i32]`.</span>
-    <span class="co">//</span>
-    <span class="co">// Relevant API docs:</span>
-    <span class="co">// - https://doc.rust-lang.org/stable/std/string/struct.String.html</span>
-    <span class="co">// - https://doc.rust-lang.org/stable/std/str/index.html</span>
-
-    <span class="kw">let</span> <span class="kw">mut</span> s = <span class="dt">String</span>::new();
-    s.push_str(<span class="st">&quot;Hello&quot;</span>);
-    s.push_str(<span class="st">&quot; &quot;</span>);
-    s.push_str(<span class="st">&quot;World!&quot;</span>);
-    <span class="pp">println!</span>(<span class="st">&quot;{}&quot;</span>, s);
-    <span class="pp">assert_eq!</span>(s.len(), <span class="dv">12</span>); <span class="co">// (length in bytes)</span>
-    <span class="pp">assert_eq!</span>(s, <span class="st">&quot;Hello World!&quot;</span>);
-
-    <span class="kw">let</span> <span class="kw">mut</span> the_bytes = <span class="dt">Vec</span>::new();
-    <span class="kw">let</span> <span class="kw">mut</span> the_chars = <span class="dt">Vec</span>::new();
-
-    <span class="co">// We can also do for-loops over strings, ...</span>
-    <span class="co">//</span>
-    <span class="co">// ... but since one can view them as sequences of bytes, or</span>
-    <span class="co">// as sequences of characters (Unicode codepoints) ...</span>
-    <span class="co">//</span>
-    <span class="co">// ... we need to say what we are iterating over</span>
-    <span class="kw">for</span> b <span class="kw">in</span> s.bytes() {
-        the_bytes.push(b);
-    }
-    <span class="kw">for</span> c <span class="kw">in</span> s.chars() {
-        the_chars.push(c);
-    }
-
-    s.clear();
-    <span class="pp">assert_eq!</span>(s, <span class="st">&quot;&quot;</span>);
-    funny_string(&amp;<span class="kw">mut</span> s);
-    <span class="pp">println!</span>(<span class="st">&quot;</span><span class="sc">\&quot;</span><span class="st">{}</span><span class="sc">\&quot;</span><span class="st">, {:?}, {}&quot;</span>, s, s, s.len());
-}
-
-<span class="kw">fn</span> funny_string(s: &amp;<span class="kw">mut</span> <span class="dt">String</span>) {
-    <span class="kw">let</span> hw = <span class="st">&quot;Hello World!&quot;</span>;
-    s.push_str(&amp;hw[<span class="dv">0.</span>.<span class="dv">9</span>]); <span class="co">// `string[range]` &quot;works&quot; just like vectors and slices.</span>
-
-    <span class="kw">let</span> funny_char: <span class="dt">char</span> = <span class="ch">&#39;</span><span class="sc">\u{1F525}</span><span class="ch">&#39;</span>;
-    s.push(funny_char);
-
-    <span class="co">// (*) (see exercises below)</span>
-    <span class="co">// let borrowed = &amp;s[0..10];</span>
-    <span class="co">// println!(&quot;borrowed: {}&quot;, borrowed);</span>
-}</code></pre></div>
+<p>The exercises in this section concern the code at the following link, which uses unit tests alone for its illustrations:</p>
+<ul>
+<li>gist: <a href="https://gist.github.com/pnkfelix/e0916c0a8abda3331293" class="uri">https://gist.github.com/pnkfelix/e0916c0a8abda3331293</a></li>
+<li>playpen: <a href="https://play.rust-lang.org/?gist=e0916c0a8abda3331293" class="uri">https://play.rust-lang.org/?gist=e0916c0a8abda3331293</a></li>
+</ul>
+<p>You may prefer to put the code on your local machine (either in its own <code>.rs</code> file, or in a cargo project).</p>
 <h3 id="core-exercises-2">Core Exercises</h3>
 <h4 id="exercise-6.1">Exercise 6.1</h4>
 <p>What is being printed out at the end of <code>fn no_longer_main</code>?</p>
