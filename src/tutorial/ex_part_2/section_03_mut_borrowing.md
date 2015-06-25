@@ -72,8 +72,10 @@ imperatively replaces its contents with its prefix-sum:
 `[v1, v2, v3, ...]` is replaced with `[v1, v1+v2, v1+v2+v3, ...]`.
 
 Examples:
-`[1, 0, 1, 0]` is replaced with `[1, 1, 2, 2]`
-`[1, 2, 3, 4]` is replaced with `[1, 3, 6, 10]`
+
+ * `[1, 0, 1, 0]` is replaced with `[1, 1, 2, 2]`
+
+ * `[1, 2, 3, 4]` is replaced with `[1, 3, 6, 10]`
 
 
 #### Exercise 3.6
