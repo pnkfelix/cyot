@@ -15,7 +15,8 @@
 struct Point { pub x: i32, pub y: i32 }
 
 fn proj_x_axis(p: &Point) -> Point {
-    Point { x: p.x, y: 0 } }
+    Point { x: p.x, y: 0 }
+}
 
 fn nudge_left(p: &mut Point) { p.x -= 10; }
 ```
@@ -30,7 +31,7 @@ impl Point {
 }
 ```
 
-Tuple-structs, Generics:
+## tuple-structs, generics
 
 ```rust
 #[derive(Copy, Clone)]
@@ -74,6 +75,17 @@ enum Line {
 
 Pattern-matching:
 ```rust
+fn start(l: &Line) -> Point {
+    match *l {
+        Line::Vector(s, _) => s,
+        Line::Segment { start: s, .. } => s,
+    }
+}
+```
+
+## Pattern-matching
+
+``` {.rust}
 fn start(l: &Line) -> Point {
     match *l {
         Line::Vector(s, _) => s,
@@ -461,7 +473,8 @@ error: mismatched types:
                                    ^~~~~~~~~~~~~~~~~~~~~~
 ```
 
-## Monomorphization is why
+## Uniformity of `T` in `Vec<T>` is why
+
 ``` {.rust .compile_error}
 struct Rect { w: u32, h: u32 }
 struct Circle { r: u32 }
