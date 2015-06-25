@@ -103,6 +103,10 @@ Richer than C-style `switch`:
     }
 ```
 
+See also [Mixing matching, mutation, and moves] blog post.
+
+[Mixing matching, mutation, and moves]: http://blog.rust-lang.org/2015/04/17/Enums-match-mutation-and-moves.html
+
 ## Option and Result
 
 ``` {.rust}
