@@ -63,7 +63,7 @@ HINT: You may need to use methods we have not yet seen to do
 these exercises; the `Vec` API is visible at:
 
   [https://doc.rust-lang.org/stable/std/vec/struct.Vec.html]
-  
+
 [https://doc.rust-lang.org/stable/std/vec/struct.Vec.html]: https://doc.rust-lang.org/stable/std/vec/struct.Vec.html
 
 #### Exercise 3.5
