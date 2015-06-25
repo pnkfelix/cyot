@@ -21,7 +21,12 @@ the [Move Semantics Playpen]. Why does the code stop compiling?
 
 Try to change the first `println!` call in the
 [Move Semantics Playpen] so that it reports the length of `vec0` after
-`fill_vec` returns. Why doesn't the code compile successfully anymore?
+`fill_vec` returns.
+
+(One quick way to do this is to just replace
+`vec1` with `vec0` in the `println!` call.)
+
+Why doesn't the code compile successfully anymore?
 
 ### Extra Exercises
 
@@ -42,6 +47,6 @@ rather, such a `mut` is attached to *bindings*)
 
 Refactor the code in the [Move Semantics Playpen] so that instead of
 creating the vector in `fn main`, we instead create it within `fn
-fill_vec`, and transfer the freshly created from `fill_vec` to its
+fill_vec`, and transfer the freshly created vector from `fill_vec` to its
 caller. Note this will require revising the function signature for
 `fill_vec`.
