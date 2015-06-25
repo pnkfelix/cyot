@@ -119,11 +119,15 @@ Also:
 
   * The `Vec` API is visible at:
 
-    https://doc.rust-lang.org/stable/std/vec/struct.Vec.html
+    [https://doc.rust-lang.org/stable/std/vec/struct.Vec.html]
 
   * The `[T]` (slice) API is visible at:
 
-    https://doc.rust-lang.org/stable/std/primitive.slice.html
+    [https://doc.rust-lang.org/stable/std/primitive.slice.html]
+
+[https://doc.rust-lang.org/stable/std/vec/struct.Vec.html]: https://doc.rust-lang.org/stable/std/vec/struct.Vec.html
+
+[https://doc.rust-lang.org/stable/std/primitive.slice.html]: https://doc.rust-lang.org/stable/std/primitive.slice.html
 
 ### Core Exercises
 
@@ -192,11 +196,15 @@ Also:
 
   * The `str` API is visible at:
 
-    https://doc.rust-lang.org/stable/std/primitive.str.html
+    [https://doc.rust-lang.org/stable/std/primitive.str.html]
 
   * The `String` API is visble at:
 
-    https://doc.rust-lang.org/stable/std/string/struct.String.html
+    [https://doc.rust-lang.org/stable/std/string/struct.String.html]
+
+[https://doc.rust-lang.org/stable/std/primitive.str.html]: https://doc.rust-lang.org/stable/std/primitive.str.html
+
+[https://doc.rust-lang.org/stable/std/string/struct.String.html]: https://doc.rust-lang.org/stable/std/string/struct.String.html
 
 The exercises in this section concern the following code,
 and uses unit tests alone for its illustrations.
