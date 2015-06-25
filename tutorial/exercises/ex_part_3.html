@@ -97,7 +97,12 @@ $ cargo build
 ...
 $ cargo test
 ...</code></pre>
-<h4 id="exercise-4.4-crates.io">Exercise 4.4: crates.io</h4>
+<h4 id="exercise-4.4-test-io">Exercise 4.4: test I/O</h4>
+<p>Revise your new cargo library so that the unit test prints out &quot;Hello World&quot; via <code class="sourceCode rust"><span class="pp">println!</span></code> when it runs.</p>
+<p>Note: <code>cargo test</code> captures such output by default, so you will not see it when you run <code>cargo test</code> with no other options.</p>
+<p>You can see options to adjust the latter behavior, that you can pass to the generated tester program, by running <code>cargo test -- --help</code>.</p>
+<p>(Note also that <code>cargo test --help</code> is quite different from <code>cargo test -- --help</code>.)</p>
+<h4 id="exercise-4.5-crates.io">Exercise 4.5: crates.io</h4>
 <p>Revise your new cargo library to print out a randomly generated number.</p>
 <p>To do this, you should not write your own random number generator; instead, you should grab one off <a href="https://crates.io/">crates.io</a>.</p>
 <p>Do a search there for one, and then add the appropriate line to a <code>[dependencies]</code> section in <code>my_new_library/Cargo.toml</code>.</p>
@@ -165,6 +170,8 @@ $ cargo test
 <h4 id="exercise-6.2">Exercise 6.2</h4>
 <p>Uncomment the lines beneath the one labelled &quot;(*)&quot; above, starting with <code>let borrowed = ...;</code></p>
 <p>Re-run the test suite. Can you explain what you see?</p>
+<p>Hint: setting the environment variable <code>RUST_BACKTRACE</code> to 1 will make Rust programs print out a stack trace when they panic.</p>
+<p>So for example, <code>RUST_BACKTRACE=1 cargo test</code> may provide further information about what is happening.</p>
 <h4 id="exercise-6.3">Exercise 6.3</h4>
 <p>Write a function</p>
 <div class="sourceCode"><pre class="sourceCode rust"><code class="sourceCode rust"><span class="kw">fn</span> listing(input: &amp;[&amp;<span class="dt">str</span>]) -&gt; <span class="dt">String</span></code></pre></div>
