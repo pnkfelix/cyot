@@ -115,6 +115,16 @@ To write and test your code, you can either:
 
 (We recommend `cargo`.)
 
+Also:
+
+  * The `Vec` API is visible at:
+
+    https://doc.rust-lang.org/stable/std/vec/struct.Vec.html
+
+  * The `[T]` (slice) API is visible at:
+
+    https://doc.rust-lang.org/stable/std/primitive.slice.html
+
 ### Core Exercises
 
 #### Exercise 5.1
@@ -177,6 +187,16 @@ To run them, you can either:
   * Put the code into a `.rs` file, replace `fn no_longer_main` with
     `fn main` and compile it the same way you did the earlier "Hello
     World"-type examples.
+
+Also:
+
+  * The `str` API is visible at:
+
+    https://doc.rust-lang.org/stable/std/primitive.str.html
+
+  * The `String` API is visble at:
+
+    https://doc.rust-lang.org/stable/std/string/struct.String.html
 
 The exercises in this section concern the following code,
 and uses unit tests alone for its illustrations.
