@@ -84,7 +84,22 @@ $ cargo test
 ...
 ```
 
-#### Exercise 4.4: crates.io
+#### Exercise 4.4: test I/O
+
+Revise your new cargo library so that the unit test
+prints out "Hello World" via `println!`{.rust} when it runs.
+
+Note: `cargo test` captures such output by default, so you
+will not see it when you run `cargo test` with no other options.
+
+You can see options to adjust the latter behavior,
+that you can pass to the generated tester program,
+by running `cargo test -- --help`.
+
+(Note also that `cargo test --help` is quite different from
+`cargo test -- --help`.)
+
+#### Exercise 4.5: crates.io
 
 Revise your new cargo library to print out a randomly generated number.
 
