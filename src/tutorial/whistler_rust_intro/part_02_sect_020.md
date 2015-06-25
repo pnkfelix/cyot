@@ -140,12 +140,16 @@ mod a {
 
 . . .
 
+  * Beginners often erroneosuly write `mod foo;` when they meant `use foo;`
+
+
+<!--
   * Why confusing, sometimes even to Rust experts??
 
     ``` {.rust .fragment}
     use foo; // (this is legal, depending on what `foo` is.)
     ```
-
+-->
 <!--
 ```rust
 mod c {
